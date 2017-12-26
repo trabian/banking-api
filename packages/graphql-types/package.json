@@ -1,0 +1,10 @@
+{
+  "name": "@trabian-banking/graphql-types",
+  "version": "0.0.1",
+  "description": "GraphQL types for banking/financial APIs",
+  "main": "src/index.js",
+  "devDependencies": {
+    "@babel/core": "^7.0.0-beta.35",
+    "@babel/preset-env": "^7.0.0-beta.35"
+  }
+}

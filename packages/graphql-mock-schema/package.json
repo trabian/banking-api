@@ -1,0 +1,31 @@
+{
+  "name": "@trabian-banking/graphql-mock-schema",
+  "version": "0.0.1",
+  "description": "A mock schema for the banking-api-graphql-types",
+  "main": "index.js",
+  "devDependencies": {
+    "@babel/cli": "^7.0.0-beta.35",
+    "@babel/core": "^7.0.0-beta.35",
+    "@babel/node": "^7.0.0-beta.35",
+    "@babel/preset-env": "^7.0.0-beta.35",
+    "@std/esm": "^0.18.0",
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "graphql-server-express": "^1.3.2",
+    "nodemon": "^1.14.3",
+    "rollup": "^0.53.0",
+    "rollup-plugin-node-resolve": "^3.0.0"
+  },
+  "scripts": {
+    "dev": "nodemon -r @std/esm src/server.js",
+    "build": "rollup -c"
+  },
+  "@std/esm": {
+    "cjs": true,
+    "esm": "js"
+  },
+  "dependencies": {
+    "graphql": "^0.12.3",
+    "graphql-tools": "^2.14.1"
+  }
+}
