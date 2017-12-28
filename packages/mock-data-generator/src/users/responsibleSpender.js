@@ -17,6 +17,7 @@
  * Second paycheck:
  * - Deposit paycheck
  * - Pay car loan (same FI)
+ * - Pay credit card
  * - Pay other utilties (water and gas)
  * - Buy groceries
  * - Restaurants, discretionary spending
@@ -139,7 +140,6 @@ const monthlyTransactionBuilder = ({
   budget,
   context,
   monthlySalary,
-  mortgagePayment,
   targetCheckingBalance,
   initialDate
 }) => (acc, index) => {
@@ -172,6 +172,14 @@ const monthlyTransactionBuilder = ({
     amount: monthlySalary * budget.mortgage,
     type: "debit",
     category: "housing"
+  };
+
+  const creditCard = {
+    description: context.creditCard.name,
+    date: randomDate(20, 3),
+    amount: monthlySalary * budget.creditCard,
+    type: "debit",
+    category: "debt"
   };
 
   // Consider adding a seasonal variance
@@ -226,6 +234,7 @@ const monthlyTransactionBuilder = ({
   let checkingTransactions = R.flatten([
     paychecks,
     mortgage,
+    creditCard,
     electricBill,
     gasBill,
     waterBill,
@@ -293,6 +302,7 @@ export default ({
   const context = {
     mortgage: faker.random.arrayElement(merchants.mortgageCompanies),
     employer: faker.random.arrayElement(merchants.employers),
+    creditCard: faker.random.arrayElement(merchants.creditCards),
     electric: faker.random.arrayElement(merchants.electricCompanies),
     gas: faker.random.arrayElement(merchants.gasCompanies),
     water: faker.random.arrayElement(merchants.waterCompanies)
@@ -302,6 +312,7 @@ export default ({
 
   const budget = {
     mortgage: 0.15,
+    creditCard: 0.03,
     groceries: 0.1,
     dining: 0.1,
     electric: 0.0375,
