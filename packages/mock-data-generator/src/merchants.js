@@ -71,7 +71,7 @@ export const groceryStores = R.pipe(
 ]);
 
 export const restaurants = R.map(buildMerchant, [
-  "Applebee's"
+  "Applebee's",
   "Arby's",
   "Auntie Anne's",
   "Baja Fresh",
@@ -118,7 +118,7 @@ export const restaurants = R.map(buildMerchant, [
   "Noodles & Company",
   "O'Charley's",
   "The Old Spaghetti Factory",
-  "Olive Garden",  
+  "Olive Garden",
   "On The Border Mexican Grill",
   "The Original Pancake House",
   "Outback Steakhouse",
@@ -209,15 +209,9 @@ export const waterCompanies = R.map(buildMerchant, [
   "American Water"
 ]);
 
-export const cableCompanies = R.map(buildMerchant, [
-  "Comcast",
-  "AT&T"
-]);
+export const cableCompanies = R.map(buildMerchant, ["Comcast", "AT&T"]);
 
-export const phoneCompanies = R.map(buildMerchant, [
-  "Verizon",
-  "AT&T"
-]);
+export const phoneCompanies = R.map(buildMerchant, ["Verizon", "AT&T"]);
 
 export const insuranceCompanies = R.map(buildMerchant, [
   "Allstate",
