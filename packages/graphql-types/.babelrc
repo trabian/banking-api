@@ -1,13 +1,11 @@
 {
   "presets": [
     [
-      "@babel/preset-env",
+      "env",
       {
-        "targets": {
-          "node": "current"
-        }
+        "modules": false
       }
     ]
   ],
-  "ignore": ["node_modules/**"]
+  "plugins": ["inline-import"]
 }

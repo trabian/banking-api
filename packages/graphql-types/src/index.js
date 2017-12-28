@@ -1,15 +1,33 @@
-import Account from "./Account";
+import { gql } from "./utils";
 
-const RootQuery = `
+import Account from "./Account";
+import Date from "./Date";
+import Transaction from "./Transaction";
+import User from "./User";
+
+const TransferMutation = gql`
+  input TransferInput {
+    toAccountId: ID!
+    fromAccountId: ID!
+    amount: Float!
+    message: String
+    scheduledDate: Date
+  }
+  
+  mutation createTransfer(transfer: TransferInput!): TransferConfirmation
+`;
+
+const RootQuery = gql`
   type RootQuery {
+    me: User
     account(id: ID!): Account
   }
 `;
 
-const SchemaDefinition = `
+const Schema = gql`
   schema {
     query: RootQuery
   }
 `;
 
-export default [SchemaDefinition, RootQuery, Account];
+export default [Schema, RootQuery, Account, Date, Transaction, User];

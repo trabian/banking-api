@@ -1,12 +1,11 @@
 {
   "presets": [
     [
-      "@babel/preset-env",
+      "env",
       {
-        "targets": {
-          "node": "current"
-        }
+        "modules": false
       }
     ]
-  ]
+  ],
+  "plugins": ["ramda", "inline-import"]
 }

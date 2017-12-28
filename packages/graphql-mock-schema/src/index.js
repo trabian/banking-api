@@ -1,7 +1,44 @@
 import typeDefs from "@trabian-banking/graphql-types";
 
-import { makeExecutableSchema } from "graphql-tools";
+import R from "ramda";
 
-const resolvers = {};
+import { GraphQLScalarType } from "graphql";
+import { Kind } from "graphql/language";
 
-export default makeExecutableSchema({ typeDefs, resolvers });
+import { getAccountsForUser } from "./accounts";
+
+const resolvers = {
+  Date: new GraphQLScalarType({
+    name: "Date",
+    description: "Date custom scalar type",
+    parseValue(value) {
+      return new Date(value); // value from the client
+    },
+    serialize(value) {
+      return value.getTime(); // value sent to the client
+    },
+    parseLiteral(ast) {
+      if (ast.kind === Kind.INT) {
+        return parseInt(ast.value, 10); // ast value is always in string format
+      }
+      return null;
+    }
+  }),
+  Account: {
+    transactions: ({ transactions }, { limit }) => {
+      return R.take(limit, transactions || []);
+    }
+  },
+  Transaction: {
+    type: R.pipe(R.prop("type"), R.toUpper)
+  },
+  RootQuery: {
+    me: (obj, args, { user: { id }, sdk }) => ({
+      accounts: getAccountsForUser(id, sdk)
+    })
+  }
+};
+
+const accounts = getAccountsForUser("responsible-spender");
+
+export { resolvers, typeDefs };
