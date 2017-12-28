@@ -35,7 +35,7 @@ const Account = gql`
     availableBalance: Float
 
     # The transactions for this account
-    transactions(limit: Int = 10): [Transaction!]!
+    transactions(limit: Int = 10, categoryId: ID): [Transaction!]!
   }
 `;
 

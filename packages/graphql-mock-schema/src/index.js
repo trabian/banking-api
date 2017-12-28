@@ -5,7 +5,11 @@ import R from "ramda";
 import { GraphQLScalarType } from "graphql";
 import { Kind } from "graphql/language";
 
-import { getAccountForUser, getAccountsForUser } from "./accounts";
+import {
+  getAccountForUser,
+  getAccountsForUser,
+  getCategoryForUser
+} from "./accounts";
 
 const resolvers = {
   Date: new GraphQLScalarType({
@@ -25,9 +29,14 @@ const resolvers = {
     }
   }),
   Account: {
-    transactions: ({ transactions }, { limit }) => {
-      return R.take(limit, transactions || []);
-    }
+    transactions: ({ transactions }, { limit, categoryId }) =>
+      R.pipe(
+        R.unless(
+          () => R.isNil(categoryId),
+          R.filter(R.pathEq(["category", "id"], categoryId))
+        ),
+        R.take(limit)
+      )(transactions || [])
   },
   Transaction: {
     type: R.pipe(R.prop("type"), R.toUpper)
@@ -35,6 +44,8 @@ const resolvers = {
   RootQuery: {
     account: (obj, { id: accountId }, { user: { id: userId } }) =>
       getAccountForUser(userId, accountId),
+    category: (obj, { id: categoryId }, { user: { id: userId } }) =>
+      categoryId && getCategoryForUser(userId, categoryId),
     me: (obj, args, { user: { id } }) => ({
       accounts: getAccountsForUser(id)
     })

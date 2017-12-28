@@ -2,6 +2,13 @@ import { gql } from "./utils";
 
 import Date from "./Date";
 
+export const Category = gql`
+  type Category {
+    id: ID!
+    name: String!
+  }
+`;
+
 const Merchant = gql`
   type Merchant {
     id: ID!
@@ -53,7 +60,7 @@ export const Transaction = gql`
     # The running balance of this transaction's account.
     balance: Float
 
-    category: String
+    category: Category
 
     merchant: Merchant
 
@@ -61,4 +68,11 @@ export const Transaction = gql`
   }
 `;
 
-export default () => [Date, Transaction, TransactionType, Merchant, Message];
+export default () => [
+  Date,
+  Transaction,
+  TransactionType,
+  Merchant,
+  Message,
+  Category
+];

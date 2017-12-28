@@ -1,11 +1,14 @@
 import R from "ramda";
 import uuid from "uuid";
 
-import { responsibleSpender } from "@trabian-banking/mock-data-generator";
+import {
+  responsibleSpender,
+  categories
+} from "@trabian-banking/mock-data-generator";
 
 const responsibleSpenderAccounts = responsibleSpender({
   months: 60,
-  targetCheckingBalance: 1000
+  targetCheckingBalance: 100
 }).accounts;
 
 const accounts = [
@@ -40,3 +43,7 @@ export const getAccountsForUser = userId =>
 // Real version would verify the account belongs to the user.
 export const getAccountForUser = (userId, accountId) =>
   R.find(R.propEq("id", accountId), accounts);
+
+// Real version would include categories customized by the user
+export const getCategoryForUser = (userId, categoryId) =>
+  R.find(R.propEq("id", categoryId), R.values(categories));

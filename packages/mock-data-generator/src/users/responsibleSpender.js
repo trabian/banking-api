@@ -40,13 +40,17 @@ import {
   startOfMonth,
   addMonths,
   addDays,
-  getDaysInMonth
+  getDaysInMonth,
+  parse,
+  format,
+  addMilliseconds
 } from "date-fns";
 
 import R from "ramda";
 import uuid from "uuid";
 
 import * as merchants from "../merchants";
+import { categories } from "../merchants";
 
 const mapIndexed = R.addIndex(R.map);
 
@@ -77,6 +81,13 @@ const randomBudgetAmount = (budget, maxVariance = 0.5) =>
 const getSignedTransactionAmount = transaction =>
   transaction.type === "credit" ? transaction.amount : -1 * transaction.amount;
 
+// Hackish way to set the time based on a string like 23:00 or 10:00
+const setTime = (date, time) => {
+  const formatted = format(date);
+  const newDate = formatted.replace(/T(.*)-/, `T${time}-`);
+  return parse(newDate);
+};
+
 // Remove additional precision. These are not audited financial statements.
 // Give us a break.
 const toFixed = (num, fixed) => parseFloat(num.toFixed(fixed));
@@ -86,16 +97,30 @@ const transactionReducer = (acc, transaction) => {
 
   const balance = toFixed(acc.balance + transAmount, 2);
 
+  let date = addDays(acc.initialDate, transaction.date - 1); // Dates are 1-indexed
+
+  if (transaction.time) {
+    date = setTime(date, transaction.time);
+  } else {
+    date = addMilliseconds(
+      date,
+      faker.random.number({
+        min: 1000 * 60 * 60 * 12, // after noon
+        max: 1000 * 60 * 60 * 20 // before 8 pm
+      })
+    );
+  }
+
   const updatedTransaction = R.merge(transaction, {
     id: uuid.v4(),
-    date: addDays(acc.initialDate, transaction.date - 1), // Dates are 1-indexed
+    date,
     amount: Math.abs(transAmount),
     balance
   });
 
   return R.evolve(
     {
-      transactions: R.append(updatedTransaction),
+      transactions: R.append(R.omit(["time"], updatedTransaction)),
       balance: R.always(balance)
     },
     acc
@@ -109,8 +134,7 @@ const splitBudget = (timesToSplit, budget) => {
 };
 
 const splitDates = times => {
-  const days = 30;
-  const split = 30 / times;
+  const split = 28 / times;
   const variance = split / 2;
 
   return R.times(
@@ -147,23 +171,16 @@ const monthlyTransactionBuilder = ({
 }) => (acc, index) => {
   const currentMonth = addMonths(initialDate, index);
 
-  const timesEatingOut = faker.random.number({
-    min: 15,
-    max: 30
-  });
-
   const paycheck = monthlySalary / 2;
-
-  const randomGroceryPercentages = splitBudget(4, budget.groceries);
-  const randomDiningPercentages = splitBudget(timesEatingOut, budget.dining);
 
   const paychecks = R.map(
     date => ({
       description: context.employer.name,
       date,
+      time: "9:00",
       amount: paycheck,
       type: "credit",
-      category: "income"
+      category: categories.income
     }),
     [1, 15]
   );
@@ -173,7 +190,7 @@ const monthlyTransactionBuilder = ({
     date: randomDate(4, 3),
     amount: monthlySalary * budget.mortgage,
     type: "debit",
-    category: "housing"
+    category: categories.housing
   };
 
   const creditCard = {
@@ -181,7 +198,7 @@ const monthlyTransactionBuilder = ({
     date: randomDate(20, 3),
     amount: monthlySalary * budget.creditCard,
     type: "debit",
-    category: "debt"
+    category: categories.debt
   };
 
   const autoLoan = {
@@ -189,7 +206,7 @@ const monthlyTransactionBuilder = ({
     date: randomDate(20, 3),
     amount: monthlySalary * budget.autoLoan,
     type: "debit",
-    category: "debt"
+    category: categories.debt
   };
 
   const insurance = {
@@ -197,7 +214,7 @@ const monthlyTransactionBuilder = ({
     date: randomDate(5, 3),
     amount: monthlySalary * budget.insurance,
     type: "debit",
-    category: "insurance"
+    category: categories.insurance
   };
 
   // Consider adding a seasonal variance
@@ -206,7 +223,7 @@ const monthlyTransactionBuilder = ({
     date: randomDate(5, 3),
     amount: monthlySalary * randomBudgetAmount(budget.electric),
     type: "debit",
-    category: "utilities"
+    category: categories.utilities
   };
 
   const phoneBill = {
@@ -214,7 +231,7 @@ const monthlyTransactionBuilder = ({
     date: randomDate(21, 3),
     amount: monthlySalary * randomBudgetAmount(budget.phoneBill),
     type: "debit",
-    category: "utilities"
+    category: categories.utilities
   };
 
   const cableBill = {
@@ -222,7 +239,7 @@ const monthlyTransactionBuilder = ({
     date: randomDate(7, 3),
     amount: monthlySalary * randomBudgetAmount(budget.cableBill),
     type: "debit",
-    category: "utilities"
+    category: categories.utilities
   };
 
   const gasBill = {
@@ -230,7 +247,7 @@ const monthlyTransactionBuilder = ({
     date: randomDate(25, 3),
     amount: monthlySalary * randomBudgetAmount(budget.gas),
     type: "debit",
-    category: "utilities"
+    category: categories.utilities
   };
 
   const waterBill = {
@@ -238,32 +255,54 @@ const monthlyTransactionBuilder = ({
     date: randomDate(20, 3),
     amount: monthlySalary * randomBudgetAmount(budget.water),
     type: "debit",
-    category: "utilities"
+    category: categories.utilities
   };
 
-  const groceries = mapIndexed((date, index) => {
-    const merchant = faker.random.arrayElement(merchants.groceryStores);
+  const createRandomTransactions = ({
+    count,
+    budgetAmount,
+    merchants,
+    category,
+    type = "debit"
+  }) =>
+    mapIndexed((date, index) => {
+      const merchant = faker.random.arrayElement(merchants);
 
-    return {
-      description: merchant.name,
-      date: randomDate(date, 3),
-      amount: monthlySalary * randomGroceryPercentages[index],
-      type: "debit",
-      category: "groceries",
-      merchant
-    };
-  }, splitDates(4));
+      return {
+        description: merchant.name,
+        date: randomDate(date, 3),
+        amount: monthlySalary * randomBudgetAmount(budgetAmount / count),
+        type,
+        category: category || merchant.category,
+        merchant
+      };
+    }, splitDates(count));
 
-  const dining = mapIndexed(
-    (date, index) => ({
-      description: faker.random.arrayElement(merchants.restaurants).name,
-      date: randomDate(date, 3),
-      amount: monthlySalary * randomDiningPercentages[index],
-      type: "debit",
-      category: "dining"
+  const groceries = createRandomTransactions({
+    count: 4,
+    budgetAmount: budget.groceries,
+    category: categories.groceries,
+    merchants: merchants.groceryStores
+  });
+
+  const dining = createRandomTransactions({
+    count: faker.random.number({
+      min: 15,
+      max: 30
     }),
-    splitDates(timesEatingOut)
-  );
+    budgetAmount: budget.dining,
+    category: categories.dining,
+    merchants: merchants.restaurants
+  });
+
+  const miscellaneous = createRandomTransactions({
+    count: faker.random.number({
+      min: 10,
+      max: 20
+    }),
+    budgetAmount: budget.miscellaneous,
+    merchants: merchants.miscellaneous
+  });
 
   let checkingTransactions = R.flatten([
     paychecks,
@@ -277,7 +316,8 @@ const monthlyTransactionBuilder = ({
     phoneBill,
     waterBill,
     groceries,
-    dining
+    dining,
+    miscellaneous
   ]);
 
   const totalCheckingAccountBalance = R.pipe(
@@ -286,15 +326,25 @@ const monthlyTransactionBuilder = ({
     R.add(acc.accounts.checking.balance)
   )(checkingTransactions);
 
-  let savingsTransactions = [];
+  let savingsTransactions = [
+    {
+      description: "Interest",
+      date: getDaysInMonth(currentMonth),
+      time: "23:59",
+      amount: acc.accounts.savings.balance * acc.accounts.savings.apy / 12,
+      category: categories.interest,
+      type: "credit"
+    }
+  ];
 
   if (totalCheckingAccountBalance > targetCheckingBalance) {
     const maxTransfer = totalCheckingAccountBalance - targetCheckingBalance;
 
     const transfer = {
       date: getDaysInMonth(currentMonth),
+      time: "11:00",
       amount: randomAmount(maxTransfer * 0.85, maxTransfer, 1),
-      category: "transfer"
+      category: categories.transfer
     };
 
     checkingTransactions = R.append(
@@ -353,7 +403,7 @@ export default ({
   const initialDate = subMonths(startOfMonth(new Date()), months);
 
   const budget = {
-    mortgage: 0.15,
+    mortgage: 0.25,
     creditCard: 0.03,
     cableBill: 0.025,
     autoLoan: 0.1,
@@ -363,7 +413,8 @@ export default ({
     electric: 0.0375,
     phoneBill: 0.025,
     gas: 0.01825,
-    water: 0.00725
+    water: 0.00725,
+    miscellaneous: 0.05
   };
 
   const accountData = R.reduce(
@@ -382,6 +433,7 @@ export default ({
         },
         savings: {
           balance: R.pathOr(10, ["savings", "initialBalance"], accounts),
+          apy: R.pathOr(0.0025, ["savings", "apy"], accounts),
           transactions: []
         }
       }

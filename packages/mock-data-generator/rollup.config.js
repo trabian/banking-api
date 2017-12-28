@@ -21,11 +21,14 @@ export default {
         "graphql-tools": ["makeExecutableSchema"],
         "date-fns": [
           "addDays",
+          "addMilliseconds",
           "addMonths",
           "subMonths",
           "addMinutes",
           "startOfMonth",
-          "getDaysInMonth"
+          "getDaysInMonth",
+          "format",
+          "parse"
         ]
       }
     }),
