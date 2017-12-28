@@ -17322,6 +17322,22 @@ function dayOfISOYear(isoYear, week, day) {
 
 var parse_1 = parse;
 
+/**
+ * @category Day Helpers
+ * @summary Add the specified number of days to the given date.
+ *
+ * @description
+ * Add the specified number of days to the given date.
+ *
+ * @param {Date|String|Number} date - the date to be changed
+ * @param {Number} amount - the amount of days to be added
+ * @returns {Date} the new date with the days added
+ *
+ * @example
+ * // Add 10 days to 1 September 2014:
+ * var result = addDays(new Date(2014, 8, 1), 10)
+ * //=> Thu Sep 11 2014 00:00:00
+ */
 function addDays(dirtyDate, dirtyAmount) {
   var date = parse_1(dirtyDate);
   var amount = Number(dirtyAmount);
@@ -17331,6 +17347,22 @@ function addDays(dirtyDate, dirtyAmount) {
 
 var add_days = addDays;
 
+/**
+ * @category Millisecond Helpers
+ * @summary Add the specified number of milliseconds to the given date.
+ *
+ * @description
+ * Add the specified number of milliseconds to the given date.
+ *
+ * @param {Date|String|Number} date - the date to be changed
+ * @param {Number} amount - the amount of milliseconds to be added
+ * @returns {Date} the new date with the milliseconds added
+ *
+ * @example
+ * // Add 750 milliseconds to 10 July 2014 12:45:30.000:
+ * var result = addMilliseconds(new Date(2014, 6, 10, 12, 45, 30, 0), 750)
+ * //=> Thu Jul 10 2014 12:45:30.750
+ */
 function addMilliseconds(dirtyDate, dirtyAmount) {
   var timestamp = parse_1(dirtyDate).getTime();
   var amount = Number(dirtyAmount);
@@ -17364,6 +17396,29 @@ function addHours(dirtyDate, dirtyAmount) {
 
 var add_hours = addHours;
 
+/**
+ * @category Week Helpers
+ * @summary Return the start of a week for the given date.
+ *
+ * @description
+ * Return the start of a week for the given date.
+ * The result will be in the local timezone.
+ *
+ * @param {Date|String|Number} date - the original date
+ * @param {Object} [options] - the object with options
+ * @param {Number} [options.weekStartsOn=0] - the index of the first day of the week (0 - Sunday)
+ * @returns {Date} the start of a week
+ *
+ * @example
+ * // The start of a week for 2 September 2014 11:55:00:
+ * var result = startOfWeek(new Date(2014, 8, 2, 11, 55, 0))
+ * //=> Sun Aug 31 2014 00:00:00
+ *
+ * @example
+ * // If the week starts on Monday, the start of the week for 2 September 2014 11:55:00:
+ * var result = startOfWeek(new Date(2014, 8, 2, 11, 55, 0), {weekStartsOn: 1})
+ * //=> Mon Sep 01 2014 00:00:00
+ */
 function startOfWeek(dirtyDate, dirtyOptions) {
   var weekStartsOn = dirtyOptions ? Number(dirtyOptions.weekStartsOn) || 0 : 0;
 
@@ -17378,12 +17433,48 @@ function startOfWeek(dirtyDate, dirtyOptions) {
 
 var start_of_week = startOfWeek;
 
+/**
+ * @category ISO Week Helpers
+ * @summary Return the start of an ISO week for the given date.
+ *
+ * @description
+ * Return the start of an ISO week for the given date.
+ * The result will be in the local timezone.
+ *
+ * ISO week-numbering year: http://en.wikipedia.org/wiki/ISO_week_date
+ *
+ * @param {Date|String|Number} date - the original date
+ * @returns {Date} the start of an ISO week
+ *
+ * @example
+ * // The start of an ISO week for 2 September 2014 11:55:00:
+ * var result = startOfISOWeek(new Date(2014, 8, 2, 11, 55, 0))
+ * //=> Mon Sep 01 2014 00:00:00
+ */
 function startOfISOWeek(dirtyDate) {
   return start_of_week(dirtyDate, { weekStartsOn: 1 });
 }
 
 var start_of_iso_week = startOfISOWeek;
 
+/**
+ * @category ISO Week-Numbering Year Helpers
+ * @summary Get the ISO week-numbering year of the given date.
+ *
+ * @description
+ * Get the ISO week-numbering year of the given date,
+ * which always starts 3 days before the year's first Thursday.
+ *
+ * ISO week-numbering year: http://en.wikipedia.org/wiki/ISO_week_date
+ *
+ * @param {Date|String|Number} date - the given date
+ * @returns {Number} the ISO week-numbering year
+ *
+ * @example
+ * // Which ISO-week numbering year is 2 January 2005?
+ * var result = getISOYear(new Date(2005, 0, 2))
+ * //=> 2004
+ */
 function getISOYear(dirtyDate) {
   var date = parse_1(dirtyDate);
   var year = date.getFullYear();
@@ -17409,6 +17500,25 @@ function getISOYear(dirtyDate) {
 
 var get_iso_year = getISOYear;
 
+/**
+ * @category ISO Week-Numbering Year Helpers
+ * @summary Return the start of an ISO week-numbering year for the given date.
+ *
+ * @description
+ * Return the start of an ISO week-numbering year,
+ * which always starts 3 days before the year's first Thursday.
+ * The result will be in the local timezone.
+ *
+ * ISO week-numbering year: http://en.wikipedia.org/wiki/ISO_week_date
+ *
+ * @param {Date|String|Number} date - the original date
+ * @returns {Date} the start of an ISO year
+ *
+ * @example
+ * // The start of an ISO week-numbering year for 2 July 2005:
+ * var result = startOfISOYear(new Date(2005, 6, 2))
+ * //=> Mon Jan 03 2005 00:00:00
+ */
 function startOfISOYear(dirtyDate) {
   var year = get_iso_year(dirtyDate);
   var fourthOfJanuary = new Date(0);
@@ -17420,6 +17530,22 @@ function startOfISOYear(dirtyDate) {
 
 var start_of_iso_year = startOfISOYear;
 
+/**
+ * @category Day Helpers
+ * @summary Return the start of a day for the given date.
+ *
+ * @description
+ * Return the start of a day for the given date.
+ * The result will be in the local timezone.
+ *
+ * @param {Date|String|Number} date - the original date
+ * @returns {Date} the start of a day
+ *
+ * @example
+ * // The start of a day for 2 September 2014 11:55:00:
+ * var result = startOfDay(new Date(2014, 8, 2, 11, 55, 0))
+ * //=> Tue Sep 02 2014 00:00:00
+ */
 function startOfDay(dirtyDate) {
   var date = parse_1(dirtyDate);
   date.setHours(0, 0, 0, 0);
@@ -17466,6 +17592,25 @@ function differenceInCalendarDays(dirtyDateLeft, dirtyDateRight) {
 
 var difference_in_calendar_days = differenceInCalendarDays;
 
+/**
+ * @category ISO Week-Numbering Year Helpers
+ * @summary Set the ISO week-numbering year to the given date.
+ *
+ * @description
+ * Set the ISO week-numbering year to the given date,
+ * saving the week number and the weekday number.
+ *
+ * ISO week-numbering year: http://en.wikipedia.org/wiki/ISO_week_date
+ *
+ * @param {Date|String|Number} date - the date to be changed
+ * @param {Number} isoYear - the ISO week-numbering year of the new date
+ * @returns {Date} the new date with the ISO week-numbering year setted
+ *
+ * @example
+ * // Set ISO week-numbering year 2007 to 29 December 2008:
+ * var result = setISOYear(new Date(2008, 11, 29), 2007)
+ * //=> Mon Jan 01 2007 00:00:00
+ */
 function setISOYear(dirtyDate, dirtyISOYear) {
   var date = parse_1(dirtyDate);
   var isoYear = Number(dirtyISOYear);
@@ -17480,6 +17625,24 @@ function setISOYear(dirtyDate, dirtyISOYear) {
 
 var set_iso_year = setISOYear;
 
+/**
+ * @category ISO Week-Numbering Year Helpers
+ * @summary Add the specified number of ISO week-numbering years to the given date.
+ *
+ * @description
+ * Add the specified number of ISO week-numbering years to the given date.
+ *
+ * ISO week-numbering year: http://en.wikipedia.org/wiki/ISO_week_date
+ *
+ * @param {Date|String|Number} date - the date to be changed
+ * @param {Number} amount - the amount of ISO week-numbering years to be added
+ * @returns {Date} the new date with the ISO week-numbering years added
+ *
+ * @example
+ * // Add 5 ISO week-numbering years to 2 July 2010:
+ * var result = addISOYears(new Date(2010, 6, 2), 5)
+ * //=> Fri Jun 26 2015 00:00:00
+ */
 function addISOYears(dirtyDate, dirtyAmount) {
   var amount = Number(dirtyAmount);
   return set_iso_year(dirtyDate, get_iso_year(dirtyDate) + amount);
@@ -17512,6 +17675,21 @@ function addMinutes(dirtyDate, dirtyAmount) {
 
 var add_minutes = addMinutes;
 
+/**
+ * @category Month Helpers
+ * @summary Get the number of days in a month of the given date.
+ *
+ * @description
+ * Get the number of days in a month of the given date.
+ *
+ * @param {Date|String|Number} date - the given date
+ * @returns {Number} the number of days in a month
+ *
+ * @example
+ * // How many days are in February 2000?
+ * var result = getDaysInMonth(new Date(2000, 1))
+ * //=> 29
+ */
 function getDaysInMonth(dirtyDate) {
   var date = parse_1(dirtyDate);
   var year = date.getFullYear();
@@ -17524,6 +17702,22 @@ function getDaysInMonth(dirtyDate) {
 
 var get_days_in_month = getDaysInMonth;
 
+/**
+ * @category Month Helpers
+ * @summary Add the specified number of months to the given date.
+ *
+ * @description
+ * Add the specified number of months to the given date.
+ *
+ * @param {Date|String|Number} date - the date to be changed
+ * @param {Number} amount - the amount of months to be added
+ * @returns {Date} the new date with the months added
+ *
+ * @example
+ * // Add 5 months to 1 September 2014:
+ * var result = addMonths(new Date(2014, 8, 1), 5)
+ * //=> Sun Feb 01 2015 00:00:00
+ */
 function addMonths(dirtyDate, dirtyAmount) {
   var date = parse_1(dirtyDate);
   var amount = Number(dirtyAmount);
@@ -17540,6 +17734,22 @@ function addMonths(dirtyDate, dirtyAmount) {
 
 var add_months = addMonths;
 
+/**
+ * @category Quarter Helpers
+ * @summary Add the specified number of year quarters to the given date.
+ *
+ * @description
+ * Add the specified number of year quarters to the given date.
+ *
+ * @param {Date|String|Number} date - the date to be changed
+ * @param {Number} amount - the amount of quarters to be added
+ * @returns {Date} the new date with the quarters added
+ *
+ * @example
+ * // Add 1 quarter to 1 September 2014:
+ * var result = addQuarters(new Date(2014, 8, 1), 1)
+ * //=> Mon Dec 01 2014 00:00:00
+ */
 function addQuarters(dirtyDate, dirtyAmount) {
   var amount = Number(dirtyAmount);
   var months = amount * 3;
@@ -17548,6 +17758,22 @@ function addQuarters(dirtyDate, dirtyAmount) {
 
 var add_quarters = addQuarters;
 
+/**
+ * @category Second Helpers
+ * @summary Add the specified number of seconds to the given date.
+ *
+ * @description
+ * Add the specified number of seconds to the given date.
+ *
+ * @param {Date|String|Number} date - the date to be changed
+ * @param {Number} amount - the amount of seconds to be added
+ * @returns {Date} the new date with the seconds added
+ *
+ * @example
+ * // Add 30 seconds to 10 July 2014 12:45:00:
+ * var result = addSeconds(new Date(2014, 6, 10, 12, 45, 0), 30)
+ * //=> Thu Jul 10 2014 12:45:30
+ */
 function addSeconds(dirtyDate, dirtyAmount) {
   var amount = Number(dirtyAmount);
   return add_milliseconds(dirtyDate, amount * 1000);
@@ -17555,6 +17781,22 @@ function addSeconds(dirtyDate, dirtyAmount) {
 
 var add_seconds = addSeconds;
 
+/**
+ * @category Week Helpers
+ * @summary Add the specified number of weeks to the given date.
+ *
+ * @description
+ * Add the specified number of week to the given date.
+ *
+ * @param {Date|String|Number} date - the date to be changed
+ * @param {Number} amount - the amount of weeks to be added
+ * @returns {Date} the new date with the weeks added
+ *
+ * @example
+ * // Add 4 weeks to 1 September 2014:
+ * var result = addWeeks(new Date(2014, 8, 1), 4)
+ * //=> Mon Sep 29 2014 00:00:00
+ */
 function addWeeks(dirtyDate, dirtyAmount) {
   var amount = Number(dirtyAmount);
   var days = amount * 7;
@@ -17563,6 +17805,22 @@ function addWeeks(dirtyDate, dirtyAmount) {
 
 var add_weeks = addWeeks;
 
+/**
+ * @category Year Helpers
+ * @summary Add the specified number of years to the given date.
+ *
+ * @description
+ * Add the specified number of years to the given date.
+ *
+ * @param {Date|String|Number} date - the date to be changed
+ * @param {Number} amount - the amount of years to be added
+ * @returns {Date} the new date with the years added
+ *
+ * @example
+ * // Add 5 years to 1 September 2014:
+ * var result = addYears(new Date(2014, 8, 1), 5)
+ * //=> Sun Sep 01 2019 00:00:00
+ */
 function addYears(dirtyDate, dirtyAmount) {
   var amount = Number(dirtyAmount);
   return add_months(dirtyDate, amount * 12);
@@ -17570,6 +17828,34 @@ function addYears(dirtyDate, dirtyAmount) {
 
 var add_years = addYears;
 
+/**
+ * @category Range Helpers
+ * @summary Is the given date range overlapping with another date range?
+ *
+ * @description
+ * Is the given date range overlapping with another date range?
+ *
+ * @param {Date|String|Number} initialRangeStartDate - the start of the initial range
+ * @param {Date|String|Number} initialRangeEndDate - the end of the initial range
+ * @param {Date|String|Number} comparedRangeStartDate - the start of the range to compare it with
+ * @param {Date|String|Number} comparedRangeEndDate - the end of the range to compare it with
+ * @returns {Boolean} whether the date ranges are overlapping
+ * @throws {Error} startDate of a date range cannot be after its endDate
+ *
+ * @example
+ * // For overlapping date ranges:
+ * areRangesOverlapping(
+ *   new Date(2014, 0, 10), new Date(2014, 0, 20), new Date(2014, 0, 17), new Date(2014, 0, 21)
+ * )
+ * //=> true
+ *
+ * @example
+ * // For non-overlapping date ranges:
+ * areRangesOverlapping(
+ *   new Date(2014, 0, 10), new Date(2014, 0, 20), new Date(2014, 0, 21), new Date(2014, 0, 22)
+ * )
+ * //=> false
+ */
 function areRangesOverlapping(dirtyInitialRangeStartDate, dirtyInitialRangeEndDate, dirtyComparedRangeStartDate, dirtyComparedRangeEndDate) {
   var initialStartTime = parse_1(dirtyInitialRangeStartDate).getTime();
   var initialEndTime = parse_1(dirtyInitialRangeEndDate).getTime();
@@ -17585,6 +17871,29 @@ function areRangesOverlapping(dirtyInitialRangeStartDate, dirtyInitialRangeEndDa
 
 var are_ranges_overlapping = areRangesOverlapping;
 
+/**
+ * @category Common Helpers
+ * @summary Return an index of the closest date from the array comparing to the given date.
+ *
+ * @description
+ * Return an index of the closest date from the array comparing to the given date.
+ *
+ * @param {Date|String|Number} dateToCompare - the date to compare with
+ * @param {Date[]|String[]|Number[]} datesArray - the array to search
+ * @returns {Number} an index of the date closest to the given date
+ * @throws {TypeError} the second argument must be an instance of Array
+ *
+ * @example
+ * // Which date is closer to 6 September 2015?
+ * var dateToCompare = new Date(2015, 8, 6)
+ * var datesArray = [
+ *   new Date(2015, 0, 1),
+ *   new Date(2016, 0, 1),
+ *   new Date(2017, 0, 1)
+ * ]
+ * var result = closestIndexTo(dateToCompare, datesArray)
+ * //=> 1
+ */
 function closestIndexTo(dirtyDateToCompare, dirtyDatesArray) {
   if (!(dirtyDatesArray instanceof Array)) {
     throw new TypeError(toString.call(dirtyDatesArray) + ' is not an instance of Array');
@@ -17610,6 +17919,27 @@ function closestIndexTo(dirtyDateToCompare, dirtyDatesArray) {
 
 var closest_index_to = closestIndexTo;
 
+/**
+ * @category Common Helpers
+ * @summary Return a date from the array closest to the given date.
+ *
+ * @description
+ * Return a date from the array closest to the given date.
+ *
+ * @param {Date|String|Number} dateToCompare - the date to compare with
+ * @param {Date[]|String[]|Number[]} datesArray - the array to search
+ * @returns {Date} the date from the array closest to the given date
+ * @throws {TypeError} the second argument must be an instance of Array
+ *
+ * @example
+ * // Which date is closer to 6 September 2015: 1 January 2000 or 1 January 2030?
+ * var dateToCompare = new Date(2015, 8, 6)
+ * var result = closestTo(dateToCompare, [
+ *   new Date(2000, 0, 1),
+ *   new Date(2030, 0, 1)
+ * ])
+ * //=> Tue Jan 01 2030 00:00:00
+ */
 function closestTo(dirtyDateToCompare, dirtyDatesArray) {
   if (!(dirtyDatesArray instanceof Array)) {
     throw new TypeError(toString.call(dirtyDatesArray) + ' is not an instance of Array');
@@ -17635,6 +17965,39 @@ function closestTo(dirtyDateToCompare, dirtyDatesArray) {
 
 var closest_to = closestTo;
 
+/**
+ * @category Common Helpers
+ * @summary Compare the two dates and return -1, 0 or 1.
+ *
+ * @description
+ * Compare the two dates and return 1 if the first date is after the second,
+ * -1 if the first date is before the second or 0 if dates are equal.
+ *
+ * @param {Date|String|Number} dateLeft - the first date to compare
+ * @param {Date|String|Number} dateRight - the second date to compare
+ * @returns {Number} the result of the comparison
+ *
+ * @example
+ * // Compare 11 February 1987 and 10 July 1989:
+ * var result = compareAsc(
+ *   new Date(1987, 1, 11),
+ *   new Date(1989, 6, 10)
+ * )
+ * //=> -1
+ *
+ * @example
+ * // Sort the array of dates:
+ * var result = [
+ *   new Date(1995, 6, 2),
+ *   new Date(1987, 1, 11),
+ *   new Date(1989, 6, 10)
+ * ].sort(compareAsc)
+ * //=> [
+ * //   Wed Feb 11 1987 00:00:00,
+ * //   Mon Jul 10 1989 00:00:00,
+ * //   Sun Jul 02 1995 00:00:00
+ * // ]
+ */
 function compareAsc(dirtyDateLeft, dirtyDateRight) {
   var dateLeft = parse_1(dirtyDateLeft);
   var timeLeft = dateLeft.getTime();
@@ -17652,6 +18015,39 @@ function compareAsc(dirtyDateLeft, dirtyDateRight) {
 
 var compare_asc = compareAsc;
 
+/**
+ * @category Common Helpers
+ * @summary Compare the two dates reverse chronologically and return -1, 0 or 1.
+ *
+ * @description
+ * Compare the two dates and return -1 if the first date is after the second,
+ * 1 if the first date is before the second or 0 if dates are equal.
+ *
+ * @param {Date|String|Number} dateLeft - the first date to compare
+ * @param {Date|String|Number} dateRight - the second date to compare
+ * @returns {Number} the result of the comparison
+ *
+ * @example
+ * // Compare 11 February 1987 and 10 July 1989 reverse chronologically:
+ * var result = compareDesc(
+ *   new Date(1987, 1, 11),
+ *   new Date(1989, 6, 10)
+ * )
+ * //=> 1
+ *
+ * @example
+ * // Sort the array of dates in reverse chronological order:
+ * var result = [
+ *   new Date(1995, 6, 2),
+ *   new Date(1987, 1, 11),
+ *   new Date(1989, 6, 10)
+ * ].sort(compareDesc)
+ * //=> [
+ * //   Sun Jul 02 1995 00:00:00,
+ * //   Mon Jul 10 1989 00:00:00,
+ * //   Wed Feb 11 1987 00:00:00
+ * // ]
+ */
 function compareDesc(dirtyDateLeft, dirtyDateRight) {
   var dateLeft = parse_1(dirtyDateLeft);
   var timeLeft = dateLeft.getTime();
@@ -17708,12 +18104,52 @@ function differenceInCalendarISOWeeks(dirtyDateLeft, dirtyDateRight) {
 
 var difference_in_calendar_iso_weeks = differenceInCalendarISOWeeks;
 
+/**
+ * @category ISO Week-Numbering Year Helpers
+ * @summary Get the number of calendar ISO week-numbering years between the given dates.
+ *
+ * @description
+ * Get the number of calendar ISO week-numbering years between the given dates.
+ *
+ * ISO week-numbering year: http://en.wikipedia.org/wiki/ISO_week_date
+ *
+ * @param {Date|String|Number} dateLeft - the later date
+ * @param {Date|String|Number} dateRight - the earlier date
+ * @returns {Number} the number of calendar ISO week-numbering years
+ *
+ * @example
+ * // How many calendar ISO week-numbering years are 1 January 2010 and 1 January 2012?
+ * var result = differenceInCalendarISOYears(
+ *   new Date(2012, 0, 1),
+ *   new Date(2010, 0, 1)
+ * )
+ * //=> 2
+ */
 function differenceInCalendarISOYears(dirtyDateLeft, dirtyDateRight) {
   return get_iso_year(dirtyDateLeft) - get_iso_year(dirtyDateRight);
 }
 
 var difference_in_calendar_iso_years = differenceInCalendarISOYears;
 
+/**
+ * @category Month Helpers
+ * @summary Get the number of calendar months between the given dates.
+ *
+ * @description
+ * Get the number of calendar months between the given dates.
+ *
+ * @param {Date|String|Number} dateLeft - the later date
+ * @param {Date|String|Number} dateRight - the earlier date
+ * @returns {Number} the number of calendar months
+ *
+ * @example
+ * // How many calendar months are between 31 January 2014 and 1 September 2014?
+ * var result = differenceInCalendarMonths(
+ *   new Date(2014, 8, 1),
+ *   new Date(2014, 0, 31)
+ * )
+ * //=> 8
+ */
 function differenceInCalendarMonths(dirtyDateLeft, dirtyDateRight) {
   var dateLeft = parse_1(dirtyDateLeft);
   var dateRight = parse_1(dirtyDateRight);
@@ -17726,6 +18162,21 @@ function differenceInCalendarMonths(dirtyDateLeft, dirtyDateRight) {
 
 var difference_in_calendar_months = differenceInCalendarMonths;
 
+/**
+ * @category Quarter Helpers
+ * @summary Get the year quarter of the given date.
+ *
+ * @description
+ * Get the year quarter of the given date.
+ *
+ * @param {Date|String|Number} date - the given date
+ * @returns {Number} the quarter
+ *
+ * @example
+ * // Which quarter is 2 July 2014?
+ * var result = getQuarter(new Date(2014, 6, 2))
+ * //=> 3
+ */
 function getQuarter(dirtyDate) {
   var date = parse_1(dirtyDate);
   var quarter = Math.floor(date.getMonth() / 3) + 1;
@@ -17734,6 +18185,25 @@ function getQuarter(dirtyDate) {
 
 var get_quarter = getQuarter;
 
+/**
+ * @category Quarter Helpers
+ * @summary Get the number of calendar quarters between the given dates.
+ *
+ * @description
+ * Get the number of calendar quarters between the given dates.
+ *
+ * @param {Date|String|Number} dateLeft - the later date
+ * @param {Date|String|Number} dateRight - the earlier date
+ * @returns {Number} the number of calendar quarters
+ *
+ * @example
+ * // How many calendar quarters are between 31 December 2013 and 2 July 2014?
+ * var result = differenceInCalendarQuarters(
+ *   new Date(2014, 6, 2),
+ *   new Date(2013, 11, 31)
+ * )
+ * //=> 3
+ */
 function differenceInCalendarQuarters(dirtyDateLeft, dirtyDateRight) {
   var dateLeft = parse_1(dirtyDateLeft);
   var dateRight = parse_1(dirtyDateRight);
@@ -17795,6 +18265,25 @@ function differenceInCalendarWeeks(dirtyDateLeft, dirtyDateRight, dirtyOptions) 
 
 var difference_in_calendar_weeks = differenceInCalendarWeeks;
 
+/**
+ * @category Year Helpers
+ * @summary Get the number of calendar years between the given dates.
+ *
+ * @description
+ * Get the number of calendar years between the given dates.
+ *
+ * @param {Date|String|Number} dateLeft - the later date
+ * @param {Date|String|Number} dateRight - the earlier date
+ * @returns {Number} the number of calendar years
+ *
+ * @example
+ * // How many calendar years are between 31 December 2013 and 11 February 2015?
+ * var result = differenceInCalendarYears(
+ *   new Date(2015, 1, 11),
+ *   new Date(2013, 11, 31)
+ * )
+ * //=> 2
+ */
 function differenceInCalendarYears(dirtyDateLeft, dirtyDateRight) {
   var dateLeft = parse_1(dirtyDateLeft);
   var dateRight = parse_1(dirtyDateRight);
@@ -17804,6 +18293,26 @@ function differenceInCalendarYears(dirtyDateLeft, dirtyDateRight) {
 
 var difference_in_calendar_years = differenceInCalendarYears;
 
+/**
+ * @category Day Helpers
+ * @summary Get the number of full days between the given dates.
+ *
+ * @description
+ * Get the number of full days between the given dates.
+ *
+ * @param {Date|String|Number} dateLeft - the later date
+ * @param {Date|String|Number} dateRight - the earlier date
+ * @returns {Number} the number of full days
+ *
+ * @example
+ * // How many full days are between
+ * // 2 July 2011 23:00:00 and 2 July 2012 00:00:00?
+ * var result = differenceInDays(
+ *   new Date(2012, 6, 2, 0, 0),
+ *   new Date(2011, 6, 2, 23, 0)
+ * )
+ * //=> 365
+ */
 function differenceInDays(dirtyDateLeft, dirtyDateRight) {
   var dateLeft = parse_1(dirtyDateLeft);
   var dateRight = parse_1(dirtyDateRight);
@@ -17820,6 +18329,26 @@ function differenceInDays(dirtyDateLeft, dirtyDateRight) {
 
 var difference_in_days = differenceInDays;
 
+/**
+ * @category Millisecond Helpers
+ * @summary Get the number of milliseconds between the given dates.
+ *
+ * @description
+ * Get the number of milliseconds between the given dates.
+ *
+ * @param {Date|String|Number} dateLeft - the later date
+ * @param {Date|String|Number} dateRight - the earlier date
+ * @returns {Number} the number of milliseconds
+ *
+ * @example
+ * // How many milliseconds are between
+ * // 2 July 2014 12:30:20.600 and 2 July 2014 12:30:21.700?
+ * var result = differenceInMilliseconds(
+ *   new Date(2014, 6, 2, 12, 30, 21, 700),
+ *   new Date(2014, 6, 2, 12, 30, 20, 600)
+ * )
+ * //=> 1100
+ */
 function differenceInMilliseconds(dirtyDateLeft, dirtyDateRight) {
   var dateLeft = parse_1(dirtyDateLeft);
   var dateRight = parse_1(dirtyDateRight);
@@ -17856,6 +18385,24 @@ function differenceInHours(dirtyDateLeft, dirtyDateRight) {
 
 var difference_in_hours = differenceInHours;
 
+/**
+ * @category ISO Week-Numbering Year Helpers
+ * @summary Subtract the specified number of ISO week-numbering years from the given date.
+ *
+ * @description
+ * Subtract the specified number of ISO week-numbering years from the given date.
+ *
+ * ISO week-numbering year: http://en.wikipedia.org/wiki/ISO_week_date
+ *
+ * @param {Date|String|Number} date - the date to be changed
+ * @param {Number} amount - the amount of ISO week-numbering years to be subtracted
+ * @returns {Date} the new date with the ISO week-numbering years subtracted
+ *
+ * @example
+ * // Subtract 5 ISO week-numbering years from 1 September 2014:
+ * var result = subISOYears(new Date(2014, 8, 1), 5)
+ * //=> Mon Aug 31 2009 00:00:00
+ */
 function subISOYears(dirtyDate, dirtyAmount) {
   var amount = Number(dirtyAmount);
   return add_iso_years(dirtyDate, -amount);
@@ -17863,6 +18410,27 @@ function subISOYears(dirtyDate, dirtyAmount) {
 
 var sub_iso_years = subISOYears;
 
+/**
+ * @category ISO Week-Numbering Year Helpers
+ * @summary Get the number of full ISO week-numbering years between the given dates.
+ *
+ * @description
+ * Get the number of full ISO week-numbering years between the given dates.
+ *
+ * ISO week-numbering year: http://en.wikipedia.org/wiki/ISO_week_date
+ *
+ * @param {Date|String|Number} dateLeft - the later date
+ * @param {Date|String|Number} dateRight - the earlier date
+ * @returns {Number} the number of full ISO week-numbering years
+ *
+ * @example
+ * // How many full ISO week-numbering years are between 1 January 2010 and 1 January 2012?
+ * var result = differenceInISOYears(
+ *   new Date(2012, 0, 1),
+ *   new Date(2010, 0, 1)
+ * )
+ * //=> 1
+ */
 function differenceInISOYears(dirtyDateLeft, dirtyDateRight) {
   var dateLeft = parse_1(dirtyDateLeft);
   var dateRight = parse_1(dirtyDateRight);
@@ -17908,6 +18476,25 @@ function differenceInMinutes(dirtyDateLeft, dirtyDateRight) {
 
 var difference_in_minutes = differenceInMinutes;
 
+/**
+ * @category Month Helpers
+ * @summary Get the number of full months between the given dates.
+ *
+ * @description
+ * Get the number of full months between the given dates.
+ *
+ * @param {Date|String|Number} dateLeft - the later date
+ * @param {Date|String|Number} dateRight - the earlier date
+ * @returns {Number} the number of full months
+ *
+ * @example
+ * // How many full months are between 31 January 2014 and 1 September 2014?
+ * var result = differenceInMonths(
+ *   new Date(2014, 8, 1),
+ *   new Date(2014, 0, 31)
+ * )
+ * //=> 7
+ */
 function differenceInMonths(dirtyDateLeft, dirtyDateRight) {
   var dateLeft = parse_1(dirtyDateLeft);
   var dateRight = parse_1(dirtyDateRight);
@@ -17924,6 +18511,25 @@ function differenceInMonths(dirtyDateLeft, dirtyDateRight) {
 
 var difference_in_months = differenceInMonths;
 
+/**
+ * @category Quarter Helpers
+ * @summary Get the number of full quarters between the given dates.
+ *
+ * @description
+ * Get the number of full quarters between the given dates.
+ *
+ * @param {Date|String|Number} dateLeft - the later date
+ * @param {Date|String|Number} dateRight - the earlier date
+ * @returns {Number} the number of full quarters
+ *
+ * @example
+ * // How many full quarters are between 31 December 2013 and 2 July 2014?
+ * var result = differenceInQuarters(
+ *   new Date(2014, 6, 2),
+ *   new Date(2013, 11, 31)
+ * )
+ * //=> 2
+ */
 function differenceInQuarters(dirtyDateLeft, dirtyDateRight) {
   var diff = difference_in_months(dirtyDateLeft, dirtyDateRight) / 3;
   return diff > 0 ? Math.floor(diff) : Math.ceil(diff);
@@ -17931,6 +18537,26 @@ function differenceInQuarters(dirtyDateLeft, dirtyDateRight) {
 
 var difference_in_quarters = differenceInQuarters;
 
+/**
+ * @category Second Helpers
+ * @summary Get the number of seconds between the given dates.
+ *
+ * @description
+ * Get the number of seconds between the given dates.
+ *
+ * @param {Date|String|Number} dateLeft - the later date
+ * @param {Date|String|Number} dateRight - the earlier date
+ * @returns {Number} the number of seconds
+ *
+ * @example
+ * // How many seconds are between
+ * // 2 July 2014 12:30:07.999 and 2 July 2014 12:30:20.000?
+ * var result = differenceInSeconds(
+ *   new Date(2014, 6, 2, 12, 30, 20, 0),
+ *   new Date(2014, 6, 2, 12, 30, 7, 999)
+ * )
+ * //=> 12
+ */
 function differenceInSeconds(dirtyDateLeft, dirtyDateRight) {
   var diff = difference_in_milliseconds(dirtyDateLeft, dirtyDateRight) / 1000;
   return diff > 0 ? Math.floor(diff) : Math.ceil(diff);
@@ -17938,6 +18564,25 @@ function differenceInSeconds(dirtyDateLeft, dirtyDateRight) {
 
 var difference_in_seconds = differenceInSeconds;
 
+/**
+ * @category Week Helpers
+ * @summary Get the number of full weeks between the given dates.
+ *
+ * @description
+ * Get the number of full weeks between the given dates.
+ *
+ * @param {Date|String|Number} dateLeft - the later date
+ * @param {Date|String|Number} dateRight - the earlier date
+ * @returns {Number} the number of full weeks
+ *
+ * @example
+ * // How many full weeks are between 5 July 2014 and 20 July 2014?
+ * var result = differenceInWeeks(
+ *   new Date(2014, 6, 20),
+ *   new Date(2014, 6, 5)
+ * )
+ * //=> 2
+ */
 function differenceInWeeks(dirtyDateLeft, dirtyDateRight) {
   var diff = difference_in_days(dirtyDateLeft, dirtyDateRight) / 7;
   return diff > 0 ? Math.floor(diff) : Math.ceil(diff);
@@ -17945,6 +18590,25 @@ function differenceInWeeks(dirtyDateLeft, dirtyDateRight) {
 
 var difference_in_weeks = differenceInWeeks;
 
+/**
+ * @category Year Helpers
+ * @summary Get the number of full years between the given dates.
+ *
+ * @description
+ * Get the number of full years between the given dates.
+ *
+ * @param {Date|String|Number} dateLeft - the later date
+ * @param {Date|String|Number} dateRight - the earlier date
+ * @returns {Number} the number of full years
+ *
+ * @example
+ * // How many full years are between 31 December 2013 and 11 February 2015?
+ * var result = differenceInYears(
+ *   new Date(2015, 1, 11),
+ *   new Date(2013, 11, 31)
+ * )
+ * //=> 1
+ */
 function differenceInYears(dirtyDateLeft, dirtyDateRight) {
   var dateLeft = parse_1(dirtyDateLeft);
   var dateRight = parse_1(dirtyDateRight);
@@ -18165,6 +18829,10 @@ function ordinal(number) {
 
 var build_format_locale = buildFormatLocale;
 
+/**
+ * @category Locales
+ * @summary English locale.
+ */
 var en = {
   distanceInWords: build_distance_in_words_locale(),
   format: build_format_locale()
@@ -18540,12 +19208,117 @@ function distanceInWordsStrict(dirtyDateToCompare, dirtyDate, dirtyOptions) {
 
 var distance_in_words_strict = distanceInWordsStrict;
 
+/**
+ * @category Common Helpers
+ * @summary Return the distance between the given date and now in words.
+ *
+ * @description
+ * Return the distance between the given date and now in words.
+ *
+ * | Distance to now                                                   | Result              |
+ * |-------------------------------------------------------------------|---------------------|
+ * | 0 ... 30 secs                                                     | less than a minute  |
+ * | 30 secs ... 1 min 30 secs                                         | 1 minute            |
+ * | 1 min 30 secs ... 44 mins 30 secs                                 | [2..44] minutes     |
+ * | 44 mins ... 30 secs ... 89 mins 30 secs                           | about 1 hour        |
+ * | 89 mins 30 secs ... 23 hrs 59 mins 30 secs                        | about [2..24] hours |
+ * | 23 hrs 59 mins 30 secs ... 41 hrs 59 mins 30 secs                 | 1 day               |
+ * | 41 hrs 59 mins 30 secs ... 29 days 23 hrs 59 mins 30 secs         | [2..30] days        |
+ * | 29 days 23 hrs 59 mins 30 secs ... 44 days 23 hrs 59 mins 30 secs | about 1 month       |
+ * | 44 days 23 hrs 59 mins 30 secs ... 59 days 23 hrs 59 mins 30 secs | about 2 months      |
+ * | 59 days 23 hrs 59 mins 30 secs ... 1 yr                           | [2..12] months      |
+ * | 1 yr ... 1 yr 3 months                                            | about 1 year        |
+ * | 1 yr 3 months ... 1 yr 9 month s                                  | over 1 year         |
+ * | 1 yr 9 months ... 2 yrs                                           | almost 2 years      |
+ * | N yrs ... N yrs 3 months                                          | about N years       |
+ * | N yrs 3 months ... N yrs 9 months                                 | over N years        |
+ * | N yrs 9 months ... N+1 yrs                                        | almost N+1 years    |
+ *
+ * With `options.includeSeconds == true`:
+ * | Distance to now     | Result               |
+ * |---------------------|----------------------|
+ * | 0 secs ... 5 secs   | less than 5 seconds  |
+ * | 5 secs ... 10 secs  | less than 10 seconds |
+ * | 10 secs ... 20 secs | less than 20 seconds |
+ * | 20 secs ... 40 secs | half a minute        |
+ * | 40 secs ... 60 secs | less than a minute   |
+ * | 60 secs ... 90 secs | 1 minute             |
+ *
+ * @param {Date|String|Number} date - the given date
+ * @param {Object} [options] - the object with options
+ * @param {Boolean} [options.includeSeconds=false] - distances less than a minute are more detailed
+ * @param {Boolean} [options.addSuffix=false] - result specifies if the second date is earlier or later than the first
+ * @param {Object} [options.locale=enLocale] - the locale object
+ * @returns {String} the distance in words
+ *
+ * @example
+ * // If today is 1 January 2015, what is the distance to 2 July 2014?
+ * var result = distanceInWordsToNow(
+ *   new Date(2014, 6, 2)
+ * )
+ * //=> '6 months'
+ *
+ * @example
+ * // If now is 1 January 2015 00:00:00,
+ * // what is the distance to 1 January 2015 00:00:15, including seconds?
+ * var result = distanceInWordsToNow(
+ *   new Date(2015, 0, 1, 0, 0, 15),
+ *   {includeSeconds: true}
+ * )
+ * //=> 'less than 20 seconds'
+ *
+ * @example
+ * // If today is 1 January 2015,
+ * // what is the distance to 1 January 2016, with a suffix?
+ * var result = distanceInWordsToNow(
+ *   new Date(2016, 0, 1),
+ *   {addSuffix: true}
+ * )
+ * //=> 'in about 1 year'
+ *
+ * @example
+ * // If today is 1 January 2015,
+ * // what is the distance to 1 August 2016 in Esperanto?
+ * var eoLocale = require('date-fns/locale/eo')
+ * var result = distanceInWordsToNow(
+ *   new Date(2016, 7, 1),
+ *   {locale: eoLocale}
+ * )
+ * //=> 'pli ol 1 jaro'
+ */
 function distanceInWordsToNow(dirtyDate, dirtyOptions) {
   return distance_in_words(Date.now(), dirtyDate, dirtyOptions);
 }
 
 var distance_in_words_to_now = distanceInWordsToNow;
 
+/**
+ * @category Day Helpers
+ * @summary Return the array of dates within the specified range.
+ *
+ * @description
+ * Return the array of dates within the specified range.
+ *
+ * @param {Date|String|Number} startDate - the first date
+ * @param {Date|String|Number} endDate - the last date
+ * @param {Number} [step=1] - the step between each day
+ * @returns {Date[]} the array with starts of days from the day of startDate to the day of endDate
+ * @throws {Error} startDate cannot be after endDate
+ *
+ * @example
+ * // Each day between 6 October 2014 and 10 October 2014:
+ * var result = eachDay(
+ *   new Date(2014, 9, 6),
+ *   new Date(2014, 9, 10)
+ * )
+ * //=> [
+ * //   Mon Oct 06 2014 00:00:00,
+ * //   Tue Oct 07 2014 00:00:00,
+ * //   Wed Oct 08 2014 00:00:00,
+ * //   Thu Oct 09 2014 00:00:00,
+ * //   Fri Oct 10 2014 00:00:00
+ * // ]
+ */
 function eachDay(dirtyStartDate, dirtyEndDate, dirtyStep) {
   var startDate = parse_1(dirtyStartDate);
   var endDate = parse_1(dirtyEndDate);
@@ -18572,6 +19345,22 @@ function eachDay(dirtyStartDate, dirtyEndDate, dirtyStep) {
 
 var each_day = eachDay;
 
+/**
+ * @category Day Helpers
+ * @summary Return the end of a day for the given date.
+ *
+ * @description
+ * Return the end of a day for the given date.
+ * The result will be in the local timezone.
+ *
+ * @param {Date|String|Number} date - the original date
+ * @returns {Date} the end of a day
+ *
+ * @example
+ * // The end of a day for 2 September 2014 11:55:00:
+ * var result = endOfDay(new Date(2014, 8, 2, 11, 55, 0))
+ * //=> Tue Sep 02 2014 23:59:59.999
+ */
 function endOfDay(dirtyDate) {
   var date = parse_1(dirtyDate);
   date.setHours(23, 59, 59, 999);
@@ -18580,6 +19369,22 @@ function endOfDay(dirtyDate) {
 
 var end_of_day = endOfDay;
 
+/**
+ * @category Hour Helpers
+ * @summary Return the end of an hour for the given date.
+ *
+ * @description
+ * Return the end of an hour for the given date.
+ * The result will be in the local timezone.
+ *
+ * @param {Date|String|Number} date - the original date
+ * @returns {Date} the end of an hour
+ *
+ * @example
+ * // The end of an hour for 2 September 2014 11:55:00:
+ * var result = endOfHour(new Date(2014, 8, 2, 11, 55))
+ * //=> Tue Sep 02 2014 11:59:59.999
+ */
 function endOfHour(dirtyDate) {
   var date = parse_1(dirtyDate);
   date.setMinutes(59, 59, 999);
@@ -18588,6 +19393,29 @@ function endOfHour(dirtyDate) {
 
 var end_of_hour = endOfHour;
 
+/**
+ * @category Week Helpers
+ * @summary Return the end of a week for the given date.
+ *
+ * @description
+ * Return the end of a week for the given date.
+ * The result will be in the local timezone.
+ *
+ * @param {Date|String|Number} date - the original date
+ * @param {Object} [options] - the object with options
+ * @param {Number} [options.weekStartsOn=0] - the index of the first day of the week (0 - Sunday)
+ * @returns {Date} the end of a week
+ *
+ * @example
+ * // The end of a week for 2 September 2014 11:55:00:
+ * var result = endOfWeek(new Date(2014, 8, 2, 11, 55, 0))
+ * //=> Sat Sep 06 2014 23:59:59.999
+ *
+ * @example
+ * // If the week starts on Monday, the end of the week for 2 September 2014 11:55:00:
+ * var result = endOfWeek(new Date(2014, 8, 2, 11, 55, 0), {weekStartsOn: 1})
+ * //=> Sun Sep 07 2014 23:59:59.999
+ */
 function endOfWeek(dirtyDate, dirtyOptions) {
   var weekStartsOn = dirtyOptions ? Number(dirtyOptions.weekStartsOn) || 0 : 0;
 
@@ -18602,12 +19430,49 @@ function endOfWeek(dirtyDate, dirtyOptions) {
 
 var end_of_week = endOfWeek;
 
+/**
+ * @category ISO Week Helpers
+ * @summary Return the end of an ISO week for the given date.
+ *
+ * @description
+ * Return the end of an ISO week for the given date.
+ * The result will be in the local timezone.
+ *
+ * ISO week-numbering year: http://en.wikipedia.org/wiki/ISO_week_date
+ *
+ * @param {Date|String|Number} date - the original date
+ * @returns {Date} the end of an ISO week
+ *
+ * @example
+ * // The end of an ISO week for 2 September 2014 11:55:00:
+ * var result = endOfISOWeek(new Date(2014, 8, 2, 11, 55, 0))
+ * //=> Sun Sep 07 2014 23:59:59.999
+ */
 function endOfISOWeek(dirtyDate) {
   return end_of_week(dirtyDate, { weekStartsOn: 1 });
 }
 
 var end_of_iso_week = endOfISOWeek;
 
+/**
+ * @category ISO Week-Numbering Year Helpers
+ * @summary Return the end of an ISO week-numbering year for the given date.
+ *
+ * @description
+ * Return the end of an ISO week-numbering year,
+ * which always starts 3 days before the year's first Thursday.
+ * The result will be in the local timezone.
+ *
+ * ISO week-numbering year: http://en.wikipedia.org/wiki/ISO_week_date
+ *
+ * @param {Date|String|Number} date - the original date
+ * @returns {Date} the end of an ISO week-numbering year
+ *
+ * @example
+ * // The end of an ISO week-numbering year for 2 July 2005:
+ * var result = endOfISOYear(new Date(2005, 6, 2))
+ * //=> Sun Jan 01 2006 23:59:59.999
+ */
 function endOfISOYear(dirtyDate) {
   var year = get_iso_year(dirtyDate);
   var fourthOfJanuaryOfNextYear = new Date(0);
@@ -18620,6 +19485,22 @@ function endOfISOYear(dirtyDate) {
 
 var end_of_iso_year = endOfISOYear;
 
+/**
+ * @category Minute Helpers
+ * @summary Return the end of a minute for the given date.
+ *
+ * @description
+ * Return the end of a minute for the given date.
+ * The result will be in the local timezone.
+ *
+ * @param {Date|String|Number} date - the original date
+ * @returns {Date} the end of a minute
+ *
+ * @example
+ * // The end of a minute for 1 December 2014 22:15:45.400:
+ * var result = endOfMinute(new Date(2014, 11, 1, 22, 15, 45, 400))
+ * //=> Mon Dec 01 2014 22:15:59.999
+ */
 function endOfMinute(dirtyDate) {
   var date = parse_1(dirtyDate);
   date.setSeconds(59, 999);
@@ -18628,6 +19509,22 @@ function endOfMinute(dirtyDate) {
 
 var end_of_minute = endOfMinute;
 
+/**
+ * @category Month Helpers
+ * @summary Return the end of a month for the given date.
+ *
+ * @description
+ * Return the end of a month for the given date.
+ * The result will be in the local timezone.
+ *
+ * @param {Date|String|Number} date - the original date
+ * @returns {Date} the end of a month
+ *
+ * @example
+ * // The end of a month for 2 September 2014 11:55:00:
+ * var result = endOfMonth(new Date(2014, 8, 2, 11, 55, 0))
+ * //=> Tue Sep 30 2014 23:59:59.999
+ */
 function endOfMonth(dirtyDate) {
   var date = parse_1(dirtyDate);
   var month = date.getMonth();
@@ -18638,6 +19535,22 @@ function endOfMonth(dirtyDate) {
 
 var end_of_month = endOfMonth;
 
+/**
+ * @category Quarter Helpers
+ * @summary Return the end of a year quarter for the given date.
+ *
+ * @description
+ * Return the end of a year quarter for the given date.
+ * The result will be in the local timezone.
+ *
+ * @param {Date|String|Number} date - the original date
+ * @returns {Date} the end of a quarter
+ *
+ * @example
+ * // The end of a quarter for 2 September 2014 11:55:00:
+ * var result = endOfQuarter(new Date(2014, 8, 2, 11, 55, 0))
+ * //=> Tue Sep 30 2014 23:59:59.999
+ */
 function endOfQuarter(dirtyDate) {
   var date = parse_1(dirtyDate);
   var currentMonth = date.getMonth();
@@ -18649,6 +19562,22 @@ function endOfQuarter(dirtyDate) {
 
 var end_of_quarter = endOfQuarter;
 
+/**
+ * @category Second Helpers
+ * @summary Return the end of a second for the given date.
+ *
+ * @description
+ * Return the end of a second for the given date.
+ * The result will be in the local timezone.
+ *
+ * @param {Date|String|Number} date - the original date
+ * @returns {Date} the end of a second
+ *
+ * @example
+ * // The end of a second for 1 December 2014 22:15:45.400:
+ * var result = endOfSecond(new Date(2014, 11, 1, 22, 15, 45, 400))
+ * //=> Mon Dec 01 2014 22:15:45.999
+ */
 function endOfSecond(dirtyDate) {
   var date = parse_1(dirtyDate);
   date.setMilliseconds(999);
@@ -18657,6 +19586,20 @@ function endOfSecond(dirtyDate) {
 
 var end_of_second = endOfSecond;
 
+/**
+ * @category Day Helpers
+ * @summary Return the end of today.
+ *
+ * @description
+ * Return the end of today.
+ *
+ * @returns {Date} the end of today
+ *
+ * @example
+ * // If today is 6 October 2014:
+ * var result = endOfToday()
+ * //=> Mon Oct 6 2014 23:59:59.999
+ */
 function endOfToday() {
   return end_of_day(new Date());
 }
@@ -18691,6 +19634,22 @@ function endOfTomorrow() {
 
 var end_of_tomorrow = endOfTomorrow;
 
+/**
+ * @category Year Helpers
+ * @summary Return the end of a year for the given date.
+ *
+ * @description
+ * Return the end of a year for the given date.
+ * The result will be in the local timezone.
+ *
+ * @param {Date|String|Number} date - the original date
+ * @returns {Date} the end of a year
+ *
+ * @example
+ * // The end of a year for 2 September 2014 11:55:00:
+ * var result = endOfYear(new Date(2014, 8, 2, 11, 55, 00))
+ * //=> Wed Dec 31 2014 23:59:59.999
+ */
 function endOfYear(dirtyDate) {
   var date = parse_1(dirtyDate);
   var year = date.getFullYear();
@@ -18729,6 +19688,22 @@ function endOfYesterday() {
 
 var end_of_yesterday = endOfYesterday;
 
+/**
+ * @category Year Helpers
+ * @summary Return the start of a year for the given date.
+ *
+ * @description
+ * Return the start of a year for the given date.
+ * The result will be in the local timezone.
+ *
+ * @param {Date|String|Number} date - the original date
+ * @returns {Date} the start of a year
+ *
+ * @example
+ * // The start of a year for 2 September 2014 11:55:00:
+ * var result = startOfYear(new Date(2014, 8, 2, 11, 55, 00))
+ * //=> Wed Jan 01 2014 00:00:00
+ */
 function startOfYear(dirtyDate) {
   var cleanDate = parse_1(dirtyDate);
   var date = new Date(0);
@@ -18739,6 +19714,21 @@ function startOfYear(dirtyDate) {
 
 var start_of_year = startOfYear;
 
+/**
+ * @category Day Helpers
+ * @summary Get the day of the year of the given date.
+ *
+ * @description
+ * Get the day of the year of the given date.
+ *
+ * @param {Date|String|Number} date - the given date
+ * @returns {Number} the day of year
+ *
+ * @example
+ * // Which day of the year is 2 July 2014?
+ * var result = getDayOfYear(new Date(2014, 6, 2))
+ * //=> 183
+ */
 function getDayOfYear(dirtyDate) {
   var date = parse_1(dirtyDate);
   var diff = difference_in_calendar_days(date, start_of_year(date));
@@ -18779,6 +19769,30 @@ function getISOWeek(dirtyDate) {
 
 var get_iso_week = getISOWeek;
 
+/**
+ * @category Common Helpers
+ * @summary Is the given date valid?
+ *
+ * @description
+ * Returns false if argument is Invalid Date and true otherwise.
+ * Invalid Date is a Date, whose time value is NaN.
+ *
+ * Time value of Date: http://es5.github.io/#x15.9.1.1
+ *
+ * @param {Date} date - the date to check
+ * @returns {Boolean} the date is valid
+ * @throws {TypeError} argument must be an instance of Date
+ *
+ * @example
+ * // For the valid date:
+ * var result = isValid(new Date(2014, 1, 31))
+ * //=> true
+ *
+ * @example
+ * // For the invalid date:
+ * var result = isValid(new Date(''))
+ * //=> false
+ */
 function isValid(dirtyDate) {
   if (is_date(dirtyDate)) {
     return !isNaN(dirtyDate);
@@ -18789,6 +19803,89 @@ function isValid(dirtyDate) {
 
 var is_valid = isValid;
 
+/**
+ * @category Common Helpers
+ * @summary Format the date.
+ *
+ * @description
+ * Return the formatted date string in the given format.
+ *
+ * Accepted tokens:
+ * | Unit                    | Token | Result examples                  |
+ * |-------------------------|-------|----------------------------------|
+ * | Month                   | M     | 1, 2, ..., 12                    |
+ * |                         | Mo    | 1st, 2nd, ..., 12th              |
+ * |                         | MM    | 01, 02, ..., 12                  |
+ * |                         | MMM   | Jan, Feb, ..., Dec               |
+ * |                         | MMMM  | January, February, ..., December |
+ * | Quarter                 | Q     | 1, 2, 3, 4                       |
+ * |                         | Qo    | 1st, 2nd, 3rd, 4th               |
+ * | Day of month            | D     | 1, 2, ..., 31                    |
+ * |                         | Do    | 1st, 2nd, ..., 31st              |
+ * |                         | DD    | 01, 02, ..., 31                  |
+ * | Day of year             | DDD   | 1, 2, ..., 366                   |
+ * |                         | DDDo  | 1st, 2nd, ..., 366th             |
+ * |                         | DDDD  | 001, 002, ..., 366               |
+ * | Day of week             | d     | 0, 1, ..., 6                     |
+ * |                         | do    | 0th, 1st, ..., 6th               |
+ * |                         | dd    | Su, Mo, ..., Sa                  |
+ * |                         | ddd   | Sun, Mon, ..., Sat               |
+ * |                         | dddd  | Sunday, Monday, ..., Saturday    |
+ * | Day of ISO week         | E     | 1, 2, ..., 7                     |
+ * | ISO week                | W     | 1, 2, ..., 53                    |
+ * |                         | Wo    | 1st, 2nd, ..., 53rd              |
+ * |                         | WW    | 01, 02, ..., 53                  |
+ * | Year                    | YY    | 00, 01, ..., 99                  |
+ * |                         | YYYY  | 1900, 1901, ..., 2099            |
+ * | ISO week-numbering year | GG    | 00, 01, ..., 99                  |
+ * |                         | GGGG  | 1900, 1901, ..., 2099            |
+ * | AM/PM                   | A     | AM, PM                           |
+ * |                         | a     | am, pm                           |
+ * |                         | aa    | a.m., p.m.                       |
+ * | Hour                    | H     | 0, 1, ... 23                     |
+ * |                         | HH    | 00, 01, ... 23                   |
+ * |                         | h     | 1, 2, ..., 12                    |
+ * |                         | hh    | 01, 02, ..., 12                  |
+ * | Minute                  | m     | 0, 1, ..., 59                    |
+ * |                         | mm    | 00, 01, ..., 59                  |
+ * | Second                  | s     | 0, 1, ..., 59                    |
+ * |                         | ss    | 00, 01, ..., 59                  |
+ * | 1/10 of second          | S     | 0, 1, ..., 9                     |
+ * | 1/100 of second         | SS    | 00, 01, ..., 99                  |
+ * | Millisecond             | SSS   | 000, 001, ..., 999               |
+ * | Timezone                | Z     | -01:00, +00:00, ... +12:00       |
+ * |                         | ZZ    | -0100, +0000, ..., +1200         |
+ * | Seconds timestamp       | X     | 512969520                        |
+ * | Milliseconds timestamp  | x     | 512969520900                     |
+ *
+ * The characters wrapped in square brackets are escaped.
+ *
+ * The result may vary by locale.
+ *
+ * @param {Date|String|Number} date - the original date
+ * @param {String} [format='YYYY-MM-DDTHH:mm:ss.SSSZ'] - the string of tokens
+ * @param {Object} [options] - the object with options
+ * @param {Object} [options.locale=enLocale] - the locale object
+ * @returns {String} the formatted date string
+ *
+ * @example
+ * // Represent 11 February 2014 in middle-endian format:
+ * var result = format(
+ *   new Date(2014, 1, 11),
+ *   'MM/DD/YYYY'
+ * )
+ * //=> '02/11/2014'
+ *
+ * @example
+ * // Represent 2 July 2014 in Esperanto:
+ * var eoLocale = require('date-fns/locale/eo')
+ * var result = format(
+ *   new Date(2014, 6, 2),
+ *   'Do [de] MMMM YYYY',
+ *   {locale: eoLocale}
+ * )
+ * //=> '2-a de julio 2014'
+ */
 function format(dirtyDate, dirtyFormatStr, dirtyOptions) {
   var formatStr = dirtyFormatStr ? String(dirtyFormatStr) : 'YYYY-MM-DDTHH:mm:ss.SSSZ';
   var options = dirtyOptions || {};
@@ -19028,6 +20125,21 @@ function addLeadingZeros(number, targetLength) {
 
 var format_1 = format;
 
+/**
+ * @category Day Helpers
+ * @summary Get the day of the month of the given date.
+ *
+ * @description
+ * Get the day of the month of the given date.
+ *
+ * @param {Date|String|Number} date - the given date
+ * @returns {Number} the day of month
+ *
+ * @example
+ * // Which day of the month is 29 February 2012?
+ * var result = getDate(new Date(2012, 1, 29))
+ * //=> 29
+ */
 function getDate(dirtyDate) {
   var date = parse_1(dirtyDate);
   var dayOfMonth = date.getDate();
@@ -19036,6 +20148,21 @@ function getDate(dirtyDate) {
 
 var get_date = getDate;
 
+/**
+ * @category Weekday Helpers
+ * @summary Get the day of the week of the given date.
+ *
+ * @description
+ * Get the day of the week of the given date.
+ *
+ * @param {Date|String|Number} date - the given date
+ * @returns {Number} the day of week
+ *
+ * @example
+ * // Which day of the week is 29 February 2012?
+ * var result = getDay(new Date(2012, 1, 29))
+ * //=> 3
+ */
 function getDay(dirtyDate) {
   var date = parse_1(dirtyDate);
   var day = date.getDay();
@@ -19044,6 +20171,21 @@ function getDay(dirtyDate) {
 
 var get_day = getDay;
 
+/**
+ * @category Year Helpers
+ * @summary Is the given date in the leap year?
+ *
+ * @description
+ * Is the given date in the leap year?
+ *
+ * @param {Date|String|Number} date - the date to check
+ * @returns {Boolean} the date is in the leap year
+ *
+ * @example
+ * // Is 1 September 2012 in the leap year?
+ * var result = isLeapYear(new Date(2012, 8, 1))
+ * //=> true
+ */
 function isLeapYear(dirtyDate) {
   var date = parse_1(dirtyDate);
   var year = date.getFullYear();
@@ -19052,12 +20194,42 @@ function isLeapYear(dirtyDate) {
 
 var is_leap_year = isLeapYear;
 
+/**
+ * @category Year Helpers
+ * @summary Get the number of days in a year of the given date.
+ *
+ * @description
+ * Get the number of days in a year of the given date.
+ *
+ * @param {Date|String|Number} date - the given date
+ * @returns {Number} the number of days in a year
+ *
+ * @example
+ * // How many days are in 2012?
+ * var result = getDaysInYear(new Date(2012, 0, 1))
+ * //=> 366
+ */
 function getDaysInYear(dirtyDate) {
   return is_leap_year(dirtyDate) ? 366 : 365;
 }
 
 var get_days_in_year = getDaysInYear;
 
+/**
+ * @category Hour Helpers
+ * @summary Get the hours of the given date.
+ *
+ * @description
+ * Get the hours of the given date.
+ *
+ * @param {Date|String|Number} date - the given date
+ * @returns {Number} the hours
+ *
+ * @example
+ * // Get the hours of 29 February 2012 11:45:00:
+ * var result = getHours(new Date(2012, 1, 29, 11, 45))
+ * //=> 11
+ */
 function getHours(dirtyDate) {
   var date = parse_1(dirtyDate);
   var hours = date.getHours();
@@ -19066,6 +20238,24 @@ function getHours(dirtyDate) {
 
 var get_hours = getHours;
 
+/**
+ * @category Weekday Helpers
+ * @summary Get the day of the ISO week of the given date.
+ *
+ * @description
+ * Get the day of the ISO week of the given date,
+ * which is 7 for Sunday, 1 for Monday etc.
+ *
+ * ISO week-numbering year: http://en.wikipedia.org/wiki/ISO_week_date
+ *
+ * @param {Date|String|Number} date - the given date
+ * @returns {Number} the day of ISO week
+ *
+ * @example
+ * // Which day of the ISO week is 26 February 2012?
+ * var result = getISODay(new Date(2012, 1, 26))
+ * //=> 7
+ */
 function getISODay(dirtyDate) {
   var date = parse_1(dirtyDate);
   var day = date.getDay();
@@ -19110,6 +20300,21 @@ function getISOWeeksInYear(dirtyDate) {
 
 var get_iso_weeks_in_year = getISOWeeksInYear;
 
+/**
+ * @category Millisecond Helpers
+ * @summary Get the milliseconds of the given date.
+ *
+ * @description
+ * Get the milliseconds of the given date.
+ *
+ * @param {Date|String|Number} date - the given date
+ * @returns {Number} the milliseconds
+ *
+ * @example
+ * // Get the milliseconds of 29 February 2012 11:45:05.123:
+ * var result = getMilliseconds(new Date(2012, 1, 29, 11, 45, 5, 123))
+ * //=> 123
+ */
 function getMilliseconds(dirtyDate) {
   var date = parse_1(dirtyDate);
   var milliseconds = date.getMilliseconds();
@@ -19118,6 +20323,21 @@ function getMilliseconds(dirtyDate) {
 
 var get_milliseconds = getMilliseconds;
 
+/**
+ * @category Minute Helpers
+ * @summary Get the minutes of the given date.
+ *
+ * @description
+ * Get the minutes of the given date.
+ *
+ * @param {Date|String|Number} date - the given date
+ * @returns {Number} the minutes
+ *
+ * @example
+ * // Get the minutes of 29 February 2012 11:45:05:
+ * var result = getMinutes(new Date(2012, 1, 29, 11, 45, 5))
+ * //=> 45
+ */
 function getMinutes(dirtyDate) {
   var date = parse_1(dirtyDate);
   var minutes = date.getMinutes();
@@ -19126,6 +20346,21 @@ function getMinutes(dirtyDate) {
 
 var get_minutes = getMinutes;
 
+/**
+ * @category Month Helpers
+ * @summary Get the month of the given date.
+ *
+ * @description
+ * Get the month of the given date.
+ *
+ * @param {Date|String|Number} date - the given date
+ * @returns {Number} the month
+ *
+ * @example
+ * // Which month is 29 February 2012?
+ * var result = getMonth(new Date(2012, 1, 29))
+ * //=> 1
+ */
 function getMonth(dirtyDate) {
   var date = parse_1(dirtyDate);
   var month = date.getMonth();
@@ -19191,6 +20426,21 @@ function getOverlappingDaysInRanges(dirtyInitialRangeStartDate, dirtyInitialRang
 
 var get_overlapping_days_in_ranges = getOverlappingDaysInRanges;
 
+/**
+ * @category Second Helpers
+ * @summary Get the seconds of the given date.
+ *
+ * @description
+ * Get the seconds of the given date.
+ *
+ * @param {Date|String|Number} date - the given date
+ * @returns {Number} the seconds
+ *
+ * @example
+ * // Get the seconds of 29 February 2012 11:45:05.123:
+ * var result = getSeconds(new Date(2012, 1, 29, 11, 45, 5, 123))
+ * //=> 5
+ */
 function getSeconds(dirtyDate) {
   var date = parse_1(dirtyDate);
   var seconds = date.getSeconds();
@@ -19199,6 +20449,21 @@ function getSeconds(dirtyDate) {
 
 var get_seconds = getSeconds;
 
+/**
+ * @category Timestamp Helpers
+ * @summary Get the milliseconds timestamp of the given date.
+ *
+ * @description
+ * Get the milliseconds timestamp of the given date.
+ *
+ * @param {Date|String|Number} date - the given date
+ * @returns {Number} the timestamp
+ *
+ * @example
+ * // Get the timestamp of 29 February 2012 11:45:05.123:
+ * var result = getTime(new Date(2012, 1, 29, 11, 45, 5, 123))
+ * //=> 1330515905123
+ */
 function getTime(dirtyDate) {
   var date = parse_1(dirtyDate);
   var timestamp = date.getTime();
@@ -19207,6 +20472,21 @@ function getTime(dirtyDate) {
 
 var get_time = getTime;
 
+/**
+ * @category Year Helpers
+ * @summary Get the year of the given date.
+ *
+ * @description
+ * Get the year of the given date.
+ *
+ * @param {Date|String|Number} date - the given date
+ * @returns {Number} the year
+ *
+ * @example
+ * // Which year is 2 July 2014?
+ * var result = getYear(new Date(2014, 6, 2))
+ * //=> 2014
+ */
 function getYear(dirtyDate) {
   var date = parse_1(dirtyDate);
   var year = date.getFullYear();
@@ -19215,6 +20495,22 @@ function getYear(dirtyDate) {
 
 var get_year = getYear;
 
+/**
+ * @category Common Helpers
+ * @summary Is the first date after the second one?
+ *
+ * @description
+ * Is the first date after the second one?
+ *
+ * @param {Date|String|Number} date - the date that should be after the other one to return true
+ * @param {Date|String|Number} dateToCompare - the date to compare with
+ * @returns {Boolean} the first date is after the second date
+ *
+ * @example
+ * // Is 10 July 1989 after 11 February 1987?
+ * var result = isAfter(new Date(1989, 6, 10), new Date(1987, 1, 11))
+ * //=> true
+ */
 function isAfter(dirtyDate, dirtyDateToCompare) {
   var date = parse_1(dirtyDate);
   var dateToCompare = parse_1(dirtyDateToCompare);
@@ -19223,6 +20519,22 @@ function isAfter(dirtyDate, dirtyDateToCompare) {
 
 var is_after = isAfter;
 
+/**
+ * @category Common Helpers
+ * @summary Is the first date before the second one?
+ *
+ * @description
+ * Is the first date before the second one?
+ *
+ * @param {Date|String|Number} date - the date that should be before the other one to return true
+ * @param {Date|String|Number} dateToCompare - the date to compare with
+ * @returns {Boolean} the first date is before the second date
+ *
+ * @example
+ * // Is 10 July 1989 before 11 February 1987?
+ * var result = isBefore(new Date(1989, 6, 10), new Date(1987, 1, 11))
+ * //=> false
+ */
 function isBefore(dirtyDate, dirtyDateToCompare) {
   var date = parse_1(dirtyDate);
   var dateToCompare = parse_1(dirtyDateToCompare);
@@ -19231,6 +20543,25 @@ function isBefore(dirtyDate, dirtyDateToCompare) {
 
 var is_before = isBefore;
 
+/**
+ * @category Common Helpers
+ * @summary Are the given dates equal?
+ *
+ * @description
+ * Are the given dates equal?
+ *
+ * @param {Date|String|Number} dateLeft - the first date to compare
+ * @param {Date|String|Number} dateRight - the second date to compare
+ * @returns {Boolean} the dates are equal
+ *
+ * @example
+ * // Are 2 July 2014 06:30:45.000 and 2 July 2014 06:30:45.500 equal?
+ * var result = isEqual(
+ *   new Date(2014, 6, 2, 6, 30, 45, 0)
+ *   new Date(2014, 6, 2, 6, 30, 45, 500)
+ * )
+ * //=> false
+ */
 function isEqual(dirtyLeftDate, dirtyRightDate) {
   var dateLeft = parse_1(dirtyLeftDate);
   var dateRight = parse_1(dirtyRightDate);
@@ -19239,24 +20570,84 @@ function isEqual(dirtyLeftDate, dirtyRightDate) {
 
 var is_equal = isEqual;
 
+/**
+ * @category Month Helpers
+ * @summary Is the given date the first day of a month?
+ *
+ * @description
+ * Is the given date the first day of a month?
+ *
+ * @param {Date|String|Number} date - the date to check
+ * @returns {Boolean} the date is the first day of a month
+ *
+ * @example
+ * // Is 1 September 2014 the first day of a month?
+ * var result = isFirstDayOfMonth(new Date(2014, 8, 1))
+ * //=> true
+ */
 function isFirstDayOfMonth(dirtyDate) {
   return parse_1(dirtyDate).getDate() === 1;
 }
 
 var is_first_day_of_month = isFirstDayOfMonth;
 
+/**
+ * @category Weekday Helpers
+ * @summary Is the given date Friday?
+ *
+ * @description
+ * Is the given date Friday?
+ *
+ * @param {Date|String|Number} date - the date to check
+ * @returns {Boolean} the date is Friday
+ *
+ * @example
+ * // Is 26 September 2014 Friday?
+ * var result = isFriday(new Date(2014, 8, 26))
+ * //=> true
+ */
 function isFriday(dirtyDate) {
   return parse_1(dirtyDate).getDay() === 5;
 }
 
 var is_friday = isFriday;
 
+/**
+ * @category Common Helpers
+ * @summary Is the given date in the future?
+ *
+ * @description
+ * Is the given date in the future?
+ *
+ * @param {Date|String|Number} date - the date to check
+ * @returns {Boolean} the date is in the future
+ *
+ * @example
+ * // If today is 6 October 2014, is 31 December 2014 in the future?
+ * var result = isFuture(new Date(2014, 11, 31))
+ * //=> true
+ */
 function isFuture(dirtyDate) {
   return parse_1(dirtyDate).getTime() > new Date().getTime();
 }
 
 var is_future = isFuture;
 
+/**
+ * @category Month Helpers
+ * @summary Is the given date the last day of a month?
+ *
+ * @description
+ * Is the given date the last day of a month?
+ *
+ * @param {Date|String|Number} date - the date to check
+ * @returns {Boolean} the date is the last day of a month
+ *
+ * @example
+ * // Is 28 February 2014 the last day of a month?
+ * var result = isLastDayOfMonth(new Date(2014, 1, 28))
+ * //=> true
+ */
 function isLastDayOfMonth(dirtyDate) {
   var date = parse_1(dirtyDate);
   return end_of_day(date).getTime() === end_of_month(date).getTime();
@@ -19264,18 +20655,67 @@ function isLastDayOfMonth(dirtyDate) {
 
 var is_last_day_of_month = isLastDayOfMonth;
 
+/**
+ * @category Weekday Helpers
+ * @summary Is the given date Monday?
+ *
+ * @description
+ * Is the given date Monday?
+ *
+ * @param {Date|String|Number} date - the date to check
+ * @returns {Boolean} the date is Monday
+ *
+ * @example
+ * // Is 22 September 2014 Monday?
+ * var result = isMonday(new Date(2014, 8, 22))
+ * //=> true
+ */
 function isMonday(dirtyDate) {
   return parse_1(dirtyDate).getDay() === 1;
 }
 
 var is_monday = isMonday;
 
+/**
+ * @category Common Helpers
+ * @summary Is the given date in the past?
+ *
+ * @description
+ * Is the given date in the past?
+ *
+ * @param {Date|String|Number} date - the date to check
+ * @returns {Boolean} the date is in the past
+ *
+ * @example
+ * // If today is 6 October 2014, is 2 July 2014 in the past?
+ * var result = isPast(new Date(2014, 6, 2))
+ * //=> true
+ */
 function isPast(dirtyDate) {
   return parse_1(dirtyDate).getTime() < new Date().getTime();
 }
 
 var is_past = isPast;
 
+/**
+ * @category Day Helpers
+ * @summary Are the given dates in the same day?
+ *
+ * @description
+ * Are the given dates in the same day?
+ *
+ * @param {Date|String|Number} dateLeft - the first date to check
+ * @param {Date|String|Number} dateRight - the second date to check
+ * @returns {Boolean} the dates are in the same day
+ *
+ * @example
+ * // Are 4 September 06:00:00 and 4 September 18:00:00 in the same day?
+ * var result = isSameDay(
+ *   new Date(2014, 8, 4, 6, 0),
+ *   new Date(2014, 8, 4, 18, 0)
+ * )
+ * //=> true
+ */
 function isSameDay(dirtyDateLeft, dirtyDateRight) {
   var dateLeftStartOfDay = start_of_day(dirtyDateLeft);
   var dateRightStartOfDay = start_of_day(dirtyDateRight);
@@ -19285,6 +20725,22 @@ function isSameDay(dirtyDateLeft, dirtyDateRight) {
 
 var is_same_day = isSameDay;
 
+/**
+ * @category Hour Helpers
+ * @summary Return the start of an hour for the given date.
+ *
+ * @description
+ * Return the start of an hour for the given date.
+ * The result will be in the local timezone.
+ *
+ * @param {Date|String|Number} date - the original date
+ * @returns {Date} the start of an hour
+ *
+ * @example
+ * // The start of an hour for 2 September 2014 11:55:00:
+ * var result = startOfHour(new Date(2014, 8, 2, 11, 55))
+ * //=> Tue Sep 02 2014 11:00:00
+ */
 function startOfHour(dirtyDate) {
   var date = parse_1(dirtyDate);
   date.setMinutes(0, 0, 0);
@@ -19293,6 +20749,25 @@ function startOfHour(dirtyDate) {
 
 var start_of_hour = startOfHour;
 
+/**
+ * @category Hour Helpers
+ * @summary Are the given dates in the same hour?
+ *
+ * @description
+ * Are the given dates in the same hour?
+ *
+ * @param {Date|String|Number} dateLeft - the first date to check
+ * @param {Date|String|Number} dateRight - the second date to check
+ * @returns {Boolean} the dates are in the same hour
+ *
+ * @example
+ * // Are 4 September 2014 06:00:00 and 4 September 06:30:00 in the same hour?
+ * var result = isSameHour(
+ *   new Date(2014, 8, 4, 6, 0),
+ *   new Date(2014, 8, 4, 6, 30)
+ * )
+ * //=> true
+ */
 function isSameHour(dirtyDateLeft, dirtyDateRight) {
   var dateLeftStartOfHour = start_of_hour(dirtyDateLeft);
   var dateRightStartOfHour = start_of_hour(dirtyDateRight);
@@ -19302,6 +20777,37 @@ function isSameHour(dirtyDateLeft, dirtyDateRight) {
 
 var is_same_hour = isSameHour;
 
+/**
+ * @category Week Helpers
+ * @summary Are the given dates in the same week?
+ *
+ * @description
+ * Are the given dates in the same week?
+ *
+ * @param {Date|String|Number} dateLeft - the first date to check
+ * @param {Date|String|Number} dateRight - the second date to check
+ * @param {Object} [options] - the object with options
+ * @param {Number} [options.weekStartsOn=0] - the index of the first day of the week (0 - Sunday)
+ * @returns {Boolean} the dates are in the same week
+ *
+ * @example
+ * // Are 31 August 2014 and 4 September 2014 in the same week?
+ * var result = isSameWeek(
+ *   new Date(2014, 7, 31),
+ *   new Date(2014, 8, 4)
+ * )
+ * //=> true
+ *
+ * @example
+ * // If week starts with Monday,
+ * // are 31 August 2014 and 4 September 2014 in the same week?
+ * var result = isSameWeek(
+ *   new Date(2014, 7, 31),
+ *   new Date(2014, 8, 4),
+ *   {weekStartsOn: 1}
+ * )
+ * //=> false
+ */
 function isSameWeek(dirtyDateLeft, dirtyDateRight, dirtyOptions) {
   var dateLeftStartOfWeek = start_of_week(dirtyDateLeft, dirtyOptions);
   var dateRightStartOfWeek = start_of_week(dirtyDateRight, dirtyOptions);
@@ -19311,12 +20817,54 @@ function isSameWeek(dirtyDateLeft, dirtyDateRight, dirtyOptions) {
 
 var is_same_week = isSameWeek;
 
+/**
+ * @category ISO Week Helpers
+ * @summary Are the given dates in the same ISO week?
+ *
+ * @description
+ * Are the given dates in the same ISO week?
+ *
+ * ISO week-numbering year: http://en.wikipedia.org/wiki/ISO_week_date
+ *
+ * @param {Date|String|Number} dateLeft - the first date to check
+ * @param {Date|String|Number} dateRight - the second date to check
+ * @returns {Boolean} the dates are in the same ISO week
+ *
+ * @example
+ * // Are 1 September 2014 and 7 September 2014 in the same ISO week?
+ * var result = isSameISOWeek(
+ *   new Date(2014, 8, 1),
+ *   new Date(2014, 8, 7)
+ * )
+ * //=> true
+ */
 function isSameISOWeek(dirtyDateLeft, dirtyDateRight) {
   return is_same_week(dirtyDateLeft, dirtyDateRight, { weekStartsOn: 1 });
 }
 
 var is_same_iso_week = isSameISOWeek;
 
+/**
+ * @category ISO Week-Numbering Year Helpers
+ * @summary Are the given dates in the same ISO week-numbering year?
+ *
+ * @description
+ * Are the given dates in the same ISO week-numbering year?
+ *
+ * ISO week-numbering year: http://en.wikipedia.org/wiki/ISO_week_date
+ *
+ * @param {Date|String|Number} dateLeft - the first date to check
+ * @param {Date|String|Number} dateRight - the second date to check
+ * @returns {Boolean} the dates are in the same ISO week-numbering year
+ *
+ * @example
+ * // Are 29 December 2003 and 2 January 2005 in the same ISO week-numbering year?
+ * var result = isSameISOYear(
+ *   new Date(2003, 11, 29),
+ *   new Date(2005, 0, 2)
+ * )
+ * //=> true
+ */
 function isSameISOYear(dirtyDateLeft, dirtyDateRight) {
   var dateLeftStartOfYear = start_of_iso_year(dirtyDateLeft);
   var dateRightStartOfYear = start_of_iso_year(dirtyDateRight);
@@ -19326,6 +20874,22 @@ function isSameISOYear(dirtyDateLeft, dirtyDateRight) {
 
 var is_same_iso_year = isSameISOYear;
 
+/**
+ * @category Minute Helpers
+ * @summary Return the start of a minute for the given date.
+ *
+ * @description
+ * Return the start of a minute for the given date.
+ * The result will be in the local timezone.
+ *
+ * @param {Date|String|Number} date - the original date
+ * @returns {Date} the start of a minute
+ *
+ * @example
+ * // The start of a minute for 1 December 2014 22:15:45.400:
+ * var result = startOfMinute(new Date(2014, 11, 1, 22, 15, 45, 400))
+ * //=> Mon Dec 01 2014 22:15:00
+ */
 function startOfMinute(dirtyDate) {
   var date = parse_1(dirtyDate);
   date.setSeconds(0, 0);
@@ -19334,6 +20898,26 @@ function startOfMinute(dirtyDate) {
 
 var start_of_minute = startOfMinute;
 
+/**
+ * @category Minute Helpers
+ * @summary Are the given dates in the same minute?
+ *
+ * @description
+ * Are the given dates in the same minute?
+ *
+ * @param {Date|String|Number} dateLeft - the first date to check
+ * @param {Date|String|Number} dateRight - the second date to check
+ * @returns {Boolean} the dates are in the same minute
+ *
+ * @example
+ * // Are 4 September 2014 06:30:00 and 4 September 2014 06:30:15
+ * // in the same minute?
+ * var result = isSameMinute(
+ *   new Date(2014, 8, 4, 6, 30),
+ *   new Date(2014, 8, 4, 6, 30, 15)
+ * )
+ * //=> true
+ */
 function isSameMinute(dirtyDateLeft, dirtyDateRight) {
   var dateLeftStartOfMinute = start_of_minute(dirtyDateLeft);
   var dateRightStartOfMinute = start_of_minute(dirtyDateRight);
@@ -19343,6 +20927,25 @@ function isSameMinute(dirtyDateLeft, dirtyDateRight) {
 
 var is_same_minute = isSameMinute;
 
+/**
+ * @category Month Helpers
+ * @summary Are the given dates in the same month?
+ *
+ * @description
+ * Are the given dates in the same month?
+ *
+ * @param {Date|String|Number} dateLeft - the first date to check
+ * @param {Date|String|Number} dateRight - the second date to check
+ * @returns {Boolean} the dates are in the same month
+ *
+ * @example
+ * // Are 2 September 2014 and 25 September 2014 in the same month?
+ * var result = isSameMonth(
+ *   new Date(2014, 8, 2),
+ *   new Date(2014, 8, 25)
+ * )
+ * //=> true
+ */
 function isSameMonth(dirtyDateLeft, dirtyDateRight) {
   var dateLeft = parse_1(dirtyDateLeft);
   var dateRight = parse_1(dirtyDateRight);
@@ -19351,6 +20954,22 @@ function isSameMonth(dirtyDateLeft, dirtyDateRight) {
 
 var is_same_month = isSameMonth;
 
+/**
+ * @category Quarter Helpers
+ * @summary Return the start of a year quarter for the given date.
+ *
+ * @description
+ * Return the start of a year quarter for the given date.
+ * The result will be in the local timezone.
+ *
+ * @param {Date|String|Number} date - the original date
+ * @returns {Date} the start of a quarter
+ *
+ * @example
+ * // The start of a quarter for 2 September 2014 11:55:00:
+ * var result = startOfQuarter(new Date(2014, 8, 2, 11, 55, 0))
+ * //=> Tue Jul 01 2014 00:00:00
+ */
 function startOfQuarter(dirtyDate) {
   var date = parse_1(dirtyDate);
   var currentMonth = date.getMonth();
@@ -19362,6 +20981,25 @@ function startOfQuarter(dirtyDate) {
 
 var start_of_quarter = startOfQuarter;
 
+/**
+ * @category Quarter Helpers
+ * @summary Are the given dates in the same year quarter?
+ *
+ * @description
+ * Are the given dates in the same year quarter?
+ *
+ * @param {Date|String|Number} dateLeft - the first date to check
+ * @param {Date|String|Number} dateRight - the second date to check
+ * @returns {Boolean} the dates are in the same quarter
+ *
+ * @example
+ * // Are 1 January 2014 and 8 March 2014 in the same quarter?
+ * var result = isSameQuarter(
+ *   new Date(2014, 0, 1),
+ *   new Date(2014, 2, 8)
+ * )
+ * //=> true
+ */
 function isSameQuarter(dirtyDateLeft, dirtyDateRight) {
   var dateLeftStartOfQuarter = start_of_quarter(dirtyDateLeft);
   var dateRightStartOfQuarter = start_of_quarter(dirtyDateRight);
@@ -19371,6 +21009,22 @@ function isSameQuarter(dirtyDateLeft, dirtyDateRight) {
 
 var is_same_quarter = isSameQuarter;
 
+/**
+ * @category Second Helpers
+ * @summary Return the start of a second for the given date.
+ *
+ * @description
+ * Return the start of a second for the given date.
+ * The result will be in the local timezone.
+ *
+ * @param {Date|String|Number} date - the original date
+ * @returns {Date} the start of a second
+ *
+ * @example
+ * // The start of a second for 1 December 2014 22:15:45.400:
+ * var result = startOfSecond(new Date(2014, 11, 1, 22, 15, 45, 400))
+ * //=> Mon Dec 01 2014 22:15:45.000
+ */
 function startOfSecond(dirtyDate) {
   var date = parse_1(dirtyDate);
   date.setMilliseconds(0);
@@ -19379,6 +21033,26 @@ function startOfSecond(dirtyDate) {
 
 var start_of_second = startOfSecond;
 
+/**
+ * @category Second Helpers
+ * @summary Are the given dates in the same second?
+ *
+ * @description
+ * Are the given dates in the same second?
+ *
+ * @param {Date|String|Number} dateLeft - the first date to check
+ * @param {Date|String|Number} dateRight - the second date to check
+ * @returns {Boolean} the dates are in the same second
+ *
+ * @example
+ * // Are 4 September 2014 06:30:15.000 and 4 September 2014 06:30.15.500
+ * // in the same second?
+ * var result = isSameSecond(
+ *   new Date(2014, 8, 4, 6, 30, 15),
+ *   new Date(2014, 8, 4, 6, 30, 15, 500)
+ * )
+ * //=> true
+ */
 function isSameSecond(dirtyDateLeft, dirtyDateRight) {
   var dateLeftStartOfSecond = start_of_second(dirtyDateLeft);
   var dateRightStartOfSecond = start_of_second(dirtyDateRight);
@@ -19388,6 +21062,25 @@ function isSameSecond(dirtyDateLeft, dirtyDateRight) {
 
 var is_same_second = isSameSecond;
 
+/**
+ * @category Year Helpers
+ * @summary Are the given dates in the same year?
+ *
+ * @description
+ * Are the given dates in the same year?
+ *
+ * @param {Date|String|Number} dateLeft - the first date to check
+ * @param {Date|String|Number} dateRight - the second date to check
+ * @returns {Boolean} the dates are in the same year
+ *
+ * @example
+ * // Are 2 September 2014 and 25 September 2014 in the same year?
+ * var result = isSameYear(
+ *   new Date(2014, 8, 2),
+ *   new Date(2014, 8, 25)
+ * )
+ * //=> true
+ */
 function isSameYear(dirtyDateLeft, dirtyDateRight) {
   var dateLeft = parse_1(dirtyDateLeft);
   var dateRight = parse_1(dirtyDateRight);
@@ -19396,84 +21089,310 @@ function isSameYear(dirtyDateLeft, dirtyDateRight) {
 
 var is_same_year = isSameYear;
 
+/**
+ * @category Weekday Helpers
+ * @summary Is the given date Saturday?
+ *
+ * @description
+ * Is the given date Saturday?
+ *
+ * @param {Date|String|Number} date - the date to check
+ * @returns {Boolean} the date is Saturday
+ *
+ * @example
+ * // Is 27 September 2014 Saturday?
+ * var result = isSaturday(new Date(2014, 8, 27))
+ * //=> true
+ */
 function isSaturday(dirtyDate) {
   return parse_1(dirtyDate).getDay() === 6;
 }
 
 var is_saturday = isSaturday;
 
+/**
+ * @category Weekday Helpers
+ * @summary Is the given date Sunday?
+ *
+ * @description
+ * Is the given date Sunday?
+ *
+ * @param {Date|String|Number} date - the date to check
+ * @returns {Boolean} the date is Sunday
+ *
+ * @example
+ * // Is 21 September 2014 Sunday?
+ * var result = isSunday(new Date(2014, 8, 21))
+ * //=> true
+ */
 function isSunday(dirtyDate) {
   return parse_1(dirtyDate).getDay() === 0;
 }
 
 var is_sunday = isSunday;
 
+/**
+ * @category Hour Helpers
+ * @summary Is the given date in the same hour as the current date?
+ *
+ * @description
+ * Is the given date in the same hour as the current date?
+ *
+ * @param {Date|String|Number} date - the date to check
+ * @returns {Boolean} the date is in this hour
+ *
+ * @example
+ * // If now is 25 September 2014 18:30:15.500,
+ * // is 25 September 2014 18:00:00 in this hour?
+ * var result = isThisHour(new Date(2014, 8, 25, 18))
+ * //=> true
+ */
 function isThisHour(dirtyDate) {
   return is_same_hour(new Date(), dirtyDate);
 }
 
 var is_this_hour = isThisHour;
 
+/**
+ * @category ISO Week Helpers
+ * @summary Is the given date in the same ISO week as the current date?
+ *
+ * @description
+ * Is the given date in the same ISO week as the current date?
+ *
+ * ISO week-numbering year: http://en.wikipedia.org/wiki/ISO_week_date
+ *
+ * @param {Date|String|Number} date - the date to check
+ * @returns {Boolean} the date is in this ISO week
+ *
+ * @example
+ * // If today is 25 September 2014, is 22 September 2014 in this ISO week?
+ * var result = isThisISOWeek(new Date(2014, 8, 22))
+ * //=> true
+ */
 function isThisISOWeek(dirtyDate) {
   return is_same_iso_week(new Date(), dirtyDate);
 }
 
 var is_this_iso_week = isThisISOWeek;
 
+/**
+ * @category ISO Week-Numbering Year Helpers
+ * @summary Is the given date in the same ISO week-numbering year as the current date?
+ *
+ * @description
+ * Is the given date in the same ISO week-numbering year as the current date?
+ *
+ * ISO week-numbering year: http://en.wikipedia.org/wiki/ISO_week_date
+ *
+ * @param {Date|String|Number} date - the date to check
+ * @returns {Boolean} the date is in this ISO week-numbering year
+ *
+ * @example
+ * // If today is 25 September 2014,
+ * // is 30 December 2013 in this ISO week-numbering year?
+ * var result = isThisISOYear(new Date(2013, 11, 30))
+ * //=> true
+ */
 function isThisISOYear(dirtyDate) {
   return is_same_iso_year(new Date(), dirtyDate);
 }
 
 var is_this_iso_year = isThisISOYear;
 
+/**
+ * @category Minute Helpers
+ * @summary Is the given date in the same minute as the current date?
+ *
+ * @description
+ * Is the given date in the same minute as the current date?
+ *
+ * @param {Date|String|Number} date - the date to check
+ * @returns {Boolean} the date is in this minute
+ *
+ * @example
+ * // If now is 25 September 2014 18:30:15.500,
+ * // is 25 September 2014 18:30:00 in this minute?
+ * var result = isThisMinute(new Date(2014, 8, 25, 18, 30))
+ * //=> true
+ */
 function isThisMinute(dirtyDate) {
   return is_same_minute(new Date(), dirtyDate);
 }
 
 var is_this_minute = isThisMinute;
 
+/**
+ * @category Month Helpers
+ * @summary Is the given date in the same month as the current date?
+ *
+ * @description
+ * Is the given date in the same month as the current date?
+ *
+ * @param {Date|String|Number} date - the date to check
+ * @returns {Boolean} the date is in this month
+ *
+ * @example
+ * // If today is 25 September 2014, is 15 September 2014 in this month?
+ * var result = isThisMonth(new Date(2014, 8, 15))
+ * //=> true
+ */
 function isThisMonth(dirtyDate) {
   return is_same_month(new Date(), dirtyDate);
 }
 
 var is_this_month = isThisMonth;
 
+/**
+ * @category Quarter Helpers
+ * @summary Is the given date in the same quarter as the current date?
+ *
+ * @description
+ * Is the given date in the same quarter as the current date?
+ *
+ * @param {Date|String|Number} date - the date to check
+ * @returns {Boolean} the date is in this quarter
+ *
+ * @example
+ * // If today is 25 September 2014, is 2 July 2014 in this quarter?
+ * var result = isThisQuarter(new Date(2014, 6, 2))
+ * //=> true
+ */
 function isThisQuarter(dirtyDate) {
   return is_same_quarter(new Date(), dirtyDate);
 }
 
 var is_this_quarter = isThisQuarter;
 
+/**
+ * @category Second Helpers
+ * @summary Is the given date in the same second as the current date?
+ *
+ * @description
+ * Is the given date in the same second as the current date?
+ *
+ * @param {Date|String|Number} date - the date to check
+ * @returns {Boolean} the date is in this second
+ *
+ * @example
+ * // If now is 25 September 2014 18:30:15.500,
+ * // is 25 September 2014 18:30:15.000 in this second?
+ * var result = isThisSecond(new Date(2014, 8, 25, 18, 30, 15))
+ * //=> true
+ */
 function isThisSecond(dirtyDate) {
   return is_same_second(new Date(), dirtyDate);
 }
 
 var is_this_second = isThisSecond;
 
+/**
+ * @category Week Helpers
+ * @summary Is the given date in the same week as the current date?
+ *
+ * @description
+ * Is the given date in the same week as the current date?
+ *
+ * @param {Date|String|Number} date - the date to check
+ * @param {Object} [options] - the object with options
+ * @param {Number} [options.weekStartsOn=0] - the index of the first day of the week (0 - Sunday)
+ * @returns {Boolean} the date is in this week
+ *
+ * @example
+ * // If today is 25 September 2014, is 21 September 2014 in this week?
+ * var result = isThisWeek(new Date(2014, 8, 21))
+ * //=> true
+ *
+ * @example
+ * // If today is 25 September 2014 and week starts with Monday
+ * // is 21 September 2014 in this week?
+ * var result = isThisWeek(new Date(2014, 8, 21), {weekStartsOn: 1})
+ * //=> false
+ */
 function isThisWeek(dirtyDate, dirtyOptions) {
   return is_same_week(new Date(), dirtyDate, dirtyOptions);
 }
 
 var is_this_week = isThisWeek;
 
+/**
+ * @category Year Helpers
+ * @summary Is the given date in the same year as the current date?
+ *
+ * @description
+ * Is the given date in the same year as the current date?
+ *
+ * @param {Date|String|Number} date - the date to check
+ * @returns {Boolean} the date is in this year
+ *
+ * @example
+ * // If today is 25 September 2014, is 2 July 2014 in this year?
+ * var result = isThisYear(new Date(2014, 6, 2))
+ * //=> true
+ */
 function isThisYear(dirtyDate) {
   return is_same_year(new Date(), dirtyDate);
 }
 
 var is_this_year = isThisYear;
 
+/**
+ * @category Weekday Helpers
+ * @summary Is the given date Thursday?
+ *
+ * @description
+ * Is the given date Thursday?
+ *
+ * @param {Date|String|Number} date - the date to check
+ * @returns {Boolean} the date is Thursday
+ *
+ * @example
+ * // Is 25 September 2014 Thursday?
+ * var result = isThursday(new Date(2014, 8, 25))
+ * //=> true
+ */
 function isThursday(dirtyDate) {
   return parse_1(dirtyDate).getDay() === 4;
 }
 
 var is_thursday = isThursday;
 
+/**
+ * @category Day Helpers
+ * @summary Is the given date today?
+ *
+ * @description
+ * Is the given date today?
+ *
+ * @param {Date|String|Number} date - the date to check
+ * @returns {Boolean} the date is today
+ *
+ * @example
+ * // If today is 6 October 2014, is 6 October 14:00:00 today?
+ * var result = isToday(new Date(2014, 9, 6, 14, 0))
+ * //=> true
+ */
 function isToday(dirtyDate) {
   return start_of_day(dirtyDate).getTime() === start_of_day(new Date()).getTime();
 }
 
 var is_today = isToday;
 
+/**
+ * @category Day Helpers
+ * @summary Is the given date tomorrow?
+ *
+ * @description
+ * Is the given date tomorrow?
+ *
+ * @param {Date|String|Number} date - the date to check
+ * @returns {Boolean} the date is tomorrow
+ *
+ * @example
+ * // If today is 6 October 2014, is 7 October 14:00:00 tomorrow?
+ * var result = isTomorrow(new Date(2014, 9, 7, 14, 0))
+ * //=> true
+ */
 function isTomorrow(dirtyDate) {
   var tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
@@ -19482,18 +21401,63 @@ function isTomorrow(dirtyDate) {
 
 var is_tomorrow = isTomorrow;
 
+/**
+ * @category Weekday Helpers
+ * @summary Is the given date Tuesday?
+ *
+ * @description
+ * Is the given date Tuesday?
+ *
+ * @param {Date|String|Number} date - the date to check
+ * @returns {Boolean} the date is Tuesday
+ *
+ * @example
+ * // Is 23 September 2014 Tuesday?
+ * var result = isTuesday(new Date(2014, 8, 23))
+ * //=> true
+ */
 function isTuesday(dirtyDate) {
   return parse_1(dirtyDate).getDay() === 2;
 }
 
 var is_tuesday = isTuesday;
 
+/**
+ * @category Weekday Helpers
+ * @summary Is the given date Wednesday?
+ *
+ * @description
+ * Is the given date Wednesday?
+ *
+ * @param {Date|String|Number} date - the date to check
+ * @returns {Boolean} the date is Wednesday
+ *
+ * @example
+ * // Is 24 September 2014 Wednesday?
+ * var result = isWednesday(new Date(2014, 8, 24))
+ * //=> true
+ */
 function isWednesday(dirtyDate) {
   return parse_1(dirtyDate).getDay() === 3;
 }
 
 var is_wednesday = isWednesday;
 
+/**
+ * @category Weekday Helpers
+ * @summary Does the given date fall on a weekend?
+ *
+ * @description
+ * Does the given date fall on a weekend?
+ *
+ * @param {Date|String|Number} date - the date to check
+ * @returns {Boolean} the date falls on a weekend
+ *
+ * @example
+ * // Does 5 October 2014 fall on a weekend?
+ * var result = isWeekend(new Date(2014, 9, 5))
+ * //=> true
+ */
 function isWeekend(dirtyDate) {
   var date = parse_1(dirtyDate);
   var day = date.getDay();
@@ -19502,6 +21466,33 @@ function isWeekend(dirtyDate) {
 
 var is_weekend = isWeekend;
 
+/**
+ * @category Range Helpers
+ * @summary Is the given date within the range?
+ *
+ * @description
+ * Is the given date within the range?
+ *
+ * @param {Date|String|Number} date - the date to check
+ * @param {Date|String|Number} startDate - the start of range
+ * @param {Date|String|Number} endDate - the end of range
+ * @returns {Boolean} the date is within the range
+ * @throws {Error} startDate cannot be after endDate
+ *
+ * @example
+ * // For the date within the range:
+ * isWithinRange(
+ *   new Date(2014, 0, 3), new Date(2014, 0, 1), new Date(2014, 0, 7)
+ * )
+ * //=> true
+ *
+ * @example
+ * // For the date outside of the range:
+ * isWithinRange(
+ *   new Date(2014, 0, 10), new Date(2014, 0, 1), new Date(2014, 0, 7)
+ * )
+ * //=> false
+ */
 function isWithinRange(dirtyDate, dirtyStartDate, dirtyEndDate) {
   var time = parse_1(dirtyDate).getTime();
   var startTime = parse_1(dirtyStartDate).getTime();
@@ -19516,6 +21507,21 @@ function isWithinRange(dirtyDate, dirtyStartDate, dirtyEndDate) {
 
 var is_within_range = isWithinRange;
 
+/**
+ * @category Day Helpers
+ * @summary Is the given date yesterday?
+ *
+ * @description
+ * Is the given date yesterday?
+ *
+ * @param {Date|String|Number} date - the date to check
+ * @returns {Boolean} the date is yesterday
+ *
+ * @example
+ * // If today is 6 October 2014, is 5 October 14:00:00 yesterday?
+ * var result = isYesterday(new Date(2014, 9, 5, 14, 0))
+ * //=> true
+ */
 function isYesterday(dirtyDate) {
   var yesterday = new Date();
   yesterday.setDate(yesterday.getDate() - 1);
@@ -19524,6 +21530,29 @@ function isYesterday(dirtyDate) {
 
 var is_yesterday = isYesterday;
 
+/**
+ * @category Week Helpers
+ * @summary Return the last day of a week for the given date.
+ *
+ * @description
+ * Return the last day of a week for the given date.
+ * The result will be in the local timezone.
+ *
+ * @param {Date|String|Number} date - the original date
+ * @param {Object} [options] - the object with options
+ * @param {Number} [options.weekStartsOn=0] - the index of the first day of the week (0 - Sunday)
+ * @returns {Date} the last day of a week
+ *
+ * @example
+ * // The last day of a week for 2 September 2014 11:55:00:
+ * var result = lastDayOfWeek(new Date(2014, 8, 2, 11, 55, 0))
+ * //=> Sat Sep 06 2014 00:00:00
+ *
+ * @example
+ * // If the week starts on Monday, the last day of the week for 2 September 2014 11:55:00:
+ * var result = lastDayOfWeek(new Date(2014, 8, 2, 11, 55, 0), {weekStartsOn: 1})
+ * //=> Sun Sep 07 2014 00:00:00
+ */
 function lastDayOfWeek(dirtyDate, dirtyOptions) {
   var weekStartsOn = dirtyOptions ? Number(dirtyOptions.weekStartsOn) || 0 : 0;
 
@@ -19538,12 +21567,49 @@ function lastDayOfWeek(dirtyDate, dirtyOptions) {
 
 var last_day_of_week = lastDayOfWeek;
 
+/**
+ * @category ISO Week Helpers
+ * @summary Return the last day of an ISO week for the given date.
+ *
+ * @description
+ * Return the last day of an ISO week for the given date.
+ * The result will be in the local timezone.
+ *
+ * ISO week-numbering year: http://en.wikipedia.org/wiki/ISO_week_date
+ *
+ * @param {Date|String|Number} date - the original date
+ * @returns {Date} the last day of an ISO week
+ *
+ * @example
+ * // The last day of an ISO week for 2 September 2014 11:55:00:
+ * var result = lastDayOfISOWeek(new Date(2014, 8, 2, 11, 55, 0))
+ * //=> Sun Sep 07 2014 00:00:00
+ */
 function lastDayOfISOWeek(dirtyDate) {
   return last_day_of_week(dirtyDate, { weekStartsOn: 1 });
 }
 
 var last_day_of_iso_week = lastDayOfISOWeek;
 
+/**
+ * @category ISO Week-Numbering Year Helpers
+ * @summary Return the last day of an ISO week-numbering year for the given date.
+ *
+ * @description
+ * Return the last day of an ISO week-numbering year,
+ * which always starts 3 days before the year's first Thursday.
+ * The result will be in the local timezone.
+ *
+ * ISO week-numbering year: http://en.wikipedia.org/wiki/ISO_week_date
+ *
+ * @param {Date|String|Number} date - the original date
+ * @returns {Date} the end of an ISO week-numbering year
+ *
+ * @example
+ * // The last day of an ISO week-numbering year for 2 July 2005:
+ * var result = lastDayOfISOYear(new Date(2005, 6, 2))
+ * //=> Sun Jan 01 2006 00:00:00
+ */
 function lastDayOfISOYear(dirtyDate) {
   var year = get_iso_year(dirtyDate);
   var fourthOfJanuary = new Date(0);
@@ -19556,6 +21622,22 @@ function lastDayOfISOYear(dirtyDate) {
 
 var last_day_of_iso_year = lastDayOfISOYear;
 
+/**
+ * @category Month Helpers
+ * @summary Return the last day of a month for the given date.
+ *
+ * @description
+ * Return the last day of a month for the given date.
+ * The result will be in the local timezone.
+ *
+ * @param {Date|String|Number} date - the original date
+ * @returns {Date} the last day of a month
+ *
+ * @example
+ * // The last day of a month for 2 September 2014 11:55:00:
+ * var result = lastDayOfMonth(new Date(2014, 8, 2, 11, 55, 0))
+ * //=> Tue Sep 30 2014 00:00:00
+ */
 function lastDayOfMonth(dirtyDate) {
   var date = parse_1(dirtyDate);
   var month = date.getMonth();
@@ -19566,6 +21648,22 @@ function lastDayOfMonth(dirtyDate) {
 
 var last_day_of_month = lastDayOfMonth;
 
+/**
+ * @category Quarter Helpers
+ * @summary Return the last day of a year quarter for the given date.
+ *
+ * @description
+ * Return the last day of a year quarter for the given date.
+ * The result will be in the local timezone.
+ *
+ * @param {Date|String|Number} date - the original date
+ * @returns {Date} the last day of a quarter
+ *
+ * @example
+ * // The last day of a quarter for 2 September 2014 11:55:00:
+ * var result = lastDayOfQuarter(new Date(2014, 8, 2, 11, 55, 0))
+ * //=> Tue Sep 30 2014 00:00:00
+ */
 function lastDayOfQuarter(dirtyDate) {
   var date = parse_1(dirtyDate);
   var currentMonth = date.getMonth();
@@ -19577,6 +21675,22 @@ function lastDayOfQuarter(dirtyDate) {
 
 var last_day_of_quarter = lastDayOfQuarter;
 
+/**
+ * @category Year Helpers
+ * @summary Return the last day of a year for the given date.
+ *
+ * @description
+ * Return the last day of a year for the given date.
+ * The result will be in the local timezone.
+ *
+ * @param {Date|String|Number} date - the original date
+ * @returns {Date} the last day of a year
+ *
+ * @example
+ * // The last day of a year for 2 September 2014 11:55:00:
+ * var result = lastDayOfYear(new Date(2014, 8, 2, 11, 55, 00))
+ * //=> Wed Dec 31 2014 00:00:00
+ */
 function lastDayOfYear(dirtyDate) {
   var date = parse_1(dirtyDate);
   var year = date.getFullYear();
@@ -19587,6 +21701,26 @@ function lastDayOfYear(dirtyDate) {
 
 var last_day_of_year = lastDayOfYear;
 
+/**
+ * @category Common Helpers
+ * @summary Return the latest of the given dates.
+ *
+ * @description
+ * Return the latest of the given dates.
+ *
+ * @param {...(Date|String|Number)} dates - the dates to compare
+ * @returns {Date} the latest of the dates
+ *
+ * @example
+ * // Which of these dates is the latest?
+ * var result = max(
+ *   new Date(1989, 6, 10),
+ *   new Date(1987, 1, 11),
+ *   new Date(1995, 6, 2),
+ *   new Date(1990, 0, 1)
+ * )
+ * //=> Sun Jul 02 1995 00:00:00
+ */
 function max() {
   var dirtyDates = Array.prototype.slice.call(arguments);
   var dates = dirtyDates.map(function (dirtyDate) {
@@ -19598,6 +21732,26 @@ function max() {
 
 var max_1 = max;
 
+/**
+ * @category Common Helpers
+ * @summary Return the earliest of the given dates.
+ *
+ * @description
+ * Return the earliest of the given dates.
+ *
+ * @param {...(Date|String|Number)} dates - the dates to compare
+ * @returns {Date} the earliest of the dates
+ *
+ * @example
+ * // Which of these dates is the earliest?
+ * var result = min(
+ *   new Date(1989, 6, 10),
+ *   new Date(1987, 1, 11),
+ *   new Date(1995, 6, 2),
+ *   new Date(1990, 0, 1)
+ * )
+ * //=> Wed Feb 11 1987 00:00:00
+ */
 function min() {
   var dirtyDates = Array.prototype.slice.call(arguments);
   var dates = dirtyDates.map(function (dirtyDate) {
@@ -19609,6 +21763,22 @@ function min() {
 
 var min_1 = min;
 
+/**
+ * @category Day Helpers
+ * @summary Set the day of the month to the given date.
+ *
+ * @description
+ * Set the day of the month to the given date.
+ *
+ * @param {Date|String|Number} date - the date to be changed
+ * @param {Number} dayOfMonth - the day of the month of the new date
+ * @returns {Date} the new date with the day of the month setted
+ *
+ * @example
+ * // Set the 30th day of the month to 1 September 2014:
+ * var result = setDate(new Date(2014, 8, 1), 30)
+ * //=> Tue Sep 30 2014 00:00:00
+ */
 function setDate(dirtyDate, dirtyDayOfMonth) {
   var date = parse_1(dirtyDate);
   var dayOfMonth = Number(dirtyDayOfMonth);
@@ -19618,6 +21788,29 @@ function setDate(dirtyDate, dirtyDayOfMonth) {
 
 var set_date = setDate;
 
+/**
+ * @category Weekday Helpers
+ * @summary Set the day of the week to the given date.
+ *
+ * @description
+ * Set the day of the week to the given date.
+ *
+ * @param {Date|String|Number} date - the date to be changed
+ * @param {Number} day - the day of the week of the new date
+ * @param {Object} [options] - the object with options
+ * @param {Number} [options.weekStartsOn=0] - the index of the first day of the week (0 - Sunday)
+ * @returns {Date} the new date with the day of the week setted
+ *
+ * @example
+ * // Set Sunday to 1 September 2014:
+ * var result = setDay(new Date(2014, 8, 1), 0)
+ * //=> Sun Aug 31 2014 00:00:00
+ *
+ * @example
+ * // If week starts with Monday, set Sunday to 1 September 2014:
+ * var result = setDay(new Date(2014, 8, 1), 0, {weekStartsOn: 1})
+ * //=> Sun Sep 07 2014 00:00:00
+ */
 function setDay(dirtyDate, dirtyDay, dirtyOptions) {
   var weekStartsOn = dirtyOptions ? Number(dirtyOptions.weekStartsOn) || 0 : 0;
   var date = parse_1(dirtyDate);
@@ -19633,6 +21826,22 @@ function setDay(dirtyDate, dirtyDay, dirtyOptions) {
 
 var set_day = setDay;
 
+/**
+ * @category Day Helpers
+ * @summary Set the day of the year to the given date.
+ *
+ * @description
+ * Set the day of the year to the given date.
+ *
+ * @param {Date|String|Number} date - the date to be changed
+ * @param {Number} dayOfYear - the day of the year of the new date
+ * @returns {Date} the new date with the day of the year setted
+ *
+ * @example
+ * // Set the 2nd day of the year to 2 July 2014:
+ * var result = setDayOfYear(new Date(2014, 6, 2), 2)
+ * //=> Thu Jan 02 2014 00:00:00
+ */
 function setDayOfYear(dirtyDate, dirtyDayOfYear) {
   var date = parse_1(dirtyDate);
   var dayOfYear = Number(dirtyDayOfYear);
@@ -19643,6 +21852,22 @@ function setDayOfYear(dirtyDate, dirtyDayOfYear) {
 
 var set_day_of_year = setDayOfYear;
 
+/**
+ * @category Hour Helpers
+ * @summary Set the hours to the given date.
+ *
+ * @description
+ * Set the hours to the given date.
+ *
+ * @param {Date|String|Number} date - the date to be changed
+ * @param {Number} hours - the hours of the new date
+ * @returns {Date} the new date with the hours setted
+ *
+ * @example
+ * // Set 4 hours to 1 September 2014 11:30:00:
+ * var result = setHours(new Date(2014, 8, 1, 11, 30), 4)
+ * //=> Mon Sep 01 2014 04:30:00
+ */
 function setHours(dirtyDate, dirtyHours) {
   var date = parse_1(dirtyDate);
   var hours = Number(dirtyHours);
@@ -19652,6 +21877,24 @@ function setHours(dirtyDate, dirtyHours) {
 
 var set_hours = setHours;
 
+/**
+ * @category Weekday Helpers
+ * @summary Set the day of the ISO week to the given date.
+ *
+ * @description
+ * Set the day of the ISO week to the given date.
+ * ISO week starts with Monday.
+ * 7 is the index of Sunday, 1 is the index of Monday etc.
+ *
+ * @param {Date|String|Number} date - the date to be changed
+ * @param {Number} day - the day of the ISO week of the new date
+ * @returns {Date} the new date with the day of the ISO week setted
+ *
+ * @example
+ * // Set Sunday to 1 September 2014:
+ * var result = setISODay(new Date(2014, 8, 1), 7)
+ * //=> Sun Sep 07 2014 00:00:00
+ */
 function setISODay(dirtyDate, dirtyDay) {
   var date = parse_1(dirtyDate);
   var day = Number(dirtyDay);
@@ -19662,6 +21905,24 @@ function setISODay(dirtyDate, dirtyDay) {
 
 var set_iso_day = setISODay;
 
+/**
+ * @category ISO Week Helpers
+ * @summary Set the ISO week to the given date.
+ *
+ * @description
+ * Set the ISO week to the given date, saving the weekday number.
+ *
+ * ISO week-numbering year: http://en.wikipedia.org/wiki/ISO_week_date
+ *
+ * @param {Date|String|Number} date - the date to be changed
+ * @param {Number} isoWeek - the ISO week of the new date
+ * @returns {Date} the new date with the ISO week setted
+ *
+ * @example
+ * // Set the 53rd ISO week to 7 August 2004:
+ * var result = setISOWeek(new Date(2004, 7, 7), 53)
+ * //=> Sat Jan 01 2005 00:00:00
+ */
 function setISOWeek(dirtyDate, dirtyISOWeek) {
   var date = parse_1(dirtyDate);
   var isoWeek = Number(dirtyISOWeek);
@@ -19672,6 +21933,22 @@ function setISOWeek(dirtyDate, dirtyISOWeek) {
 
 var set_iso_week = setISOWeek;
 
+/**
+ * @category Millisecond Helpers
+ * @summary Set the milliseconds to the given date.
+ *
+ * @description
+ * Set the milliseconds to the given date.
+ *
+ * @param {Date|String|Number} date - the date to be changed
+ * @param {Number} milliseconds - the milliseconds of the new date
+ * @returns {Date} the new date with the milliseconds setted
+ *
+ * @example
+ * // Set 300 milliseconds to 1 September 2014 11:30:40.500:
+ * var result = setMilliseconds(new Date(2014, 8, 1, 11, 30, 40, 500), 300)
+ * //=> Mon Sep 01 2014 11:30:40.300
+ */
 function setMilliseconds(dirtyDate, dirtyMilliseconds) {
   var date = parse_1(dirtyDate);
   var milliseconds = Number(dirtyMilliseconds);
@@ -19681,6 +21958,22 @@ function setMilliseconds(dirtyDate, dirtyMilliseconds) {
 
 var set_milliseconds = setMilliseconds;
 
+/**
+ * @category Minute Helpers
+ * @summary Set the minutes to the given date.
+ *
+ * @description
+ * Set the minutes to the given date.
+ *
+ * @param {Date|String|Number} date - the date to be changed
+ * @param {Number} minutes - the minutes of the new date
+ * @returns {Date} the new date with the minutes setted
+ *
+ * @example
+ * // Set 45 minutes to 1 September 2014 11:30:40:
+ * var result = setMinutes(new Date(2014, 8, 1, 11, 30, 40), 45)
+ * //=> Mon Sep 01 2014 11:45:40
+ */
 function setMinutes(dirtyDate, dirtyMinutes) {
   var date = parse_1(dirtyDate);
   var minutes = Number(dirtyMinutes);
@@ -19690,6 +21983,22 @@ function setMinutes(dirtyDate, dirtyMinutes) {
 
 var set_minutes = setMinutes;
 
+/**
+ * @category Month Helpers
+ * @summary Set the month to the given date.
+ *
+ * @description
+ * Set the month to the given date.
+ *
+ * @param {Date|String|Number} date - the date to be changed
+ * @param {Number} month - the month of the new date
+ * @returns {Date} the new date with the month setted
+ *
+ * @example
+ * // Set February to 1 September 2014:
+ * var result = setMonth(new Date(2014, 8, 1), 1)
+ * //=> Sat Feb 01 2014 00:00:00
+ */
 function setMonth(dirtyDate, dirtyMonth) {
   var date = parse_1(dirtyDate);
   var month = Number(dirtyMonth);
@@ -19708,6 +22017,22 @@ function setMonth(dirtyDate, dirtyMonth) {
 
 var set_month = setMonth;
 
+/**
+ * @category Quarter Helpers
+ * @summary Set the year quarter to the given date.
+ *
+ * @description
+ * Set the year quarter to the given date.
+ *
+ * @param {Date|String|Number} date - the date to be changed
+ * @param {Number} quarter - the quarter of the new date
+ * @returns {Date} the new date with the quarter setted
+ *
+ * @example
+ * // Set the 2nd quarter to 2 July 2014:
+ * var result = setQuarter(new Date(2014, 6, 2), 2)
+ * //=> Wed Apr 02 2014 00:00:00
+ */
 function setQuarter(dirtyDate, dirtyQuarter) {
   var date = parse_1(dirtyDate);
   var quarter = Number(dirtyQuarter);
@@ -19718,6 +22043,22 @@ function setQuarter(dirtyDate, dirtyQuarter) {
 
 var set_quarter = setQuarter;
 
+/**
+ * @category Second Helpers
+ * @summary Set the seconds to the given date.
+ *
+ * @description
+ * Set the seconds to the given date.
+ *
+ * @param {Date|String|Number} date - the date to be changed
+ * @param {Number} seconds - the seconds of the new date
+ * @returns {Date} the new date with the seconds setted
+ *
+ * @example
+ * // Set 45 seconds to 1 September 2014 11:30:40:
+ * var result = setSeconds(new Date(2014, 8, 1, 11, 30, 40), 45)
+ * //=> Mon Sep 01 2014 11:30:45
+ */
 function setSeconds(dirtyDate, dirtySeconds) {
   var date = parse_1(dirtyDate);
   var seconds = Number(dirtySeconds);
@@ -19727,6 +22068,22 @@ function setSeconds(dirtyDate, dirtySeconds) {
 
 var set_seconds = setSeconds;
 
+/**
+ * @category Year Helpers
+ * @summary Set the year to the given date.
+ *
+ * @description
+ * Set the year to the given date.
+ *
+ * @param {Date|String|Number} date - the date to be changed
+ * @param {Number} year - the year of the new date
+ * @returns {Date} the new date with the year setted
+ *
+ * @example
+ * // Set year 2013 to 1 September 2014:
+ * var result = setYear(new Date(2014, 8, 1), 2013)
+ * //=> Sun Sep 01 2013 00:00:00
+ */
 function setYear(dirtyDate, dirtyYear) {
   var date = parse_1(dirtyDate);
   var year = Number(dirtyYear);
@@ -19736,6 +22093,22 @@ function setYear(dirtyDate, dirtyYear) {
 
 var set_year = setYear;
 
+/**
+ * @category Month Helpers
+ * @summary Return the start of a month for the given date.
+ *
+ * @description
+ * Return the start of a month for the given date.
+ * The result will be in the local timezone.
+ *
+ * @param {Date|String|Number} date - the original date
+ * @returns {Date} the start of a month
+ *
+ * @example
+ * // The start of a month for 2 September 2014 11:55:00:
+ * var result = startOfMonth(new Date(2014, 8, 2, 11, 55, 0))
+ * //=> Mon Sep 01 2014 00:00:00
+ */
 function startOfMonth(dirtyDate) {
   var date = parse_1(dirtyDate);
   date.setDate(1);
@@ -19745,6 +22118,20 @@ function startOfMonth(dirtyDate) {
 
 var start_of_month = startOfMonth;
 
+/**
+ * @category Day Helpers
+ * @summary Return the start of today.
+ *
+ * @description
+ * Return the start of today.
+ *
+ * @returns {Date} the start of today
+ *
+ * @example
+ * // If today is 6 October 2014:
+ * var result = startOfToday()
+ * //=> Mon Oct 6 2014 00:00:00
+ */
 function startOfToday() {
   return start_of_day(new Date());
 }
@@ -19807,6 +22194,22 @@ function startOfYesterday() {
 
 var start_of_yesterday = startOfYesterday;
 
+/**
+ * @category Day Helpers
+ * @summary Subtract the specified number of days from the given date.
+ *
+ * @description
+ * Subtract the specified number of days from the given date.
+ *
+ * @param {Date|String|Number} date - the date to be changed
+ * @param {Number} amount - the amount of days to be subtracted
+ * @returns {Date} the new date with the days subtracted
+ *
+ * @example
+ * // Subtract 10 days from 1 September 2014:
+ * var result = subDays(new Date(2014, 8, 1), 10)
+ * //=> Fri Aug 22 2014 00:00:00
+ */
 function subDays(dirtyDate, dirtyAmount) {
   var amount = Number(dirtyAmount);
   return add_days(dirtyDate, -amount);
@@ -19814,6 +22217,22 @@ function subDays(dirtyDate, dirtyAmount) {
 
 var sub_days = subDays;
 
+/**
+ * @category Hour Helpers
+ * @summary Subtract the specified number of hours from the given date.
+ *
+ * @description
+ * Subtract the specified number of hours from the given date.
+ *
+ * @param {Date|String|Number} date - the date to be changed
+ * @param {Number} amount - the amount of hours to be subtracted
+ * @returns {Date} the new date with the hours subtracted
+ *
+ * @example
+ * // Subtract 2 hours from 11 July 2014 01:00:00:
+ * var result = subHours(new Date(2014, 6, 11, 1, 0), 2)
+ * //=> Thu Jul 10 2014 23:00:00
+ */
 function subHours(dirtyDate, dirtyAmount) {
   var amount = Number(dirtyAmount);
   return add_hours(dirtyDate, -amount);
@@ -19821,6 +22240,22 @@ function subHours(dirtyDate, dirtyAmount) {
 
 var sub_hours = subHours;
 
+/**
+ * @category Millisecond Helpers
+ * @summary Subtract the specified number of milliseconds from the given date.
+ *
+ * @description
+ * Subtract the specified number of milliseconds from the given date.
+ *
+ * @param {Date|String|Number} date - the date to be changed
+ * @param {Number} amount - the amount of milliseconds to be subtracted
+ * @returns {Date} the new date with the milliseconds subtracted
+ *
+ * @example
+ * // Subtract 750 milliseconds from 10 July 2014 12:45:30.000:
+ * var result = subMilliseconds(new Date(2014, 6, 10, 12, 45, 30, 0), 750)
+ * //=> Thu Jul 10 2014 12:45:29.250
+ */
 function subMilliseconds(dirtyDate, dirtyAmount) {
   var amount = Number(dirtyAmount);
   return add_milliseconds(dirtyDate, -amount);
@@ -19828,6 +22263,22 @@ function subMilliseconds(dirtyDate, dirtyAmount) {
 
 var sub_milliseconds = subMilliseconds;
 
+/**
+ * @category Minute Helpers
+ * @summary Subtract the specified number of minutes from the given date.
+ *
+ * @description
+ * Subtract the specified number of minutes from the given date.
+ *
+ * @param {Date|String|Number} date - the date to be changed
+ * @param {Number} amount - the amount of minutes to be subtracted
+ * @returns {Date} the new date with the mintues subtracted
+ *
+ * @example
+ * // Subtract 30 minutes from 10 July 2014 12:00:00:
+ * var result = subMinutes(new Date(2014, 6, 10, 12, 0), 30)
+ * //=> Thu Jul 10 2014 11:30:00
+ */
 function subMinutes(dirtyDate, dirtyAmount) {
   var amount = Number(dirtyAmount);
   return add_minutes(dirtyDate, -amount);
@@ -19835,6 +22286,22 @@ function subMinutes(dirtyDate, dirtyAmount) {
 
 var sub_minutes = subMinutes;
 
+/**
+ * @category Month Helpers
+ * @summary Subtract the specified number of months from the given date.
+ *
+ * @description
+ * Subtract the specified number of months from the given date.
+ *
+ * @param {Date|String|Number} date - the date to be changed
+ * @param {Number} amount - the amount of months to be subtracted
+ * @returns {Date} the new date with the months subtracted
+ *
+ * @example
+ * // Subtract 5 months from 1 February 2015:
+ * var result = subMonths(new Date(2015, 1, 1), 5)
+ * //=> Mon Sep 01 2014 00:00:00
+ */
 function subMonths(dirtyDate, dirtyAmount) {
   var amount = Number(dirtyAmount);
   return add_months(dirtyDate, -amount);
@@ -19842,6 +22309,22 @@ function subMonths(dirtyDate, dirtyAmount) {
 
 var sub_months = subMonths;
 
+/**
+ * @category Quarter Helpers
+ * @summary Subtract the specified number of year quarters from the given date.
+ *
+ * @description
+ * Subtract the specified number of year quarters from the given date.
+ *
+ * @param {Date|String|Number} date - the date to be changed
+ * @param {Number} amount - the amount of quarters to be subtracted
+ * @returns {Date} the new date with the quarters subtracted
+ *
+ * @example
+ * // Subtract 3 quarters from 1 September 2014:
+ * var result = subQuarters(new Date(2014, 8, 1), 3)
+ * //=> Sun Dec 01 2013 00:00:00
+ */
 function subQuarters(dirtyDate, dirtyAmount) {
   var amount = Number(dirtyAmount);
   return add_quarters(dirtyDate, -amount);
@@ -19849,6 +22332,22 @@ function subQuarters(dirtyDate, dirtyAmount) {
 
 var sub_quarters = subQuarters;
 
+/**
+ * @category Second Helpers
+ * @summary Subtract the specified number of seconds from the given date.
+ *
+ * @description
+ * Subtract the specified number of seconds from the given date.
+ *
+ * @param {Date|String|Number} date - the date to be changed
+ * @param {Number} amount - the amount of seconds to be subtracted
+ * @returns {Date} the new date with the seconds subtracted
+ *
+ * @example
+ * // Subtract 30 seconds from 10 July 2014 12:45:00:
+ * var result = subSeconds(new Date(2014, 6, 10, 12, 45, 0), 30)
+ * //=> Thu Jul 10 2014 12:44:30
+ */
 function subSeconds(dirtyDate, dirtyAmount) {
   var amount = Number(dirtyAmount);
   return add_seconds(dirtyDate, -amount);
@@ -19856,6 +22355,22 @@ function subSeconds(dirtyDate, dirtyAmount) {
 
 var sub_seconds = subSeconds;
 
+/**
+ * @category Week Helpers
+ * @summary Subtract the specified number of weeks from the given date.
+ *
+ * @description
+ * Subtract the specified number of weeks from the given date.
+ *
+ * @param {Date|String|Number} date - the date to be changed
+ * @param {Number} amount - the amount of weeks to be subtracted
+ * @returns {Date} the new date with the weeks subtracted
+ *
+ * @example
+ * // Subtract 4 weeks from 1 September 2014:
+ * var result = subWeeks(new Date(2014, 8, 1), 4)
+ * //=> Mon Aug 04 2014 00:00:00
+ */
 function subWeeks(dirtyDate, dirtyAmount) {
   var amount = Number(dirtyAmount);
   return add_weeks(dirtyDate, -amount);
@@ -19863,6 +22378,22 @@ function subWeeks(dirtyDate, dirtyAmount) {
 
 var sub_weeks = subWeeks;
 
+/**
+ * @category Year Helpers
+ * @summary Subtract the specified number of years from the given date.
+ *
+ * @description
+ * Subtract the specified number of years from the given date.
+ *
+ * @param {Date|String|Number} date - the date to be changed
+ * @param {Number} amount - the amount of years to be subtracted
+ * @returns {Date} the new date with the years subtracted
+ *
+ * @example
+ * // Subtract 5 years from 1 September 2014:
+ * var result = subYears(new Date(2014, 8, 1), 5)
+ * //=> Tue Sep 01 2009 00:00:00
+ */
 function subYears(dirtyDate, dirtyAmount) {
   var amount = Number(dirtyAmount);
   return add_years(dirtyDate, -amount);
@@ -20038,6 +22569,15 @@ function _isPlaceholder(a) {
 }
 var _isPlaceholder_1 = _isPlaceholder;
 
+/**
+ * Optimized internal one-arity curry function.
+ *
+ * @private
+ * @category Function
+ * @param {Function} fn The function to curry.
+ * @return {Function} The curried function.
+ */
+
 function _curry1(fn) {
   return function f1(a) {
     if (arguments.length === 0 || _isPlaceholder_1(a)) {
@@ -20049,6 +22589,26 @@ function _curry1(fn) {
 }
 var _curry1_1 = _curry1;
 
+/**
+ * Returns a function that always returns the given value. Note that for
+ * non-primitives the value returned is a reference to the original value.
+ *
+ * This function is known as `const`, `constant`, or `K` (for K combinator) in
+ * other languages and libraries.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Function
+ * @sig a -> (* -> a)
+ * @param {*} val The value to wrap in a function
+ * @return {Function} A Function :: * -> val.
+ * @example
+ *
+ *      var t = R.always('Tee');
+ *      t(); //=> 'Tee'
+ */
+
 var always$1 = /*#__PURE__*/_curry1_1(function always(val) {
   return function () {
     return val;
@@ -20056,8 +22616,40 @@ var always$1 = /*#__PURE__*/_curry1_1(function always(val) {
 });
 var always_1 = always$1;
 
+/**
+ * A function that always returns `false`. Any passed in parameters are ignored.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.9.0
+ * @category Function
+ * @sig * -> Boolean
+ * @param {*}
+ * @return {Boolean}
+ * @see R.always, R.T
+ * @example
+ *
+ *      R.F(); //=> false
+ */
+
 var F$1 = /*#__PURE__*/always_1(false);
 var F_1 = F$1;
+
+/**
+ * A function that always returns `true`. Any passed in parameters are ignored.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.9.0
+ * @category Function
+ * @sig * -> Boolean
+ * @param {*}
+ * @return {Boolean}
+ * @see R.always, R.F
+ * @example
+ *
+ *      R.T(); //=> true
+ */
 
 var T$1 = /*#__PURE__*/always_1(true);
 var T_1 = T$1;
@@ -20090,6 +22682,15 @@ var T_1 = T$1;
  */
 var __$1 = { '@@functional/placeholder': true };
 
+/**
+ * Optimized internal two-arity curry function.
+ *
+ * @private
+ * @category Function
+ * @param {Function} fn The function to curry.
+ * @return {Function} The curried function.
+ */
+
 function _curry2(fn) {
   return function f2(a, b) {
     switch (arguments.length) {
@@ -20109,6 +22710,24 @@ function _curry2(fn) {
   };
 }
 var _curry2_1 = _curry2;
+
+/**
+ * Adds two values.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Math
+ * @sig Number -> Number -> Number
+ * @param {Number} a
+ * @param {Number} b
+ * @return {Number}
+ * @see R.subtract
+ * @example
+ *
+ *      R.add(2, 3);       //=>  5
+ *      R.add(7)(10);      //=> 17
+ */
 
 var add$1 = /*#__PURE__*/_curry2_1(function add(a, b) {
   return Number(a) + Number(b);
@@ -20201,6 +22820,17 @@ function _arity(n, fn) {
 }
 var _arity_1 = _arity;
 
+/**
+ * Internal curryN function.
+ *
+ * @private
+ * @category Function
+ * @param {Number} length The arity of the curried function.
+ * @param {Array} received An array of arguments received thus far.
+ * @param {Function} fn The function to curry.
+ * @return {Function} The curried function.
+ */
+
 function _curryN(length, received, fn) {
   return function () {
     var combined = [];
@@ -20226,6 +22856,49 @@ function _curryN(length, received, fn) {
 }
 var _curryN_1 = _curryN;
 
+/**
+ * Returns a curried equivalent of the provided function, with the specified
+ * arity. The curried function has two unusual capabilities. First, its
+ * arguments needn't be provided one at a time. If `g` is `R.curryN(3, f)`, the
+ * following are equivalent:
+ *
+ *   - `g(1)(2)(3)`
+ *   - `g(1)(2, 3)`
+ *   - `g(1, 2)(3)`
+ *   - `g(1, 2, 3)`
+ *
+ * Secondly, the special placeholder value [`R.__`](#__) may be used to specify
+ * "gaps", allowing partial application of any combination of arguments,
+ * regardless of their positions. If `g` is as above and `_` is [`R.__`](#__),
+ * the following are equivalent:
+ *
+ *   - `g(1, 2, 3)`
+ *   - `g(_, 2, 3)(1)`
+ *   - `g(_, _, 3)(1)(2)`
+ *   - `g(_, _, 3)(1, 2)`
+ *   - `g(_, 2)(1)(3)`
+ *   - `g(_, 2)(1, 3)`
+ *   - `g(_, 2)(_, 3)(1)`
+ *
+ * @func
+ * @memberOf R
+ * @since v0.5.0
+ * @category Function
+ * @sig Number -> (* -> a) -> (* -> a)
+ * @param {Number} length The arity for the returned function.
+ * @param {Function} fn The function to curry.
+ * @return {Function} A new, curried function.
+ * @see R.curry
+ * @example
+ *
+ *      var sumArgs = (...args) => R.sum(args);
+ *
+ *      var curriedAddFourNumbers = R.curryN(4, sumArgs);
+ *      var f = curriedAddFourNumbers(1, 2);
+ *      var g = f(3);
+ *      g(4); //=> 10
+ */
+
 var curryN$1 = /*#__PURE__*/_curry2_1(function curryN(length, fn) {
   if (length === 1) {
     return _curry1_1(fn);
@@ -20233,6 +22906,31 @@ var curryN$1 = /*#__PURE__*/_curry2_1(function curryN(length, fn) {
   return _arity_1(length, _curryN_1(length, [], fn));
 });
 var curryN_1 = curryN$1;
+
+/**
+ * Creates a new list iteration function from an existing one by adding two new
+ * parameters to its callback function: the current index, and the entire list.
+ *
+ * This would turn, for instance, [`R.map`](#map) function into one that
+ * more closely resembles `Array.prototype.map`. Note that this will only work
+ * for functions in which the iteration callback function is the first
+ * parameter, and where the list is the last parameter. (This latter might be
+ * unimportant if the list parameter is not used.)
+ *
+ * @func
+ * @memberOf R
+ * @since v0.15.0
+ * @category Function
+ * @category List
+ * @sig ((a ... -> b) ... -> [a] -> *) -> (a ..., Int, [a] -> b) ... -> [a] -> *)
+ * @param {Function} fn A list iteration function that does not pass index or list to its callback
+ * @return {Function} An altered list iteration function that passes (item, index, list) to its callback
+ * @example
+ *
+ *      var mapIndexed = R.addIndex(R.map);
+ *      mapIndexed((val, idx) => idx + '-' + val, ['f', 'o', 'o', 'b', 'a', 'r']);
+ *      //=> ['0-f', '1-o', '2-o', '3-b', '4-a', '5-r']
+ */
 
 var addIndex$1 = /*#__PURE__*/_curry1_1(function addIndex(fn) {
   return curryN_1(fn.length, function () {
@@ -20249,6 +22947,15 @@ var addIndex$1 = /*#__PURE__*/_curry1_1(function addIndex(fn) {
   });
 });
 var addIndex_1 = addIndex$1;
+
+/**
+ * Optimized internal three-arity curry function.
+ *
+ * @private
+ * @category Function
+ * @param {Function} fn The function to curry.
+ * @return {Function} The curried function.
+ */
 
 function _curry3(fn) {
   return function f3(a, b, c) {
@@ -20286,6 +22993,32 @@ function _curry3(fn) {
 }
 var _curry3_1 = _curry3;
 
+/**
+ * Applies a function to the value at the given index of an array, returning a
+ * new copy of the array with the element at the given index replaced with the
+ * result of the function application.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.14.0
+ * @category List
+ * @sig (a -> a) -> Number -> [a] -> [a]
+ * @param {Function} fn The function to apply.
+ * @param {Number} idx The index.
+ * @param {Array|Arguments} list An array-like object whose value
+ *        at the supplied index will be replaced.
+ * @return {Array} A copy of the supplied array-like object with
+ *         the element at index `idx` replaced with the value
+ *         returned by applying `fn` to the existing element.
+ * @see R.update
+ * @example
+ *
+ *      R.adjust(R.add(10), 1, [1, 2, 3]);     //=> [1, 12, 3]
+ *      R.adjust(R.add(10))(1)([1, 2, 3]);     //=> [1, 12, 3]
+ * @symb R.adjust(f, -1, [a, b]) = [a, f(b)]
+ * @symb R.adjust(f, 0, [a, b]) = [f(a), b]
+ */
+
 var adjust$1 = /*#__PURE__*/_curry3_1(function adjust(fn, idx, list) {
   if (idx >= list.length || idx < -list.length) {
     return list;
@@ -20318,6 +23051,21 @@ function _isTransformer(obj) {
   return typeof obj['@@transducer/step'] === 'function';
 }
 var _isTransformer_1 = _isTransformer;
+
+/**
+ * Returns a function that dispatches with different strategies based on the
+ * object in list position (last argument). If it is an array, executes [fn].
+ * Otherwise, if it has a function with one of the given method names, it will
+ * execute that function (functor case). Otherwise, if it is a transformer,
+ * uses transducer [xf] to return a new transformer (transducer case).
+ * Otherwise, it will default to executing [fn].
+ *
+ * @private
+ * @param {Array} methodNames properties to check for a custom implementation
+ * @param {Function} xf transducer to initialize if object is transformer
+ * @param {Function} fn default ramda implementation
+ * @return {Function} A function that dispatches on object in list position
+ */
 
 function _dispatchable(methodNames, xf, fn) {
   return function () {
@@ -20391,6 +23139,31 @@ var _xall = /*#__PURE__*/_curry2_1(function _xall(f, xf) {
 });
 var _xall_1 = _xall;
 
+/**
+ * Returns `true` if all elements of the list match the predicate, `false` if
+ * there are any that don't.
+ *
+ * Dispatches to the `all` method of the second argument, if present.
+ *
+ * Acts as a transducer if a transformer is given in list position.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category List
+ * @sig (a -> Boolean) -> [a] -> Boolean
+ * @param {Function} fn The predicate function.
+ * @param {Array} list The array to consider.
+ * @return {Boolean} `true` if the predicate is satisfied by every element, `false`
+ *         otherwise.
+ * @see R.any, R.none, R.transduce
+ * @example
+ *
+ *      var equals3 = R.equals(3);
+ *      R.all(equals3)([3, 3, 3, 3]); //=> true
+ *      R.all(equals3)([3, 3, 1, 3]); //=> false
+ */
+
 var all$1 = /*#__PURE__*/_curry2_1( /*#__PURE__*/_dispatchable_1(['all'], _xall_1, function all(fn, list) {
   var idx = 0;
   while (idx < list.length) {
@@ -20402,6 +23175,24 @@ var all$1 = /*#__PURE__*/_curry2_1( /*#__PURE__*/_dispatchable_1(['all'], _xall_
   return true;
 }));
 var all_1 = all$1;
+
+/**
+ * Returns the larger of its two arguments.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Relation
+ * @sig Ord a => a -> a -> a
+ * @param {*} a
+ * @param {*} b
+ * @return {*}
+ * @see R.maxBy, R.min
+ * @example
+ *
+ *      R.max(789, 123); //=> 789
+ *      R.max('a', 'b'); //=> 'b'
+ */
 
 var max$2 = /*#__PURE__*/_curry2_1(function max(a, b) {
   return b > a ? b : a;
@@ -20424,6 +23215,24 @@ function _isString(x) {
   return Object.prototype.toString.call(x) === '[object String]';
 }
 var _isString_1 = _isString;
+
+/**
+ * Tests whether or not an object is similar to an array.
+ *
+ * @private
+ * @category Type
+ * @category List
+ * @sig * -> Boolean
+ * @param {*} x The object to test.
+ * @return {Boolean} `true` if `x` has a numeric length property and extreme indices defined; `false` otherwise.
+ * @example
+ *
+ *      _isArrayLike([]); //=> true
+ *      _isArrayLike(true); //=> false
+ *      _isArrayLike({}); //=> false
+ *      _isArrayLike({length: 10}); //=> false
+ *      _isArrayLike({0: 'zero', 9: 'nine', length: 10}); //=> true
+ */
 
 var _isArrayLike = /*#__PURE__*/_curry1_1(function isArrayLike(x) {
   if (_isArray(x)) {
@@ -20472,6 +23281,29 @@ function _xwrap(fn) {
   return new XWrap(fn);
 }
 var _xwrap_1 = _xwrap;
+
+/**
+ * Creates a function that is bound to a context.
+ * Note: `R.bind` does not provide the additional argument-binding capabilities of
+ * [Function.prototype.bind](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind).
+ *
+ * @func
+ * @memberOf R
+ * @since v0.6.0
+ * @category Function
+ * @category Object
+ * @sig (* -> *) -> {*} -> (* -> *)
+ * @param {Function} fn The function to bind to context
+ * @param {Object} thisObj The context to bind `fn` to
+ * @return {Function} A function that will execute in the context of `thisObj`.
+ * @see R.partial
+ * @example
+ *
+ *      var log = R.bind(console.log, console);
+ *      R.pipe(R.assoc('a', 2), R.tap(log), R.assoc('a', 3))({a: 1}); //=> {a: 3}
+ *      // logs {a: 2}
+ * @symb R.bind(f, o)(a, b) = f.call(o, a, b)
+ */
 
 var bind$1 = /*#__PURE__*/_curry2_1(function bind(fn, thisObj) {
   return _arity_1(fn.length, function () {
@@ -20573,6 +23405,9 @@ var _isArguments = function () {
 
 var _isArguments_1 = _isArguments;
 
+// cover IE < 9 keys issues
+
+
 var hasEnumBug = ! /*#__PURE__*/{ toString: null }.propertyIsEnumerable('toString');
 var nonEnumerableProps = ['constructor', 'valueOf', 'isPrototypeOf', 'toString', 'propertyIsEnumerable', 'hasOwnProperty', 'toLocaleString'];
 // Safari bug
@@ -20638,6 +23473,42 @@ var _keys = typeof Object.keys === 'function' && !hasArgsEnumBug ? function keys
 var keys$1 = /*#__PURE__*/_curry1_1(_keys);
 var keys_1 = keys$1;
 
+/**
+ * Takes a function and
+ * a [functor](https://github.com/fantasyland/fantasy-land#functor),
+ * applies the function to each of the functor's values, and returns
+ * a functor of the same shape.
+ *
+ * Ramda provides suitable `map` implementations for `Array` and `Object`,
+ * so this function may be applied to `[1, 2, 3]` or `{x: 1, y: 2, z: 3}`.
+ *
+ * Dispatches to the `map` method of the second argument, if present.
+ *
+ * Acts as a transducer if a transformer is given in list position.
+ *
+ * Also treats functions as functors and will compose them together.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category List
+ * @sig Functor f => (a -> b) -> f a -> f b
+ * @param {Function} fn The function to be called on every element of the input `list`.
+ * @param {Array} list The list to be iterated over.
+ * @return {Array} The new list.
+ * @see R.transduce, R.addIndex
+ * @example
+ *
+ *      var double = x => x * 2;
+ *
+ *      R.map(double, [1, 2, 3]); //=> [2, 4, 6]
+ *
+ *      R.map(double, {x: 1, y: 2, z: 3}); //=> {x: 2, y: 4, z: 6}
+ * @symb R.map(f, [a, b]) = [f(a), f(b)]
+ * @symb R.map(f, { x: a, y: b }) = { x: f(a), y: f(b) }
+ * @symb R.map(f, functor_o) = functor_o.map(f)
+ */
+
 var map$1 = /*#__PURE__*/_curry2_1( /*#__PURE__*/_dispatchable_1(['fantasy-land/map', 'map'], _xmap_1, function map(fn, functor) {
   switch (Object.prototype.toString.call(functor)) {
     case '[object Function]':
@@ -20655,6 +23526,25 @@ var map$1 = /*#__PURE__*/_curry2_1( /*#__PURE__*/_dispatchable_1(['fantasy-land/
 }));
 var map_1 = map$1;
 
+/**
+ * Retrieve the value at a given path.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.2.0
+ * @category Object
+ * @typedefn Idx = String | Int
+ * @sig [Idx] -> {a} -> a | Undefined
+ * @param {Array} path The path to use.
+ * @param {Object} obj The object to retrieve the nested property from.
+ * @return {*} The data at `path`.
+ * @see R.prop
+ * @example
+ *
+ *      R.path(['a', 'b'], {a: {b: 2}}); //=> 2
+ *      R.path(['a', 'b'], {c: {b: 2}}); //=> undefined
+ */
+
 var path$1 = /*#__PURE__*/_curry2_1(function path(paths, obj) {
   var val = obj;
   var idx = 0;
@@ -20669,18 +23559,136 @@ var path$1 = /*#__PURE__*/_curry2_1(function path(paths, obj) {
 });
 var path_1 = path$1;
 
+/**
+ * Returns a function that when supplied an object returns the indicated
+ * property of that object, if it exists.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Object
+ * @sig s -> {s: a} -> a | Undefined
+ * @param {String} p The property name
+ * @param {Object} obj The object to query
+ * @return {*} The value at `obj.p`.
+ * @see R.path
+ * @example
+ *
+ *      R.prop('x', {x: 100}); //=> 100
+ *      R.prop('x', {}); //=> undefined
+ */
+
 var prop$1 = /*#__PURE__*/_curry2_1(function prop(p, obj) {
   return path_1([p], obj);
 });
 var prop_1 = prop$1;
+
+/**
+ * Returns a new list by plucking the same named property off all objects in
+ * the list supplied.
+ *
+ * `pluck` will work on
+ * any [functor](https://github.com/fantasyland/fantasy-land#functor) in
+ * addition to arrays, as it is equivalent to `R.map(R.prop(k), f)`.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category List
+ * @sig Functor f => k -> f {k: v} -> f v
+ * @param {Number|String} key The key name to pluck off of each object.
+ * @param {Array} f The array or functor to consider.
+ * @return {Array} The list of values for the given key.
+ * @see R.props
+ * @example
+ *
+ *      R.pluck('a')([{a: 1}, {a: 2}]); //=> [1, 2]
+ *      R.pluck(0)([[1, 2], [3, 4]]);   //=> [1, 3]
+ *      R.pluck('val', {a: {val: 3}, b: {val: 5}}); //=> {a: 3, b: 5}
+ * @symb R.pluck('x', [{x: 1, y: 2}, {x: 3, y: 4}, {x: 5, y: 6}]) = [1, 3, 5]
+ * @symb R.pluck(0, [[1, 2], [3, 4], [5, 6]]) = [1, 3, 5]
+ */
 
 var pluck$1 = /*#__PURE__*/_curry2_1(function pluck(p, list) {
   return map_1(prop_1(p), list);
 });
 var pluck_1 = pluck$1;
 
+/**
+ * Returns a single item by iterating through the list, successively calling
+ * the iterator function and passing it an accumulator value and the current
+ * value from the array, and then passing the result to the next call.
+ *
+ * The iterator function receives two values: *(acc, value)*. It may use
+ * [`R.reduced`](#reduced) to shortcut the iteration.
+ *
+ * The arguments' order of [`reduceRight`](#reduceRight)'s iterator function
+ * is *(value, acc)*.
+ *
+ * Note: `R.reduce` does not skip deleted or unassigned indices (sparse
+ * arrays), unlike the native `Array.prototype.reduce` method. For more details
+ * on this behavior, see:
+ * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce#Description
+ *
+ * Dispatches to the `reduce` method of the third argument, if present. When
+ * doing so, it is up to the user to handle the [`R.reduced`](#reduced)
+ * shortcuting, as this is not implemented by `reduce`.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category List
+ * @sig ((a, b) -> a) -> a -> [b] -> a
+ * @param {Function} fn The iterator function. Receives two values, the accumulator and the
+ *        current element from the array.
+ * @param {*} acc The accumulator value.
+ * @param {Array} list The list to iterate over.
+ * @return {*} The final, accumulated value.
+ * @see R.reduced, R.addIndex, R.reduceRight
+ * @example
+ *
+ *      R.reduce(R.subtract, 0, [1, 2, 3, 4]) // => ((((0 - 1) - 2) - 3) - 4) = -10
+ *      //          -               -10
+ *      //         / \              / \
+ *      //        -   4           -6   4
+ *      //       / \              / \
+ *      //      -   3   ==>     -3   3
+ *      //     / \              / \
+ *      //    -   2           -1   2
+ *      //   / \              / \
+ *      //  0   1            0   1
+ *
+ * @symb R.reduce(f, a, [b, c, d]) = f(f(f(a, b), c), d)
+ */
+
 var reduce$1 = /*#__PURE__*/_curry3_1(_reduce_1);
 var reduce_1 = reduce$1;
+
+/**
+ * Takes a list of predicates and returns a predicate that returns true for a
+ * given list of arguments if every one of the provided predicates is satisfied
+ * by those arguments.
+ *
+ * The function returned is a curried function whose arity matches that of the
+ * highest-arity predicate.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.9.0
+ * @category Logic
+ * @sig [(*... -> Boolean)] -> (*... -> Boolean)
+ * @param {Array} predicates An array of predicates to check
+ * @return {Function} The combined predicate
+ * @see R.anyPass
+ * @example
+ *
+ *      var isQueen = R.propEq('rank', 'Q');
+ *      var isSpade = R.propEq('suit', '♠︎');
+ *      var isQueenOfSpades = R.allPass([isQueen, isSpade]);
+ *
+ *      isQueenOfSpades({rank: 'Q', suit: '♣︎'}); //=> false
+ *      isQueenOfSpades({rank: 'Q', suit: '♠︎'}); //=> true
+ */
 
 var allPass$1 = /*#__PURE__*/_curry1_1(function allPass(preds) {
   return curryN_1(reduce_1(max_1$2, 0, pluck_1('length', preds)), function () {
@@ -20696,6 +23704,26 @@ var allPass$1 = /*#__PURE__*/_curry1_1(function allPass(preds) {
   });
 });
 var allPass_1 = allPass$1;
+
+/**
+ * Returns `true` if both arguments are `true`; `false` otherwise.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Logic
+ * @sig a -> b -> a | b
+ * @param {Any} a
+ * @param {Any} b
+ * @return {Any} the first argument if it is falsy, otherwise the second argument.
+ * @see R.both
+ * @example
+ *
+ *      R.and(true, true); //=> true
+ *      R.and(true, false); //=> false
+ *      R.and(false, true); //=> false
+ *      R.and(false, false); //=> false
+ */
 
 var and$1 = /*#__PURE__*/_curry2_1(function and(a, b) {
   return a && b;
@@ -20732,6 +23760,32 @@ var _xany = /*#__PURE__*/_curry2_1(function _xany(f, xf) {
 });
 var _xany_1 = _xany;
 
+/**
+ * Returns `true` if at least one of elements of the list match the predicate,
+ * `false` otherwise.
+ *
+ * Dispatches to the `any` method of the second argument, if present.
+ *
+ * Acts as a transducer if a transformer is given in list position.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category List
+ * @sig (a -> Boolean) -> [a] -> Boolean
+ * @param {Function} fn The predicate function.
+ * @param {Array} list The array to consider.
+ * @return {Boolean} `true` if the predicate is satisfied by at least one element, `false`
+ *         otherwise.
+ * @see R.all, R.none, R.transduce
+ * @example
+ *
+ *      var lessThan0 = R.flip(R.lt)(0);
+ *      var lessThan2 = R.flip(R.lt)(2);
+ *      R.any(lessThan0)([1, 2]); //=> false
+ *      R.any(lessThan2)([1, 2]); //=> true
+ */
+
 var any$1 = /*#__PURE__*/_curry2_1( /*#__PURE__*/_dispatchable_1(['any'], _xany_1, function any(fn, list) {
   var idx = 0;
   while (idx < list.length) {
@@ -20743,6 +23797,33 @@ var any$1 = /*#__PURE__*/_curry2_1( /*#__PURE__*/_dispatchable_1(['any'], _xany_
   return false;
 }));
 var any_1 = any$1;
+
+/**
+ * Takes a list of predicates and returns a predicate that returns true for a
+ * given list of arguments if at least one of the provided predicates is
+ * satisfied by those arguments.
+ *
+ * The function returned is a curried function whose arity matches that of the
+ * highest-arity predicate.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.9.0
+ * @category Logic
+ * @sig [(*... -> Boolean)] -> (*... -> Boolean)
+ * @param {Array} predicates An array of predicates to check
+ * @return {Function} The combined predicate
+ * @see R.allPass
+ * @example
+ *
+ *      var isClub = R.propEq('suit', '♣');
+ *      var isSpade = R.propEq('suit', '♠');
+ *      var isBlackCard = R.anyPass([isClub, isSpade]);
+ *
+ *      isBlackCard({rank: '10', suit: '♣'}); //=> true
+ *      isBlackCard({rank: 'Q', suit: '♠'}); //=> true
+ *      isBlackCard({rank: 'Q', suit: '♦'}); //=> false
+ */
 
 var anyPass$1 = /*#__PURE__*/_curry1_1(function anyPass(preds) {
   return curryN_1(reduce_1(max_1$2, 0, pluck_1('length', preds)), function () {
@@ -20758,6 +23839,33 @@ var anyPass$1 = /*#__PURE__*/_curry1_1(function anyPass(preds) {
   });
 });
 var anyPass_1 = anyPass$1;
+
+/**
+ * ap applies a list of functions to a list of values.
+ *
+ * Dispatches to the `ap` method of the second argument, if present. Also
+ * treats curried functions as applicatives.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.3.0
+ * @category Function
+ * @sig [a -> b] -> [a] -> [b]
+ * @sig Apply f => f (a -> b) -> f a -> f b
+ * @sig (a -> b -> c) -> (a -> b) -> (a -> c)
+ * @param {*} applyF
+ * @param {*} applyX
+ * @return {*}
+ * @example
+ *
+ *      R.ap([R.multiply(2), R.add(3)], [1,2,3]); //=> [2, 4, 6, 4, 5, 6]
+ *      R.ap([R.concat('tasty '), R.toUpper], ['pizza', 'salad']); //=> ["tasty pizza", "tasty salad", "PIZZA", "SALAD"]
+ *
+ *      // R.ap can also be used as S combinator
+ *      // when only two functions are passed
+ *      R.ap(R.concat, R.toUpper)('Ramda') //=> 'RamdaRAMDA'
+ * @symb R.ap([f, g], [a, b]) = [f(a), f(b), g(a), g(b)]
+ */
 
 var ap$1 = /*#__PURE__*/_curry2_1(function ap(applyF, applyX) {
   return typeof applyX['fantasy-land/ap'] === 'function' ? applyX['fantasy-land/ap'](applyF) : typeof applyF.ap === 'function' ? applyF.ap(applyX) : typeof applyF === 'function' ? function (x) {
@@ -20819,18 +23927,100 @@ var _xaperture = /*#__PURE__*/_curry2_1(function _xaperture(n, xf) {
 });
 var _xaperture_1 = _xaperture;
 
+/**
+ * Returns a new list, composed of n-tuples of consecutive elements. If `n` is
+ * greater than the length of the list, an empty list is returned.
+ *
+ * Acts as a transducer if a transformer is given in list position.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.12.0
+ * @category List
+ * @sig Number -> [a] -> [[a]]
+ * @param {Number} n The size of the tuples to create
+ * @param {Array} list The list to split into `n`-length tuples
+ * @return {Array} The resulting list of `n`-length tuples
+ * @see R.transduce
+ * @example
+ *
+ *      R.aperture(2, [1, 2, 3, 4, 5]); //=> [[1, 2], [2, 3], [3, 4], [4, 5]]
+ *      R.aperture(3, [1, 2, 3, 4, 5]); //=> [[1, 2, 3], [2, 3, 4], [3, 4, 5]]
+ *      R.aperture(7, [1, 2, 3, 4, 5]); //=> []
+ */
+
 var aperture$1 = /*#__PURE__*/_curry2_1( /*#__PURE__*/_dispatchable_1([], _xaperture_1, _aperture_1));
 var aperture_1 = aperture$1;
+
+/**
+ * Returns a new list containing the contents of the given list, followed by
+ * the given element.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category List
+ * @sig a -> [a] -> [a]
+ * @param {*} el The element to add to the end of the new list.
+ * @param {Array} list The list of elements to add a new item to.
+ *        list.
+ * @return {Array} A new list containing the elements of the old list followed by `el`.
+ * @see R.prepend
+ * @example
+ *
+ *      R.append('tests', ['write', 'more']); //=> ['write', 'more', 'tests']
+ *      R.append('tests', []); //=> ['tests']
+ *      R.append(['tests'], ['write', 'more']); //=> ['write', 'more', ['tests']]
+ */
 
 var append$1 = /*#__PURE__*/_curry2_1(function append(el, list) {
   return _concat_1(list, [el]);
 });
 var append_1 = append$1;
 
+/**
+ * Applies function `fn` to the argument list `args`. This is useful for
+ * creating a fixed-arity function from a variadic function. `fn` should be a
+ * bound function if context is significant.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.7.0
+ * @category Function
+ * @sig (*... -> a) -> [*] -> a
+ * @param {Function} fn The function which will be called with `args`
+ * @param {Array} args The arguments to call `fn` with
+ * @return {*} result The result, equivalent to `fn(...args)`
+ * @see R.call, R.unapply
+ * @example
+ *
+ *      var nums = [1, 2, 3, -99, 42, 6, 7];
+ *      R.apply(Math.max, nums); //=> 42
+ * @symb R.apply(f, [a, b, c]) = f(a, b, c)
+ */
+
 var apply$1 = /*#__PURE__*/_curry2_1(function apply(fn, args) {
   return fn.apply(this, args);
 });
 var apply_1 = apply$1;
+
+/**
+ * Returns a list of all the enumerable own properties of the supplied object.
+ * Note that the order of the output array is not guaranteed across different
+ * JS platforms.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Object
+ * @sig {k: v} -> [v]
+ * @param {Object} obj The object to extract values from
+ * @return {Array} An array of the values of the object's own properties.
+ * @see R.valuesIn, R.keys
+ * @example
+ *
+ *      R.values({a: 1, b: 2, c: 3}); //=> [1, 2, 3]
+ */
 
 var values$1 = /*#__PURE__*/_curry1_1(function values(obj) {
   var props = keys_1(obj);
@@ -20845,6 +24035,32 @@ var values$1 = /*#__PURE__*/_curry1_1(function values(obj) {
 });
 var values_1 = values$1;
 
+/**
+ * Given a spec object recursively mapping properties to functions, creates a
+ * function producing an object of the same structure, by mapping each property
+ * to the result of calling its associated function with the supplied arguments.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.20.0
+ * @category Function
+ * @sig {k: ((a, b, ..., m) -> v)} -> ((a, b, ..., m) -> {k: v})
+ * @param {Object} spec an object recursively mapping properties to functions for
+ *        producing the values for these properties.
+ * @return {Function} A function that returns an object of the same structure
+ * as `spec', with each property set to the value returned by calling its
+ * associated function with the supplied arguments.
+ * @see R.converge, R.juxt
+ * @example
+ *
+ *      var getMetrics = R.applySpec({
+ *        sum: R.add,
+ *        nested: { mul: R.multiply }
+ *      });
+ *      getMetrics(2, 4); // => { sum: 6, nested: { mul: 8 } }
+ * @symb R.applySpec({ x: f, y: { z: g } })(a, b) = { x: f(a, b), y: { z: g(a, b) } }
+ */
+
 var applySpec$1 = /*#__PURE__*/_curry1_1(function applySpec(spec) {
   spec = map_1(function (v) {
     return typeof v == 'function' ? v : applySpec(v);
@@ -20858,10 +24074,53 @@ var applySpec$1 = /*#__PURE__*/_curry1_1(function applySpec(spec) {
 });
 var applySpec_1 = applySpec$1;
 
+/**
+* Takes a value and applies a function to it.
+*
+* This function is also known as the `thrush` combinator.
+*
+* @func
+* @memberOf R
+ * @since v0.25.0
+* @category Function
+* @sig a -> (a -> b) -> b
+* @param {*} x The value
+* @param {Function} f The function to apply
+* @return {*} The result of applying `f` to `x`
+* @example
+*
+*      var t42 = R.applyTo(42);
+*      t42(R.identity); //=> 42
+*      t42(R.add(1)); //=> 43
+*/
+
 var applyTo$1 = /*#__PURE__*/_curry2_1(function applyTo(x, f) {
   return f(x);
 });
 var applyTo_1 = applyTo$1;
+
+/**
+ * Makes an ascending comparator function out of a function that returns a value
+ * that can be compared with `<` and `>`.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.23.0
+ * @category Function
+ * @sig Ord b => (a -> b) -> a -> a -> Number
+ * @param {Function} fn A function of arity one that returns a value that can be compared
+ * @param {*} a The first item to be compared.
+ * @param {*} b The second item to be compared.
+ * @return {Number} `-1` if fn(a) < fn(b), `1` if fn(b) < fn(a), otherwise `0`
+ * @see R.descend
+ * @example
+ *
+ *      var byAge = R.ascend(R.prop('age'));
+ *      var people = [
+ *        // ...
+ *      ];
+ *      var peopleByYoungestFirst = R.sort(byAge, people);
+ */
 
 var ascend$1 = /*#__PURE__*/_curry3_1(function ascend(fn, a, b) {
   var aa = fn(a);
@@ -20869,6 +24128,27 @@ var ascend$1 = /*#__PURE__*/_curry3_1(function ascend(fn, a, b) {
   return aa < bb ? -1 : aa > bb ? 1 : 0;
 });
 var ascend_1 = ascend$1;
+
+/**
+ * Makes a shallow clone of an object, setting or overriding the specified
+ * property with the given value. Note that this copies and flattens prototype
+ * properties onto the new object as well. All non-primitive properties are
+ * copied by reference.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.8.0
+ * @category Object
+ * @sig String -> a -> {k: v} -> {k: v}
+ * @param {String} prop The property name to set
+ * @param {*} val The new value
+ * @param {Object} obj The object to clone
+ * @return {Object} A new object equivalent to the original except for the changed property.
+ * @see R.dissoc
+ * @example
+ *
+ *      R.assoc('c', 3, {a: 1, b: 2}); //=> {a: 1, b: 2, c: 3}
+ */
 
 var assoc$1 = /*#__PURE__*/_curry3_1(function assoc(prop, val, obj) {
   var result = {};
@@ -20892,10 +24172,53 @@ var _isInteger = Number.isInteger || function _isInteger(n) {
   return n << 0 === n;
 };
 
+/**
+ * Checks if the input value is `null` or `undefined`.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.9.0
+ * @category Type
+ * @sig * -> Boolean
+ * @param {*} x The value to test.
+ * @return {Boolean} `true` if `x` is `undefined` or `null`, otherwise `false`.
+ * @example
+ *
+ *      R.isNil(null); //=> true
+ *      R.isNil(undefined); //=> true
+ *      R.isNil(0); //=> false
+ *      R.isNil([]); //=> false
+ */
+
 var isNil$1 = /*#__PURE__*/_curry1_1(function isNil(x) {
   return x == null;
 });
 var isNil_1 = isNil$1;
+
+/**
+ * Makes a shallow clone of an object, setting or overriding the nodes required
+ * to create the given path, and placing the specific value at the tail end of
+ * that path. Note that this copies and flattens prototype properties onto the
+ * new object as well. All non-primitive properties are copied by reference.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.8.0
+ * @category Object
+ * @typedefn Idx = String | Int
+ * @sig [Idx] -> a -> {a} -> {a}
+ * @param {Array} path the path to set
+ * @param {*} val The new value
+ * @param {Object} obj The object to clone
+ * @return {Object} A new object equivalent to the original except along the specified path.
+ * @see R.dissocPath
+ * @example
+ *
+ *      R.assocPath(['a', 'b', 'c'], 42, {a: {b: {c: 0}}}); //=> {a: {b: {c: 42}}}
+ *
+ *      // Any missing or non-object keys in path will be overridden
+ *      R.assocPath(['a', 'b', 'c'], 42, {a: 5}); //=> {a: {b: {c: 42}}}
+ */
 
 var assocPath$1 = /*#__PURE__*/_curry3_1(function assocPath(path, val, obj) {
   if (path.length === 0) {
@@ -20915,6 +24238,37 @@ var assocPath$1 = /*#__PURE__*/_curry3_1(function assocPath(path, val, obj) {
   }
 });
 var assocPath_1 = assocPath$1;
+
+/**
+ * Wraps a function of any arity (including nullary) in a function that accepts
+ * exactly `n` parameters. Any extraneous parameters will not be passed to the
+ * supplied function.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Function
+ * @sig Number -> (* -> a) -> (* -> a)
+ * @param {Number} n The desired arity of the new function.
+ * @param {Function} fn The function to wrap.
+ * @return {Function} A new function wrapping `fn`. The new function is guaranteed to be of
+ *         arity `n`.
+ * @see R.binary, R.unary
+ * @example
+ *
+ *      var takesTwoArgs = (a, b) => [a, b];
+ *
+ *      takesTwoArgs.length; //=> 2
+ *      takesTwoArgs(1, 2); //=> [1, 2]
+ *
+ *      var takesOneArg = R.nAry(1, takesTwoArgs);
+ *      takesOneArg.length; //=> 1
+ *      // Only `n` arguments are passed to the wrapped function
+ *      takesOneArg(1, 2); //=> [1, undefined]
+ * @symb R.nAry(0, f)(a, b) = f()
+ * @symb R.nAry(1, f)(a, b) = f(a)
+ * @symb R.nAry(2, f)(a, b) = f(a, b)
+ */
 
 var nAry$1 = /*#__PURE__*/_curry2_1(function nAry(n, fn) {
   switch (n) {
@@ -20968,6 +24322,35 @@ var nAry$1 = /*#__PURE__*/_curry2_1(function nAry(n, fn) {
 });
 var nAry_1 = nAry$1;
 
+/**
+ * Wraps a function of any arity (including nullary) in a function that accepts
+ * exactly 2 parameters. Any extraneous parameters will not be passed to the
+ * supplied function.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.2.0
+ * @category Function
+ * @sig (* -> c) -> (a, b -> c)
+ * @param {Function} fn The function to wrap.
+ * @return {Function} A new function wrapping `fn`. The new function is guaranteed to be of
+ *         arity 2.
+ * @see R.nAry, R.unary
+ * @example
+ *
+ *      var takesThreeArgs = function(a, b, c) {
+ *        return [a, b, c];
+ *      };
+ *      takesThreeArgs.length; //=> 3
+ *      takesThreeArgs(1, 2, 3); //=> [1, 2, 3]
+ *
+ *      var takesTwoArgs = R.binary(takesThreeArgs);
+ *      takesTwoArgs.length; //=> 2
+ *      // Only 2 arguments are passed to the wrapped function
+ *      takesTwoArgs(1, 2, 3); //=> [1, 2, undefined]
+ * @symb R.binary(f)(a, b, c) = f(a, b)
+ */
+
 var binary$1 = /*#__PURE__*/_curry1_1(function binary(fn) {
   return nAry_1(2, fn);
 });
@@ -20978,6 +24361,24 @@ function _isFunction(x) {
 }
 var _isFunction_1 = _isFunction;
 
+/**
+ * "lifts" a function to be the specified arity, so that it may "map over" that
+ * many lists, Functions or other objects that satisfy the [FantasyLand Apply spec](https://github.com/fantasyland/fantasy-land#apply).
+ *
+ * @func
+ * @memberOf R
+ * @since v0.7.0
+ * @category Function
+ * @sig Number -> (*... -> *) -> ([*]... -> [*])
+ * @param {Function} fn The function to lift into higher context
+ * @return {Function} The lifted function.
+ * @see R.lift, R.ap
+ * @example
+ *
+ *      var madd3 = R.liftN(3, (...args) => R.sum(args));
+ *      madd3([1,2,3], [1,2,3], [1]); //=> [3, 4, 5, 4, 5, 6, 5, 6, 7]
+ */
+
 var liftN$1 = /*#__PURE__*/_curry2_1(function liftN(arity, fn) {
   var lifted = curryN_1(arity, fn);
   return curryN_1(arity, function () {
@@ -20986,10 +24387,62 @@ var liftN$1 = /*#__PURE__*/_curry2_1(function liftN(arity, fn) {
 });
 var liftN_1 = liftN$1;
 
+/**
+ * "lifts" a function of arity > 1 so that it may "map over" a list, Function or other
+ * object that satisfies the [FantasyLand Apply spec](https://github.com/fantasyland/fantasy-land#apply).
+ *
+ * @func
+ * @memberOf R
+ * @since v0.7.0
+ * @category Function
+ * @sig (*... -> *) -> ([*]... -> [*])
+ * @param {Function} fn The function to lift into higher context
+ * @return {Function} The lifted function.
+ * @see R.liftN
+ * @example
+ *
+ *      var madd3 = R.lift((a, b, c) => a + b + c);
+ *
+ *      madd3([1,2,3], [1,2,3], [1]); //=> [3, 4, 5, 4, 5, 6, 5, 6, 7]
+ *
+ *      var madd5 = R.lift((a, b, c, d, e) => a + b + c + d + e);
+ *
+ *      madd5([1,2], [3], [4, 5], [6], [7, 8]); //=> [21, 22, 22, 23, 22, 23, 23, 24]
+ */
+
 var lift$1 = /*#__PURE__*/_curry1_1(function lift(fn) {
   return liftN_1(fn.length, fn);
 });
 var lift_1 = lift$1;
+
+/**
+ * A function which calls the two provided functions and returns the `&&`
+ * of the results.
+ * It returns the result of the first function if it is false-y and the result
+ * of the second function otherwise. Note that this is short-circuited,
+ * meaning that the second function will not be invoked if the first returns a
+ * false-y value.
+ *
+ * In addition to functions, `R.both` also accepts any fantasy-land compatible
+ * applicative functor.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.12.0
+ * @category Logic
+ * @sig (*... -> Boolean) -> (*... -> Boolean) -> (*... -> Boolean)
+ * @param {Function} f A predicate
+ * @param {Function} g Another predicate
+ * @return {Function} a function that applies its arguments to `f` and `g` and `&&`s their outputs together.
+ * @see R.and
+ * @example
+ *
+ *      var gt10 = R.gt(R.__, 10)
+ *      var lt20 = R.lt(R.__, 20)
+ *      var f = R.both(gt10, lt20);
+ *      f(15); //=> true
+ *      f(30); //=> false
+ */
 
 var both$1 = /*#__PURE__*/_curry2_1(function both(f, g) {
   return _isFunction_1(f) ? function _both() {
@@ -20998,15 +24451,97 @@ var both$1 = /*#__PURE__*/_curry2_1(function both(f, g) {
 });
 var both_1 = both$1;
 
+/**
+ * Returns a curried equivalent of the provided function. The curried function
+ * has two unusual capabilities. First, its arguments needn't be provided one
+ * at a time. If `f` is a ternary function and `g` is `R.curry(f)`, the
+ * following are equivalent:
+ *
+ *   - `g(1)(2)(3)`
+ *   - `g(1)(2, 3)`
+ *   - `g(1, 2)(3)`
+ *   - `g(1, 2, 3)`
+ *
+ * Secondly, the special placeholder value [`R.__`](#__) may be used to specify
+ * "gaps", allowing partial application of any combination of arguments,
+ * regardless of their positions. If `g` is as above and `_` is [`R.__`](#__),
+ * the following are equivalent:
+ *
+ *   - `g(1, 2, 3)`
+ *   - `g(_, 2, 3)(1)`
+ *   - `g(_, _, 3)(1)(2)`
+ *   - `g(_, _, 3)(1, 2)`
+ *   - `g(_, 2)(1)(3)`
+ *   - `g(_, 2)(1, 3)`
+ *   - `g(_, 2)(_, 3)(1)`
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Function
+ * @sig (* -> a) -> (* -> a)
+ * @param {Function} fn The function to curry.
+ * @return {Function} A new, curried function.
+ * @see R.curryN
+ * @example
+ *
+ *      var addFourNumbers = (a, b, c, d) => a + b + c + d;
+ *
+ *      var curriedAddFourNumbers = R.curry(addFourNumbers);
+ *      var f = curriedAddFourNumbers(1, 2);
+ *      var g = f(3);
+ *      g(4); //=> 10
+ */
+
 var curry$1 = /*#__PURE__*/_curry1_1(function curry(fn) {
   return curryN_1(fn.length, fn);
 });
 var curry_1 = curry$1;
 
+/**
+ * Returns the result of calling its first argument with the remaining
+ * arguments. This is occasionally useful as a converging function for
+ * [`R.converge`](#converge): the first branch can produce a function while the
+ * remaining branches produce values to be passed to that function as its
+ * arguments.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.9.0
+ * @category Function
+ * @sig (*... -> a),*... -> a
+ * @param {Function} fn The function to apply to the remaining arguments.
+ * @param {...*} args Any number of positional arguments.
+ * @return {*}
+ * @see R.apply
+ * @example
+ *
+ *      R.call(R.add, 1, 2); //=> 3
+ *
+ *      var indentN = R.pipe(R.repeat(' '),
+ *                           R.join(''),
+ *                           R.replace(/^(?!$)/gm));
+ *
+ *      var format = R.converge(R.call, [
+ *                                  R.pipe(R.prop('indent'), indentN),
+ *                                  R.prop('value')
+ *                              ]);
+ *
+ *      format({indent: 2, value: 'foo\nbar\nbaz\n'}); //=> '  foo\n  bar\n  baz\n'
+ * @symb R.call(f, a, b) = f(a, b)
+ */
+
 var call$1 = /*#__PURE__*/curry_1(function call(fn) {
   return fn.apply(this, Array.prototype.slice.call(arguments, 1));
 });
 var call_1 = call$1;
+
+/**
+ * `_makeFlat` is a helper function that returns a one-level or fully recursive
+ * function based on the flag passed in.
+ *
+ * @private
+ */
 
 function _makeFlat(recursive) {
   return function flatt(list) {
@@ -21075,6 +24610,29 @@ var _xchain = /*#__PURE__*/_curry2_1(function _xchain(f, xf) {
 });
 var _xchain_1 = _xchain;
 
+/**
+ * `chain` maps a function over a list and concatenates the results. `chain`
+ * is also known as `flatMap` in some libraries
+ *
+ * Dispatches to the `chain` method of the second argument, if present,
+ * according to the [FantasyLand Chain spec](https://github.com/fantasyland/fantasy-land#chain).
+ *
+ * @func
+ * @memberOf R
+ * @since v0.3.0
+ * @category List
+ * @sig Chain m => (a -> m b) -> m a -> m b
+ * @param {Function} fn The function to map with
+ * @param {Array} list The list to map over
+ * @return {Array} The result of flat-mapping `list` with `fn`
+ * @example
+ *
+ *      var duplicate = n => [n, n];
+ *      R.chain(duplicate, [1, 2, 3]); //=> [1, 1, 2, 2, 3, 3]
+ *
+ *      R.chain(R.append, R.head)([1, 2, 3]); //=> [1, 2, 3, 1]
+ */
+
 var chain$1 = /*#__PURE__*/_curry2_1( /*#__PURE__*/_dispatchable_1(['fantasy-land/chain', 'chain'], _xchain_1, function chain(fn, monad) {
   if (typeof monad === 'function') {
     return function (x) {
@@ -21084,6 +24642,27 @@ var chain$1 = /*#__PURE__*/_curry2_1( /*#__PURE__*/_dispatchable_1(['fantasy-lan
   return _makeFlat_1(false)(map_1(fn, monad));
 }));
 var chain_1 = chain$1;
+
+/**
+ * Restricts a number to be within a range.
+ *
+ * Also works for other ordered types such as Strings and Dates.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.20.0
+ * @category Relation
+ * @sig Ord a => a -> a -> a -> a
+ * @param {Number} minimum The lower limit of the clamp (inclusive)
+ * @param {Number} maximum The upper limit of the clamp (inclusive)
+ * @param {Number} value Value to be clamped
+ * @return {Number} Returns `minimum` when `val < minimum`, `maximum` when `val > maximum`, returns `val` otherwise
+ * @example
+ *
+ *      R.clamp(1, 10, -5) // => 1
+ *      R.clamp(1, 10, 15) // => 10
+ *      R.clamp(1, 10, 4)  // => 4
+ */
 
 var clamp$1 = /*#__PURE__*/_curry3_1(function clamp(min, max, value) {
   if (min > max) {
@@ -21098,10 +24677,47 @@ function _cloneRegExp(pattern) {
 }
 var _cloneRegExp_1 = _cloneRegExp;
 
+/**
+ * Gives a single-word string description of the (native) type of a value,
+ * returning such answers as 'Object', 'Number', 'Array', or 'Null'. Does not
+ * attempt to distinguish user Object types any further, reporting them all as
+ * 'Object'.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.8.0
+ * @category Type
+ * @sig (* -> {*}) -> String
+ * @param {*} val The value to test
+ * @return {String}
+ * @example
+ *
+ *      R.type({}); //=> "Object"
+ *      R.type(1); //=> "Number"
+ *      R.type(false); //=> "Boolean"
+ *      R.type('s'); //=> "String"
+ *      R.type(null); //=> "Null"
+ *      R.type([]); //=> "Array"
+ *      R.type(/[A-z]/); //=> "RegExp"
+ *      R.type(() => {}); //=> "Function"
+ *      R.type(undefined); //=> "Undefined"
+ */
+
 var type$3 = /*#__PURE__*/_curry1_1(function type(val) {
   return val === null ? 'Null' : val === undefined ? 'Undefined' : Object.prototype.toString.call(val).slice(8, -1);
 });
 var type_1 = type$3;
+
+/**
+ * Copies an object.
+ *
+ * @private
+ * @param {*} value The value to be copied
+ * @param {Array} refFrom Array containing the source references
+ * @param {Array} refTo Array containing the copied source references
+ * @param {Boolean} deep Whether or not to perform deep cloning.
+ * @return {*} The copied value.
+ */
 
 function _clone(value, refFrom, refTo, deep) {
   var copy = function copy(copiedValue) {
@@ -21135,10 +24751,53 @@ function _clone(value, refFrom, refTo, deep) {
 }
 var _clone_1 = _clone;
 
+/**
+ * Creates a deep copy of the value which may contain (nested) `Array`s and
+ * `Object`s, `Number`s, `String`s, `Boolean`s and `Date`s. `Function`s are
+ * assigned by reference rather than copied
+ *
+ * Dispatches to a `clone` method if present.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Object
+ * @sig {*} -> {*}
+ * @param {*} value The object or array to clone
+ * @return {*} A deeply cloned copy of `val`
+ * @example
+ *
+ *      var objects = [{}, {}, {}];
+ *      var objectsClone = R.clone(objects);
+ *      objects === objectsClone; //=> false
+ *      objects[0] === objectsClone[0]; //=> false
+ */
+
 var clone$1 = /*#__PURE__*/_curry1_1(function clone(value) {
   return value != null && typeof value.clone === 'function' ? value.clone() : _clone_1(value, [], [], true);
 });
 var clone_1 = clone$1;
+
+/**
+ * Makes a comparator function out of a function that reports whether the first
+ * element is less than the second.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Function
+ * @sig ((a, b) -> Boolean) -> ((a, b) -> Number)
+ * @param {Function} pred A predicate function of arity two which will return `true` if the first argument
+ * is less than the second, `false` otherwise
+ * @return {Function} A Function :: a -> b -> Int that returns `-1` if a < b, `1` if b < a, otherwise `0`
+ * @example
+ *
+ *      var byAge = R.comparator((a, b) => a.age < b.age);
+ *      var people = [
+ *        // ...
+ *      ];
+ *      var peopleByIncreasingAge = R.sort(byAge, people);
+ */
 
 var comparator$1 = /*#__PURE__*/_curry1_1(function comparator(pred) {
   return function (a, b) {
@@ -21147,10 +24806,53 @@ var comparator$1 = /*#__PURE__*/_curry1_1(function comparator(pred) {
 });
 var comparator_1 = comparator$1;
 
+/**
+ * A function that returns the `!` of its argument. It will return `true` when
+ * passed false-y value, and `false` when passed a truth-y one.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Logic
+ * @sig * -> Boolean
+ * @param {*} a any value
+ * @return {Boolean} the logical inverse of passed argument.
+ * @see R.complement
+ * @example
+ *
+ *      R.not(true); //=> false
+ *      R.not(false); //=> true
+ *      R.not(0); //=> true
+ *      R.not(1); //=> false
+ */
+
 var not$1 = /*#__PURE__*/_curry1_1(function not(a) {
   return !a;
 });
 var not_1 = not$1;
+
+/**
+ * Takes a function `f` and returns a function `g` such that if called with the same arguments
+ * when `f` returns a "truthy" value, `g` returns `false` and when `f` returns a "falsy" value `g` returns `true`.
+ *
+ * `R.complement` may be applied to any functor
+ *
+ * @func
+ * @memberOf R
+ * @since v0.12.0
+ * @category Logic
+ * @sig (*... -> *) -> (*... -> Boolean)
+ * @param {Function} f
+ * @return {Function}
+ * @see R.not
+ * @example
+ *
+ *      var isNotNil = R.complement(R.isNil);
+ *      isNil(null); //=> true
+ *      isNotNil(null); //=> false
+ *      isNil(7); //=> false
+ *      isNotNil(7); //=> true
+ */
 
 var complement$1 = /*#__PURE__*/lift_1(not_1);
 var complement_1 = complement$1;
@@ -21161,6 +24863,17 @@ function _pipe(f, g) {
   };
 }
 var _pipe_1 = _pipe;
+
+/**
+ * This checks whether a function has a [methodname] function. If it isn't an
+ * array it will execute that function otherwise it will default to the ramda
+ * implementation.
+ *
+ * @private
+ * @param {Function} fn ramda implemtation
+ * @param {String} methodname property to check for a custom implementation
+ * @return {Object} Whatever the return value of the method is.
+ */
 
 function _checkForMethod(methodname, fn) {
   return function () {
@@ -21174,13 +24887,90 @@ function _checkForMethod(methodname, fn) {
 }
 var _checkForMethod_1 = _checkForMethod;
 
+/**
+ * Returns the elements of the given list or string (or object with a `slice`
+ * method) from `fromIndex` (inclusive) to `toIndex` (exclusive).
+ *
+ * Dispatches to the `slice` method of the third argument, if present.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.4
+ * @category List
+ * @sig Number -> Number -> [a] -> [a]
+ * @sig Number -> Number -> String -> String
+ * @param {Number} fromIndex The start index (inclusive).
+ * @param {Number} toIndex The end index (exclusive).
+ * @param {*} list
+ * @return {*}
+ * @example
+ *
+ *      R.slice(1, 3, ['a', 'b', 'c', 'd']);        //=> ['b', 'c']
+ *      R.slice(1, Infinity, ['a', 'b', 'c', 'd']); //=> ['b', 'c', 'd']
+ *      R.slice(0, -1, ['a', 'b', 'c', 'd']);       //=> ['a', 'b', 'c']
+ *      R.slice(-3, -1, ['a', 'b', 'c', 'd']);      //=> ['b', 'c']
+ *      R.slice(0, 3, 'ramda');                     //=> 'ram'
+ */
+
 var slice$1 = /*#__PURE__*/_curry3_1( /*#__PURE__*/_checkForMethod_1('slice', function slice(fromIndex, toIndex, list) {
   return Array.prototype.slice.call(list, fromIndex, toIndex);
 }));
 var slice_1 = slice$1;
 
+/**
+ * Returns all but the first element of the given list or string (or object
+ * with a `tail` method).
+ *
+ * Dispatches to the `slice` method of the first argument, if present.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category List
+ * @sig [a] -> [a]
+ * @sig String -> String
+ * @param {*} list
+ * @return {*}
+ * @see R.head, R.init, R.last
+ * @example
+ *
+ *      R.tail([1, 2, 3]);  //=> [2, 3]
+ *      R.tail([1, 2]);     //=> [2]
+ *      R.tail([1]);        //=> []
+ *      R.tail([]);         //=> []
+ *
+ *      R.tail('abc');  //=> 'bc'
+ *      R.tail('ab');   //=> 'b'
+ *      R.tail('a');    //=> ''
+ *      R.tail('');     //=> ''
+ */
+
 var tail$1 = /*#__PURE__*/_curry1_1( /*#__PURE__*/_checkForMethod_1('tail', /*#__PURE__*/slice_1(1, Infinity)));
 var tail_1 = tail$1;
+
+/**
+ * Performs left-to-right function composition. The leftmost function may have
+ * any arity; the remaining functions must be unary.
+ *
+ * In some libraries this function is named `sequence`.
+ *
+ * **Note:** The result of pipe is not automatically curried.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Function
+ * @sig (((a, b, ..., n) -> o), (o -> p), ..., (x -> y), (y -> z)) -> ((a, b, ..., n) -> z)
+ * @param {...Function} functions
+ * @return {Function}
+ * @see R.compose
+ * @example
+ *
+ *      var f = R.pipe(Math.pow, R.negate, R.inc);
+ *
+ *      f(3, 4); // -(3^4) + 1
+ * @symb R.pipe(f, g, h)(a, b) = h(g(f(a, b)))
+ */
 
 function pipe$1() {
   if (arguments.length === 0) {
@@ -21190,10 +24980,60 @@ function pipe$1() {
 }
 var pipe_1 = pipe$1;
 
+/**
+ * Returns a new list or string with the elements or characters in reverse
+ * order.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category List
+ * @sig [a] -> [a]
+ * @sig String -> String
+ * @param {Array|String} list
+ * @return {Array|String}
+ * @example
+ *
+ *      R.reverse([1, 2, 3]);  //=> [3, 2, 1]
+ *      R.reverse([1, 2]);     //=> [2, 1]
+ *      R.reverse([1]);        //=> [1]
+ *      R.reverse([]);         //=> []
+ *
+ *      R.reverse('abc');      //=> 'cba'
+ *      R.reverse('ab');       //=> 'ba'
+ *      R.reverse('a');        //=> 'a'
+ *      R.reverse('');         //=> ''
+ */
+
 var reverse$1 = /*#__PURE__*/_curry1_1(function reverse(list) {
   return _isString_1(list) ? list.split('').reverse().join('') : Array.prototype.slice.call(list, 0).reverse();
 });
 var reverse_1 = reverse$1;
+
+/**
+ * Performs right-to-left function composition. The rightmost function may have
+ * any arity; the remaining functions must be unary.
+ *
+ * **Note:** The result of compose is not automatically curried.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Function
+ * @sig ((y -> z), (x -> y), ..., (o -> p), ((a, b, ..., n) -> o)) -> ((a, b, ..., n) -> z)
+ * @param {...Function} ...functions The functions to compose
+ * @return {Function}
+ * @see R.pipe
+ * @example
+ *
+ *      var classyGreeting = (firstName, lastName) => "The name's " + lastName + ", " + firstName + " " + lastName
+ *      var yellGreeting = R.compose(R.toUpper, classyGreeting);
+ *      yellGreeting('James', 'Bond'); //=> "THE NAME'S BOND, JAMES BOND"
+ *
+ *      R.compose(Math.abs, R.add(1), R.multiply(2))(-4) //=> 7
+ *
+ * @symb R.compose(f, g, h)(a, b) = f(g(h(a, b)))
+ */
 
 function compose$1() {
   if (arguments.length === 0) {
@@ -21202,6 +25042,37 @@ function compose$1() {
   return pipe_1.apply(this, reverse_1(arguments));
 }
 var compose_1 = compose$1;
+
+/**
+ * Returns the right-to-left Kleisli composition of the provided functions,
+ * each of which must return a value of a type supported by [`chain`](#chain).
+ *
+ * `R.composeK(h, g, f)` is equivalent to `R.compose(R.chain(h), R.chain(g), f)`.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.16.0
+ * @category Function
+ * @sig Chain m => ((y -> m z), (x -> m y), ..., (a -> m b)) -> (a -> m z)
+ * @param {...Function} ...functions The functions to compose
+ * @return {Function}
+ * @see R.pipeK
+ * @example
+ *
+ *       //  get :: String -> Object -> Maybe *
+ *       var get = R.curry((propName, obj) => Maybe(obj[propName]))
+ *
+ *       //  getStateCode :: Maybe String -> Maybe String
+ *       var getStateCode = R.composeK(
+ *         R.compose(Maybe.of, R.toUpper),
+ *         get('state'),
+ *         get('address'),
+ *         get('user'),
+ *       );
+ *       getStateCode({"user":{"address":{"state":"ny"}}}); //=> Maybe.Just("NY")
+ *       getStateCode({}); //=> Maybe.Nothing()
+ * @symb R.composeK(f, g, h)(a) = R.chain(f, R.chain(g, h(a)))
+ */
 
 function composeK$1() {
   if (arguments.length === 0) {
@@ -21223,6 +25094,25 @@ function _pipeP(f, g) {
 }
 var _pipeP_1 = _pipeP;
 
+/**
+ * Performs left-to-right composition of one or more Promise-returning
+ * functions. The leftmost function may have any arity; the remaining functions
+ * must be unary.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.10.0
+ * @category Function
+ * @sig ((a -> Promise b), (b -> Promise c), ..., (y -> Promise z)) -> (a -> Promise z)
+ * @param {...Function} functions
+ * @return {Function}
+ * @see R.composeP
+ * @example
+ *
+ *      //  followersForUser :: String -> Promise [User]
+ *      var followersForUser = R.pipeP(db.getUserById, db.getFollowers);
+ */
+
 function pipeP$1() {
   if (arguments.length === 0) {
     throw new Error('pipeP requires at least one argument');
@@ -21230,6 +25120,41 @@ function pipeP$1() {
   return _arity_1(arguments[0].length, reduce_1(_pipeP_1, arguments[0], tail_1(arguments)));
 }
 var pipeP_1 = pipeP$1;
+
+/**
+ * Performs right-to-left composition of one or more Promise-returning
+ * functions. The rightmost function may have any arity; the remaining
+ * functions must be unary.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.10.0
+ * @category Function
+ * @sig ((y -> Promise z), (x -> Promise y), ..., (a -> Promise b)) -> (a -> Promise z)
+ * @param {...Function} functions The functions to compose
+ * @return {Function}
+ * @see R.pipeP
+ * @example
+ *
+ *      var db = {
+ *        users: {
+ *          JOE: {
+ *            name: 'Joe',
+ *            followers: ['STEVE', 'SUZY']
+ *          }
+ *        }
+ *      }
+ *
+ *      // We'll pretend to do a db lookup which returns a promise
+ *      var lookupUser = (userId) => Promise.resolve(db.users[userId])
+ *      var lookupFollowers = (user) => Promise.resolve(user.followers)
+ *      lookupUser('JOE').then(lookupFollowers)
+ *
+ *      //  followersForUser :: String -> Promise [UserId]
+ *      var followersForUser = R.composeP(lookupFollowers, lookupUser);
+ *      followersForUser('JOE').then(followers => console.log('Followers:', followers))
+ *      // Followers: ["STEVE","SUZY"]
+ */
 
 function composeP$1() {
   if (arguments.length === 0) {
@@ -21270,6 +25195,30 @@ function _functionName(f) {
 }
 var _functionName_1 = _functionName;
 
+/**
+ * Returns true if its arguments are identical, false otherwise. Values are
+ * identical if they reference the same memory. `NaN` is identical to `NaN`;
+ * `0` and `-0` are not identical.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.15.0
+ * @category Relation
+ * @sig a -> a -> Boolean
+ * @param {*} a
+ * @param {*} b
+ * @return {Boolean}
+ * @example
+ *
+ *      var o = {};
+ *      R.identical(o, o); //=> true
+ *      R.identical(1, 1); //=> true
+ *      R.identical(1, '1'); //=> false
+ *      R.identical([], []); //=> false
+ *      R.identical(0, -0); //=> false
+ *      R.identical(NaN, NaN); //=> true
+ */
+
 var identical$1 = /*#__PURE__*/_curry2_1(function identical(a, b) {
   // SameValue algorithm
   if (a === b) {
@@ -21282,6 +25231,17 @@ var identical$1 = /*#__PURE__*/_curry2_1(function identical(a, b) {
   }
 });
 var identical_1 = identical$1;
+
+/**
+ * private _uniqContentEquals function.
+ * That function is checking equality of 2 iterator contents with 2 assumptions
+ * - iterators lengths are the same
+ * - iterators values are unique
+ *
+ * false-positive result will be returned for comparision of, e.g.
+ * - [1,2,3] and [1,2,3,4]
+ * - [1,1,1] and [1,2,3]
+ * */
 
 function _uniqContentEquals(aIterator, bIterator, stackA, stackB) {
   var a = _arrayFromIterator_1(aIterator);
@@ -21414,6 +25374,32 @@ function _equals(a, b, stackA, stackB) {
   return true;
 }
 var _equals_1 = _equals;
+
+/**
+ * Returns `true` if its arguments are equivalent, `false` otherwise. Handles
+ * cyclical data structures.
+ *
+ * Dispatches symmetrically to the `equals` methods of both arguments, if
+ * present.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.15.0
+ * @category Relation
+ * @sig a -> b -> Boolean
+ * @param {*} a
+ * @param {*} b
+ * @return {Boolean}
+ * @example
+ *
+ *      R.equals(1, 1); //=> true
+ *      R.equals(1, '1'); //=> false
+ *      R.equals([1, 2, 3], [1, 2, 3]); //=> true
+ *
+ *      var a = {}; a.v = a;
+ *      var b = {}; b.v = b;
+ *      R.equals(a, b); //=> true
+ */
 
 var equals$1 = /*#__PURE__*/_curry2_1(function equals(a, b) {
   return _equals_1(a, b, [], []);
@@ -21551,6 +25537,34 @@ var _xfilter = /*#__PURE__*/_curry2_1(function _xfilter(f, xf) {
 });
 var _xfilter_1 = _xfilter;
 
+/**
+ * Takes a predicate and a `Filterable`, and returns a new filterable of the
+ * same type containing the members of the given filterable which satisfy the
+ * given predicate. Filterable objects include plain objects or any object
+ * that has a filter method such as `Array`.
+ *
+ * Dispatches to the `filter` method of the second argument, if present.
+ *
+ * Acts as a transducer if a transformer is given in list position.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category List
+ * @sig Filterable f => (a -> Boolean) -> f a -> f a
+ * @param {Function} pred
+ * @param {Array} filterable
+ * @return {Array} Filterable
+ * @see R.reject, R.transduce, R.addIndex
+ * @example
+ *
+ *      var isEven = n => n % 2 === 0;
+ *
+ *      R.filter(isEven, [1, 2, 3, 4]); //=> [2, 4]
+ *
+ *      R.filter(isEven, {a: 1, b: 2, c: 3, d: 4}); //=> {b: 2, d: 4}
+ */
+
 var filter$1 = /*#__PURE__*/_curry2_1( /*#__PURE__*/_dispatchable_1(['filter'], _xfilter_1, function (pred, filterable) {
   return _isObject_1(filterable) ? _reduce_1(function (acc, key) {
     if (pred(filterable[key])) {
@@ -21562,6 +25576,31 @@ var filter$1 = /*#__PURE__*/_curry2_1( /*#__PURE__*/_dispatchable_1(['filter'], 
   _filter_1(pred, filterable);
 }));
 var filter_1 = filter$1;
+
+/**
+ * The complement of [`filter`](#filter).
+ *
+ * Acts as a transducer if a transformer is given in list position. Filterable
+ * objects include plain objects or any object that has a filter method such
+ * as `Array`.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category List
+ * @sig Filterable f => (a -> Boolean) -> f a -> f a
+ * @param {Function} pred
+ * @param {Array} filterable
+ * @return {Array}
+ * @see R.filter, R.transduce, R.addIndex
+ * @example
+ *
+ *      var isOdd = (n) => n % 2 === 1;
+ *
+ *      R.reject(isOdd, [1, 2, 3, 4]); //=> [2, 4]
+ *
+ *      R.reject(isOdd, {a: 1, b: 2, c: 3, d: 4}); //=> {b: 2, d: 4}
+ */
 
 var reject$1 = /*#__PURE__*/_curry2_1(function reject(pred, filterable) {
   return filter_1(_complement_1(pred), filterable);
@@ -21613,10 +25652,76 @@ function _toString(x, seen) {
 }
 var _toString_1 = _toString;
 
+/**
+ * Returns the string representation of the given value. `eval`'ing the output
+ * should result in a value equivalent to the input value. Many of the built-in
+ * `toString` methods do not satisfy this requirement.
+ *
+ * If the given value is an `[object Object]` with a `toString` method other
+ * than `Object.prototype.toString`, this method is invoked with no arguments
+ * to produce the return value. This means user-defined constructor functions
+ * can provide a suitable `toString` method. For example:
+ *
+ *     function Point(x, y) {
+ *       this.x = x;
+ *       this.y = y;
+ *     }
+ *
+ *     Point.prototype.toString = function() {
+ *       return 'new Point(' + this.x + ', ' + this.y + ')';
+ *     };
+ *
+ *     R.toString(new Point(1, 2)); //=> 'new Point(1, 2)'
+ *
+ * @func
+ * @memberOf R
+ * @since v0.14.0
+ * @category String
+ * @sig * -> String
+ * @param {*} val
+ * @return {String}
+ * @example
+ *
+ *      R.toString(42); //=> '42'
+ *      R.toString('abc'); //=> '"abc"'
+ *      R.toString([1, 2, 3]); //=> '[1, 2, 3]'
+ *      R.toString({foo: 1, bar: 2, baz: 3}); //=> '{"bar": 2, "baz": 3, "foo": 1}'
+ *      R.toString(new Date('2001-02-03T04:05:06Z')); //=> 'new Date("2001-02-03T04:05:06.000Z")'
+ */
+
 var toString$2 = /*#__PURE__*/_curry1_1(function toString(val) {
   return _toString_1(val, []);
 });
 var toString_1$1 = toString$2;
+
+/**
+ * Returns the result of concatenating the given lists or strings.
+ *
+ * Note: `R.concat` expects both arguments to be of the same type,
+ * unlike the native `Array.prototype.concat` method. It will throw
+ * an error if you `concat` an Array with a non-Array value.
+ *
+ * Dispatches to the `concat` method of the first argument, if present.
+ * Can also concatenate two members of a [fantasy-land
+ * compatible semigroup](https://github.com/fantasyland/fantasy-land#semigroup).
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category List
+ * @sig [a] -> [a] -> [a]
+ * @sig String -> String -> String
+ * @param {Array|String} firstList The first list
+ * @param {Array|String} secondList The second list
+ * @return {Array|String} A list consisting of the elements of `firstList` followed by the elements of
+ * `secondList`.
+ *
+ * @example
+ *
+ *      R.concat('ABC', 'DEF'); // 'ABCDEF'
+ *      R.concat([4, 5, 6], [1, 2, 3]); //=> [4, 5, 6, 1, 2, 3]
+ *      R.concat([], []); //=> []
+ */
 
 var concat$1 = /*#__PURE__*/_curry2_1(function concat(a, b) {
   if (_isArray(a)) {
@@ -21641,6 +25746,33 @@ var concat$1 = /*#__PURE__*/_curry2_1(function concat(a, b) {
 });
 var concat_1 = concat$1;
 
+/**
+ * Returns a function, `fn`, which encapsulates `if/else, if/else, ...` logic.
+ * `R.cond` takes a list of [predicate, transformer] pairs. All of the arguments
+ * to `fn` are applied to each of the predicates in turn until one returns a
+ * "truthy" value, at which point `fn` returns the result of applying its
+ * arguments to the corresponding transformer. If none of the predicates
+ * matches, `fn` returns undefined.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.6.0
+ * @category Logic
+ * @sig [[(*... -> Boolean),(*... -> *)]] -> (*... -> *)
+ * @param {Array} pairs A list of [predicate, transformer]
+ * @return {Function}
+ * @example
+ *
+ *      var fn = R.cond([
+ *        [R.equals(0),   R.always('water freezes at 0°C')],
+ *        [R.equals(100), R.always('water boils at 100°C')],
+ *        [R.T,           temp => 'nothing special happens at ' + temp + '°C']
+ *      ]);
+ *      fn(0); //=> 'water freezes at 0°C'
+ *      fn(50); //=> 'nothing special happens at 50°C'
+ *      fn(100); //=> 'water boils at 100°C'
+ */
+
 var cond$1 = /*#__PURE__*/_curry1_1(function cond(pairs) {
   var arity = reduce_1(max_1$2, 0, map_1(function (pair) {
     return pair[0].length;
@@ -21656,6 +25788,42 @@ var cond$1 = /*#__PURE__*/_curry1_1(function cond(pairs) {
   });
 });
 var cond_1 = cond$1;
+
+/**
+ * Wraps a constructor function inside a curried function that can be called
+ * with the same arguments and returns the same type. The arity of the function
+ * returned is specified to allow using variadic constructor functions.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.4.0
+ * @category Function
+ * @sig Number -> (* -> {*}) -> (* -> {*})
+ * @param {Number} n The arity of the constructor function.
+ * @param {Function} Fn The constructor function to wrap.
+ * @return {Function} A wrapped, curried constructor function.
+ * @example
+ *
+ *      // Variadic Constructor function
+ *      function Salad() {
+ *        this.ingredients = arguments;
+ *      }
+ *
+ *      Salad.prototype.recipe = function() {
+ *        var instructions = R.map(ingredient => 'Add a dollop of ' + ingredient, this.ingredients);
+ *        return R.join('\n', instructions);
+ *      };
+ *
+ *      var ThreeLayerSalad = R.constructN(3, Salad);
+ *
+ *      // Notice we no longer need the 'new' keyword, and the constructor is curried for 3 arguments.
+ *      var salad = ThreeLayerSalad('Mayonnaise')('Potato Chips')('Ketchup');
+ *
+ *      console.log(salad.recipe());
+ *      // Add a dollop of Mayonnaise
+ *      // Add a dollop of Potato Chips
+ *      // Add a dollop of Ketchup
+ */
 
 var constructN$1 = /*#__PURE__*/_curry2_1(function constructN(n, Fn) {
   if (n > 10) {
@@ -21693,13 +25861,95 @@ var constructN$1 = /*#__PURE__*/_curry2_1(function constructN(n, Fn) {
 });
 var constructN_1 = constructN$1;
 
+/**
+ * Wraps a constructor function inside a curried function that can be called
+ * with the same arguments and returns the same type.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Function
+ * @sig (* -> {*}) -> (* -> {*})
+ * @param {Function} fn The constructor function to wrap.
+ * @return {Function} A wrapped, curried constructor function.
+ * @see R.invoker
+ * @example
+ *
+ *      // Constructor function
+ *      function Animal(kind) {
+ *        this.kind = kind;
+ *      };
+ *      Animal.prototype.sighting = function() {
+ *        return "It's a " + this.kind + "!";
+ *      }
+ *
+ *      var AnimalConstructor = R.construct(Animal)
+ *
+ *      // Notice we no longer need the 'new' keyword:
+ *      AnimalConstructor('Pig'); //=> {"kind": "Pig", "sighting": function (){...}};
+ *
+ *      var animalTypes = ["Lion", "Tiger", "Bear"];
+ *      var animalSighting = R.invoker(0, 'sighting');
+ *      var sightNewAnimal = R.compose(animalSighting, AnimalConstructor);
+ *      R.map(sightNewAnimal, animalTypes); //=> ["It's a Lion!", "It's a Tiger!", "It's a Bear!"]
+ */
+
 var construct$1 = /*#__PURE__*/_curry1_1(function construct(Fn) {
   return constructN_1(Fn.length, Fn);
 });
 var construct_1 = construct$1;
 
+/**
+ * Returns `true` if the specified value is equal, in [`R.equals`](#equals)
+ * terms, to at least one element of the given list; `false` otherwise.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category List
+ * @sig a -> [a] -> Boolean
+ * @param {Object} a The item to compare against.
+ * @param {Array} list The array to consider.
+ * @return {Boolean} `true` if an equivalent item is in the list, `false` otherwise.
+ * @see R.any
+ * @example
+ *
+ *      R.contains(3, [1, 2, 3]); //=> true
+ *      R.contains(4, [1, 2, 3]); //=> false
+ *      R.contains({ name: 'Fred' }, [{ name: 'Fred' }]); //=> true
+ *      R.contains([42], [[42]]); //=> true
+ */
+
 var contains$2 = /*#__PURE__*/_curry2_1(_contains_1);
 var contains_1 = contains$2;
+
+/**
+ * Accepts a converging function and a list of branching functions and returns
+ * a new function. When invoked, this new function is applied to some
+ * arguments, each branching function is applied to those same arguments. The
+ * results of each branching function are passed as arguments to the converging
+ * function to produce the return value.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.4.2
+ * @category Function
+ * @sig ((x1, x2, ...) -> z) -> [((a, b, ...) -> x1), ((a, b, ...) -> x2), ...] -> (a -> b -> ... -> z)
+ * @param {Function} after A function. `after` will be invoked with the return values of
+ *        `fn1` and `fn2` as its arguments.
+ * @param {Array} functions A list of functions.
+ * @return {Function} A new function.
+ * @see R.useWith
+ * @example
+ *
+ *      var average = R.converge(R.divide, [R.sum, R.length])
+ *      average([1, 2, 3, 4, 5, 6, 7]) //=> 4
+ *
+ *      var strangeConcat = R.converge(R.concat, [R.toUpper, R.toLower])
+ *      strangeConcat("Yodel") //=> "YODELyodel"
+ *
+ * @symb R.converge(f, [g, h])(a, b) = f(g(a, b), h(a, b))
+ */
 
 var converge$1 = /*#__PURE__*/_curry2_1(function converge(after, fns) {
   return curryN_1(reduce_1(max_1$2, 0, pluck_1('length', fns)), function () {
@@ -21751,6 +26001,51 @@ var _xreduceBy = /*#__PURE__*/_curryN_1(4, [], function _xreduceBy(valueFn, valu
 });
 var _xreduceBy_1 = _xreduceBy;
 
+/**
+ * Groups the elements of the list according to the result of calling
+ * the String-returning function `keyFn` on each element and reduces the elements
+ * of each group to a single value via the reducer function `valueFn`.
+ *
+ * This function is basically a more general [`groupBy`](#groupBy) function.
+ *
+ * Acts as a transducer if a transformer is given in list position.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.20.0
+ * @category List
+ * @sig ((a, b) -> a) -> a -> (b -> String) -> [b] -> {String: a}
+ * @param {Function} valueFn The function that reduces the elements of each group to a single
+ *        value. Receives two values, accumulator for a particular group and the current element.
+ * @param {*} acc The (initial) accumulator value for each group.
+ * @param {Function} keyFn The function that maps the list's element into a key.
+ * @param {Array} list The array to group.
+ * @return {Object} An object with the output of `keyFn` for keys, mapped to the output of
+ *         `valueFn` for elements which produced that key when passed to `keyFn`.
+ * @see R.groupBy, R.reduce
+ * @example
+ *
+ *      var reduceToNamesBy = R.reduceBy((acc, student) => acc.concat(student.name), []);
+ *      var namesByGrade = reduceToNamesBy(function(student) {
+ *        var score = student.score;
+ *        return score < 65 ? 'F' :
+ *               score < 70 ? 'D' :
+ *               score < 80 ? 'C' :
+ *               score < 90 ? 'B' : 'A';
+ *      });
+ *      var students = [{name: 'Lucy', score: 92},
+ *                      {name: 'Drew', score: 85},
+ *                      // ...
+ *                      {name: 'Bart', score: 62}];
+ *      namesByGrade(students);
+ *      // {
+ *      //   'A': ['Lucy'],
+ *      //   'B': ['Drew']
+ *      //   // ...,
+ *      //   'F': ['Bart']
+ *      // }
+ */
+
 var reduceBy$1 = /*#__PURE__*/_curryN_1(4, [], /*#__PURE__*/_dispatchable_1([], _xreduceBy_1, function reduceBy(valueFn, valueAcc, keyFn, list) {
   return _reduce_1(function (acc, elt) {
     var key = keyFn(elt);
@@ -21760,18 +26055,105 @@ var reduceBy$1 = /*#__PURE__*/_curryN_1(4, [], /*#__PURE__*/_dispatchable_1([], 
 }));
 var reduceBy_1 = reduceBy$1;
 
+/**
+ * Counts the elements of a list according to how many match each value of a
+ * key generated by the supplied function. Returns an object mapping the keys
+ * produced by `fn` to the number of occurrences in the list. Note that all
+ * keys are coerced to strings because of how JavaScript objects work.
+ *
+ * Acts as a transducer if a transformer is given in list position.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Relation
+ * @sig (a -> String) -> [a] -> {*}
+ * @param {Function} fn The function used to map values to keys.
+ * @param {Array} list The list to count elements from.
+ * @return {Object} An object mapping keys to number of occurrences in the list.
+ * @example
+ *
+ *      var numbers = [1.0, 1.1, 1.2, 2.0, 3.0, 2.2];
+ *      R.countBy(Math.floor)(numbers);    //=> {'1': 3, '2': 2, '3': 1}
+ *
+ *      var letters = ['a', 'b', 'A', 'a', 'B', 'c'];
+ *      R.countBy(R.toLower)(letters);   //=> {'a': 3, 'b': 2, 'c': 1}
+ */
+
 var countBy$1 = /*#__PURE__*/reduceBy_1(function (acc, elem) {
   return acc + 1;
 }, 0);
 var countBy_1 = countBy$1;
 
+/**
+ * Decrements its argument.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.9.0
+ * @category Math
+ * @sig Number -> Number
+ * @param {Number} n
+ * @return {Number} n - 1
+ * @see R.inc
+ * @example
+ *
+ *      R.dec(42); //=> 41
+ */
+
 var dec$1 = /*#__PURE__*/add_1(-1);
 var dec_1 = dec$1;
+
+/**
+ * Returns the second argument if it is not `null`, `undefined` or `NaN`;
+ * otherwise the first argument is returned.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.10.0
+ * @category Logic
+ * @sig a -> b -> a | b
+ * @param {a} default The default value.
+ * @param {b} val `val` will be returned instead of `default` unless `val` is `null`, `undefined` or `NaN`.
+ * @return {*} The second value if it is not `null`, `undefined` or `NaN`, otherwise the default value
+ * @example
+ *
+ *      var defaultTo42 = R.defaultTo(42);
+ *
+ *      defaultTo42(null);  //=> 42
+ *      defaultTo42(undefined);  //=> 42
+ *      defaultTo42('Ramda');  //=> 'Ramda'
+ *      // parseInt('string') results in NaN
+ *      defaultTo42(parseInt('string')); //=> 42
+ */
 
 var defaultTo$1 = /*#__PURE__*/_curry2_1(function defaultTo(d, v) {
   return v == null || v !== v ? d : v;
 });
 var defaultTo_1 = defaultTo$1;
+
+/**
+ * Makes a descending comparator function out of a function that returns a value
+ * that can be compared with `<` and `>`.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.23.0
+ * @category Function
+ * @sig Ord b => (a -> b) -> a -> a -> Number
+ * @param {Function} fn A function of arity one that returns a value that can be compared
+ * @param {*} a The first item to be compared.
+ * @param {*} b The second item to be compared.
+ * @return {Number} `-1` if fn(a) > fn(b), `1` if fn(b) > fn(a), otherwise `0`
+ * @see R.ascend
+ * @example
+ *
+ *      var byAge = R.descend(R.prop('age'));
+ *      var people = [
+ *        // ...
+ *      ];
+ *      var peopleByOldestFirst = R.sort(byAge, people);
+ */
 
 var descend$1 = /*#__PURE__*/_curry3_1(function descend(fn, a, b) {
   var aa = fn(a);
@@ -21779,6 +26161,27 @@ var descend$1 = /*#__PURE__*/_curry3_1(function descend(fn, a, b) {
   return aa > bb ? -1 : aa < bb ? 1 : 0;
 });
 var descend_1 = descend$1;
+
+/**
+ * Finds the set (i.e. no duplicates) of all elements in the first list not
+ * contained in the second list. Objects and Arrays are compared in terms of
+ * value equality, not reference equality.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Relation
+ * @sig [*] -> [*] -> [*]
+ * @param {Array} list1 The first list.
+ * @param {Array} list2 The second list.
+ * @return {Array} The elements in `list1` that are not in `list2`.
+ * @see R.differenceWith, R.symmetricDifference, R.symmetricDifferenceWith, R.without
+ * @example
+ *
+ *      R.difference([1,2,3,4], [7,6,5,4,3]); //=> [1,2]
+ *      R.difference([7,6,5,4,3], [1,2,3,4]); //=> [7,6,5]
+ *      R.difference([{a: 1}, {b: 2}], [{a: 1}, {c: 3}]) //=> [{b: 2}]
+ */
 
 var difference$1 = /*#__PURE__*/_curry2_1(function difference(first, second) {
   var out = [];
@@ -21794,6 +26197,29 @@ var difference$1 = /*#__PURE__*/_curry2_1(function difference(first, second) {
 });
 var difference_1 = difference$1;
 
+/**
+ * Finds the set (i.e. no duplicates) of all elements in the first list not
+ * contained in the second list. Duplication is determined according to the
+ * value returned by applying the supplied predicate to two list elements.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Relation
+ * @sig ((a, a) -> Boolean) -> [a] -> [a] -> [a]
+ * @param {Function} pred A predicate used to test whether two items are equal.
+ * @param {Array} list1 The first list.
+ * @param {Array} list2 The second list.
+ * @return {Array} The elements in `list1` that are not in `list2`.
+ * @see R.difference, R.symmetricDifference, R.symmetricDifferenceWith
+ * @example
+ *
+ *      var cmp = (x, y) => x.a === y.a;
+ *      var l1 = [{a: 1}, {a: 2}, {a: 3}];
+ *      var l2 = [{a: 3}, {a: 4}];
+ *      R.differenceWith(cmp, l1, l2); //=> [{a: 1}, {a: 2}]
+ */
+
 var differenceWith$1 = /*#__PURE__*/_curry3_1(function differenceWith(pred, first, second) {
   var out = [];
   var idx = 0;
@@ -21808,6 +26234,23 @@ var differenceWith$1 = /*#__PURE__*/_curry3_1(function differenceWith(pred, firs
 });
 var differenceWith_1 = differenceWith$1;
 
+/**
+ * Returns a new object that does not contain a `prop` property.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.10.0
+ * @category Object
+ * @sig String -> {k: v} -> {k: v}
+ * @param {String} prop The name of the property to dissociate
+ * @param {Object} obj The object to clone
+ * @return {Object} A new object equivalent to the original but without the specified property
+ * @see R.assoc
+ * @example
+ *
+ *      R.dissoc('b', {a: 1, b: 2, c: 3}); //=> {a: 1, c: 3}
+ */
+
 var dissoc$1 = /*#__PURE__*/_curry2_1(function dissoc(prop, obj) {
   var result = {};
   for (var p in obj) {
@@ -21818,6 +26261,26 @@ var dissoc$1 = /*#__PURE__*/_curry2_1(function dissoc(prop, obj) {
 });
 var dissoc_1 = dissoc$1;
 
+/**
+ * Removes the sub-list of `list` starting at index `start` and containing
+ * `count` elements. _Note that this is not destructive_: it returns a copy of
+ * the list with the changes.
+ * <small>No lists have been harmed in the application of this function.</small>
+ *
+ * @func
+ * @memberOf R
+ * @since v0.2.2
+ * @category List
+ * @sig Number -> Number -> [a] -> [a]
+ * @param {Number} start The position to start removing elements
+ * @param {Number} count The number of elements to remove
+ * @param {Array} list The list to remove from
+ * @return {Array} A new Array with `count` elements from `start` removed.
+ * @example
+ *
+ *      R.remove(2, 3, [1,2,3,4,5,6,7,8]); //=> [1,2,6,7,8]
+ */
+
 var remove$1 = /*#__PURE__*/_curry3_1(function remove(start, count, list) {
   var result = Array.prototype.slice.call(list, 0);
   result.splice(start, count);
@@ -21825,10 +26288,53 @@ var remove$1 = /*#__PURE__*/_curry3_1(function remove(start, count, list) {
 });
 var remove_1 = remove$1;
 
+/**
+ * Returns a new copy of the array with the element at the provided index
+ * replaced with the given value.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.14.0
+ * @category List
+ * @sig Number -> a -> [a] -> [a]
+ * @param {Number} idx The index to update.
+ * @param {*} x The value to exist at the given index of the returned array.
+ * @param {Array|Arguments} list The source array-like object to be updated.
+ * @return {Array} A copy of `list` with the value at index `idx` replaced with `x`.
+ * @see R.adjust
+ * @example
+ *
+ *      R.update(1, 11, [0, 1, 2]);     //=> [0, 11, 2]
+ *      R.update(1)(11)([0, 1, 2]);     //=> [0, 11, 2]
+ * @symb R.update(-1, a, [b, c]) = [b, a]
+ * @symb R.update(0, a, [b, c]) = [a, c]
+ * @symb R.update(1, a, [b, c]) = [b, a]
+ */
+
 var update$1 = /*#__PURE__*/_curry3_1(function update(idx, x, list) {
   return adjust_1(always_1(x), idx, list);
 });
 var update_1 = update$1;
+
+/**
+ * Makes a shallow clone of an object, omitting the property at the given path.
+ * Note that this copies and flattens prototype properties onto the new object
+ * as well. All non-primitive properties are copied by reference.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.11.0
+ * @category Object
+ * @typedefn Idx = String | Int
+ * @sig [Idx] -> {k: v} -> {k: v}
+ * @param {Array} path The path to the value to omit
+ * @param {Object} obj The object to clone
+ * @return {Object} A new object without the property at path
+ * @see R.assocPath
+ * @example
+ *
+ *      R.dissocPath(['a', 'b', 'c'], {a: {b: {c: 42}}}); //=> {a: {b: {}}}
+ */
 
 var dissocPath$1 = /*#__PURE__*/_curry2_1(function dissocPath(path, obj) {
   switch (path.length) {
@@ -21849,6 +26355,29 @@ var dissocPath$1 = /*#__PURE__*/_curry2_1(function dissocPath(path, obj) {
   }
 });
 var dissocPath_1 = dissocPath$1;
+
+/**
+ * Divides two numbers. Equivalent to `a / b`.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Math
+ * @sig Number -> Number -> Number
+ * @param {Number} a The first value.
+ * @param {Number} b The second value.
+ * @return {Number} The result of `a / b`.
+ * @see R.multiply
+ * @example
+ *
+ *      R.divide(71, 100); //=> 0.71
+ *
+ *      var half = R.divide(R.__, 2);
+ *      half(42); //=> 21
+ *
+ *      var reciprocal = R.divide(1);
+ *      reciprocal(4);   //=> 0.25
+ */
 
 var divide$1 = /*#__PURE__*/_curry2_1(function divide(a, b) {
   return a / b;
@@ -21879,6 +26408,31 @@ var _xdrop = /*#__PURE__*/_curry2_1(function _xdrop(n, xf) {
 });
 var _xdrop_1 = _xdrop;
 
+/**
+ * Returns all but the first `n` elements of the given list, string, or
+ * transducer/transformer (or object with a `drop` method).
+ *
+ * Dispatches to the `drop` method of the second argument, if present.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category List
+ * @sig Number -> [a] -> [a]
+ * @sig Number -> String -> String
+ * @param {Number} n
+ * @param {*} list
+ * @return {*} A copy of list without the first `n` elements
+ * @see R.take, R.transduce, R.dropLast, R.dropWhile
+ * @example
+ *
+ *      R.drop(1, ['foo', 'bar', 'baz']); //=> ['bar', 'baz']
+ *      R.drop(2, ['foo', 'bar', 'baz']); //=> ['baz']
+ *      R.drop(3, ['foo', 'bar', 'baz']); //=> []
+ *      R.drop(4, ['foo', 'bar', 'baz']); //=> []
+ *      R.drop(3, 'ramda');               //=> 'da'
+ */
+
 var drop$1 = /*#__PURE__*/_curry2_1( /*#__PURE__*/_dispatchable_1(['drop'], _xdrop_1, function drop(n, xs) {
   return slice_1(Math.max(0, n), Infinity, xs);
 }));
@@ -21906,6 +26460,50 @@ var _xtake = /*#__PURE__*/_curry2_1(function _xtake(n, xf) {
   return new XTake(n, xf);
 });
 var _xtake_1 = _xtake;
+
+/**
+ * Returns the first `n` elements of the given list, string, or
+ * transducer/transformer (or object with a `take` method).
+ *
+ * Dispatches to the `take` method of the second argument, if present.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category List
+ * @sig Number -> [a] -> [a]
+ * @sig Number -> String -> String
+ * @param {Number} n
+ * @param {*} list
+ * @return {*}
+ * @see R.drop
+ * @example
+ *
+ *      R.take(1, ['foo', 'bar', 'baz']); //=> ['foo']
+ *      R.take(2, ['foo', 'bar', 'baz']); //=> ['foo', 'bar']
+ *      R.take(3, ['foo', 'bar', 'baz']); //=> ['foo', 'bar', 'baz']
+ *      R.take(4, ['foo', 'bar', 'baz']); //=> ['foo', 'bar', 'baz']
+ *      R.take(3, 'ramda');               //=> 'ram'
+ *
+ *      var personnel = [
+ *        'Dave Brubeck',
+ *        'Paul Desmond',
+ *        'Eugene Wright',
+ *        'Joe Morello',
+ *        'Gerry Mulligan',
+ *        'Bob Bates',
+ *        'Joe Dodge',
+ *        'Ron Crotty'
+ *      ];
+ *
+ *      var takeFive = R.take(5);
+ *      takeFive(personnel);
+ *      //=> ['Dave Brubeck', 'Paul Desmond', 'Eugene Wright', 'Joe Morello', 'Gerry Mulligan']
+ * @symb R.take(-1, [a, b]) = [a, b]
+ * @symb R.take(0, [a, b]) = []
+ * @symb R.take(1, [a, b]) = [a]
+ * @symb R.take(2, [a, b]) = [a, b]
+ */
 
 var take$1 = /*#__PURE__*/_curry2_1( /*#__PURE__*/_dispatchable_1(['take'], _xtake_1, function take(n, xs) {
   return slice_1(0, n < 0 ? Infinity : n, xs);
@@ -21954,6 +26552,28 @@ var _xdropLast = /*#__PURE__*/_curry2_1(function _xdropLast(n, xf) {
 });
 var _xdropLast_1 = _xdropLast;
 
+/**
+ * Returns a list containing all but the last `n` elements of the given `list`.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.16.0
+ * @category List
+ * @sig Number -> [a] -> [a]
+ * @sig Number -> String -> String
+ * @param {Number} n The number of elements of `list` to skip.
+ * @param {Array} list The list of elements to consider.
+ * @return {Array} A copy of the list with only the first `list.length - n` elements
+ * @see R.takeLast, R.drop, R.dropWhile, R.dropLastWhile
+ * @example
+ *
+ *      R.dropLast(1, ['foo', 'bar', 'baz']); //=> ['foo', 'bar']
+ *      R.dropLast(2, ['foo', 'bar', 'baz']); //=> ['foo']
+ *      R.dropLast(3, ['foo', 'bar', 'baz']); //=> []
+ *      R.dropLast(4, ['foo', 'bar', 'baz']); //=> []
+ *      R.dropLast(3, 'ramda');               //=> 'ra'
+ */
+
 var dropLast$1 = /*#__PURE__*/_curry2_1( /*#__PURE__*/_dispatchable_1([], _xdropLast_1, _dropLast));
 var dropLast_1 = dropLast$1;
 
@@ -21999,6 +26619,32 @@ var _xdropLastWhile = /*#__PURE__*/_curry2_1(function _xdropLastWhile(fn, xf) {
 });
 var _xdropLastWhile_1 = _xdropLastWhile;
 
+/**
+ * Returns a new list excluding all the tailing elements of a given list which
+ * satisfy the supplied predicate function. It passes each value from the right
+ * to the supplied predicate function, skipping elements until the predicate
+ * function returns a `falsy` value. The predicate function is applied to one argument:
+ * *(value)*.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.16.0
+ * @category List
+ * @sig (a -> Boolean) -> [a] -> [a]
+ * @sig (a -> Boolean) -> String -> String
+ * @param {Function} predicate The function to be called on each element
+ * @param {Array} xs The collection to iterate over.
+ * @return {Array} A new array without any trailing elements that return `falsy` values from the `predicate`.
+ * @see R.takeLastWhile, R.addIndex, R.drop, R.dropWhile
+ * @example
+ *
+ *      var lteThree = x => x <= 3;
+ *
+ *      R.dropLastWhile(lteThree, [1, 2, 3, 4, 3, 2, 1]); //=> [1, 2, 3, 4]
+ *
+ *      R.dropLastWhile(x => x !== 'd' , 'Ramda'); //=> 'Ramd'
+ */
+
 var dropLastWhile$1 = /*#__PURE__*/_curry2_1( /*#__PURE__*/_dispatchable_1([], _xdropLastWhile_1, _dropLastWhile));
 var dropLastWhile_1 = dropLastWhile$1;
 
@@ -22032,14 +26678,84 @@ var _xdropRepeatsWith = /*#__PURE__*/_curry2_1(function _xdropRepeatsWith(pred, 
 });
 var _xdropRepeatsWith_1 = _xdropRepeatsWith;
 
+/**
+ * Returns the nth element of the given list or string. If n is negative the
+ * element at index length + n is returned.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category List
+ * @sig Number -> [a] -> a | Undefined
+ * @sig Number -> String -> String
+ * @param {Number} offset
+ * @param {*} list
+ * @return {*}
+ * @example
+ *
+ *      var list = ['foo', 'bar', 'baz', 'quux'];
+ *      R.nth(1, list); //=> 'bar'
+ *      R.nth(-1, list); //=> 'quux'
+ *      R.nth(-99, list); //=> undefined
+ *
+ *      R.nth(2, 'abc'); //=> 'c'
+ *      R.nth(3, 'abc'); //=> ''
+ * @symb R.nth(-1, [a, b, c]) = c
+ * @symb R.nth(0, [a, b, c]) = a
+ * @symb R.nth(1, [a, b, c]) = b
+ */
+
 var nth$1 = /*#__PURE__*/_curry2_1(function nth(offset, list) {
   var idx = offset < 0 ? list.length + offset : offset;
   return _isString_1(list) ? list.charAt(idx) : list[idx];
 });
 var nth_1 = nth$1;
 
+/**
+ * Returns the last element of the given list or string.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.4
+ * @category List
+ * @sig [a] -> a | Undefined
+ * @sig String -> String
+ * @param {*} list
+ * @return {*}
+ * @see R.init, R.head, R.tail
+ * @example
+ *
+ *      R.last(['fi', 'fo', 'fum']); //=> 'fum'
+ *      R.last([]); //=> undefined
+ *
+ *      R.last('abc'); //=> 'c'
+ *      R.last(''); //=> ''
+ */
+
 var last$1 = /*#__PURE__*/nth_1(-1);
 var last_1 = last$1;
+
+/**
+ * Returns a new list without any consecutively repeating elements. Equality is
+ * determined by applying the supplied predicate to each pair of consecutive elements. The
+ * first element in a series of equal elements will be preserved.
+ *
+ * Acts as a transducer if a transformer is given in list position.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.14.0
+ * @category List
+ * @sig ((a, a) -> Boolean) -> [a] -> [a]
+ * @param {Function} pred A predicate used to test whether two items are equal.
+ * @param {Array} list The array to consider.
+ * @return {Array} `list` without repeating elements.
+ * @see R.transduce
+ * @example
+ *
+ *      var l = [1, -1, 1, 3, 4, -4, -4, -5, 5, 3, 3];
+ *      R.dropRepeatsWith(R.eqBy(Math.abs), l); //=> [1, 3, 4, -5, 3]
+ */
 
 var dropRepeatsWith$1 = /*#__PURE__*/_curry2_1( /*#__PURE__*/_dispatchable_1([], _xdropRepeatsWith_1, function dropRepeatsWith(pred, list) {
   var result = [];
@@ -22057,6 +26773,25 @@ var dropRepeatsWith$1 = /*#__PURE__*/_curry2_1( /*#__PURE__*/_dispatchable_1([],
   return result;
 }));
 var dropRepeatsWith_1 = dropRepeatsWith$1;
+
+/**
+ * Returns a new list without any consecutively repeating elements.
+ * [`R.equals`](#equals) is used to determine equality.
+ *
+ * Acts as a transducer if a transformer is given in list position.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.14.0
+ * @category List
+ * @sig [a] -> [a]
+ * @param {Array} list The array to consider.
+ * @return {Array} `list` without repeating elements.
+ * @see R.transduce
+ * @example
+ *
+ *     R.dropRepeats([1, 1, 1, 2, 3, 4, 4, 2, 2]); //=> [1, 2, 3, 4, 2]
+ */
 
 var dropRepeats$1 = /*#__PURE__*/_curry1_1( /*#__PURE__*/_dispatchable_1([], /*#__PURE__*/_xdropRepeatsWith_1(equals_1), /*#__PURE__*/dropRepeatsWith_1(equals_1)));
 var dropRepeats_1 = dropRepeats$1;
@@ -22087,6 +26822,35 @@ var _xdropWhile = /*#__PURE__*/_curry2_1(function _xdropWhile(f, xf) {
 });
 var _xdropWhile_1 = _xdropWhile;
 
+/**
+ * Returns a new list excluding the leading elements of a given list which
+ * satisfy the supplied predicate function. It passes each value to the supplied
+ * predicate function, skipping elements while the predicate function returns
+ * `true`. The predicate function is applied to one argument: *(value)*.
+ *
+ * Dispatches to the `dropWhile` method of the second argument, if present.
+ *
+ * Acts as a transducer if a transformer is given in list position.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.9.0
+ * @category List
+ * @sig (a -> Boolean) -> [a] -> [a]
+ * @sig (a -> Boolean) -> String -> String
+ * @param {Function} fn The function called per iteration.
+ * @param {Array} xs The collection to iterate over.
+ * @return {Array} A new array.
+ * @see R.takeWhile, R.transduce, R.addIndex
+ * @example
+ *
+ *      var lteTwo = x => x <= 2;
+ *
+ *      R.dropWhile(lteTwo, [1, 2, 3, 4, 3, 2, 1]); //=> [3, 4, 3, 2, 1]
+ *
+ *      R.dropWhile(x => x !== 'd' , 'Ramda'); //=> 'da'
+ */
+
 var dropWhile$1 = /*#__PURE__*/_curry2_1( /*#__PURE__*/_dispatchable_1(['dropWhile'], _xdropWhile_1, function dropWhile(pred, xs) {
   var idx = 0;
   var len = xs.length;
@@ -22097,10 +26861,59 @@ var dropWhile$1 = /*#__PURE__*/_curry2_1( /*#__PURE__*/_dispatchable_1(['dropWhi
 }));
 var dropWhile_1 = dropWhile$1;
 
+/**
+ * Returns `true` if one or both of its arguments are `true`. Returns `false`
+ * if both arguments are `false`.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Logic
+ * @sig a -> b -> a | b
+ * @param {Any} a
+ * @param {Any} b
+ * @return {Any} the first argument if truthy, otherwise the second argument.
+ * @see R.either
+ * @example
+ *
+ *      R.or(true, true); //=> true
+ *      R.or(true, false); //=> true
+ *      R.or(false, true); //=> true
+ *      R.or(false, false); //=> false
+ */
+
 var or$1 = /*#__PURE__*/_curry2_1(function or(a, b) {
   return a || b;
 });
 var or_1 = or$1;
+
+/**
+ * A function wrapping calls to the two functions in an `||` operation,
+ * returning the result of the first function if it is truth-y and the result
+ * of the second function otherwise. Note that this is short-circuited,
+ * meaning that the second function will not be invoked if the first returns a
+ * truth-y value.
+ *
+ * In addition to functions, `R.either` also accepts any fantasy-land compatible
+ * applicative functor.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.12.0
+ * @category Logic
+ * @sig (*... -> Boolean) -> (*... -> Boolean) -> (*... -> Boolean)
+ * @param {Function} f a predicate
+ * @param {Function} g another predicate
+ * @return {Function} a function that applies its arguments to `f` and `g` and `||`s their outputs together.
+ * @see R.or
+ * @example
+ *
+ *      var gt10 = x => x > 10;
+ *      var even = x => x % 2 === 0;
+ *      var f = R.either(gt10, even);
+ *      f(101); //=> true
+ *      f(8); //=> true
+ */
 
 var either$1 = /*#__PURE__*/_curry2_1(function either(f, g) {
   return _isFunction_1(f) ? function _either() {
@@ -22108,6 +26921,30 @@ var either$1 = /*#__PURE__*/_curry2_1(function either(f, g) {
   } : lift_1(or_1)(f, g);
 });
 var either_1 = either$1;
+
+/**
+ * Returns the empty value of its argument's type. Ramda defines the empty
+ * value of Array (`[]`), Object (`{}`), String (`''`), and Arguments. Other
+ * types are supported if they define `<Type>.empty`,
+ * `<Type>.prototype.empty` or implement the
+ * [FantasyLand Monoid spec](https://github.com/fantasyland/fantasy-land#monoid).
+ *
+ * Dispatches to the `empty` method of the first argument, if present.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.3.0
+ * @category Function
+ * @sig a -> a
+ * @param {*} x
+ * @return {*}
+ * @example
+ *
+ *      R.empty(Just(42));      //=> Nothing()
+ *      R.empty([1, 2, 3]);     //=> []
+ *      R.empty('unicorns');    //=> ''
+ *      R.empty({x: 1, y: 2});  //=> {}
+ */
 
 var empty$1 = /*#__PURE__*/_curry1_1(function empty(x) {
   return x != null && typeof x['fantasy-land/empty'] === 'function' ? x['fantasy-land/empty']() : x != null && x.constructor != null && typeof x.constructor['fantasy-land/empty'] === 'function' ? x.constructor['fantasy-land/empty']() : x != null && typeof x.empty === 'function' ? x.empty() : x != null && x.constructor != null && typeof x.constructor.empty === 'function' ? x.constructor.empty() : _isArray(x) ? [] : _isString_1(x) ? '' : _isObject_1(x) ? {} : _isArguments_1(x) ? function () {
@@ -22118,25 +26955,136 @@ var empty$1 = /*#__PURE__*/_curry1_1(function empty(x) {
 });
 var empty_1 = empty$1;
 
+/**
+ * Returns a new list containing the last `n` elements of the given list.
+ * If `n > list.length`, returns a list of `list.length` elements.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.16.0
+ * @category List
+ * @sig Number -> [a] -> [a]
+ * @sig Number -> String -> String
+ * @param {Number} n The number of elements to return.
+ * @param {Array} xs The collection to consider.
+ * @return {Array}
+ * @see R.dropLast
+ * @example
+ *
+ *      R.takeLast(1, ['foo', 'bar', 'baz']); //=> ['baz']
+ *      R.takeLast(2, ['foo', 'bar', 'baz']); //=> ['bar', 'baz']
+ *      R.takeLast(3, ['foo', 'bar', 'baz']); //=> ['foo', 'bar', 'baz']
+ *      R.takeLast(4, ['foo', 'bar', 'baz']); //=> ['foo', 'bar', 'baz']
+ *      R.takeLast(3, 'ramda');               //=> 'mda'
+ */
+
 var takeLast$1 = /*#__PURE__*/_curry2_1(function takeLast(n, xs) {
   return drop_1(n >= 0 ? xs.length - n : 0, xs);
 });
 var takeLast_1 = takeLast$1;
+
+/**
+ * Checks if a list ends with the provided values
+ *
+ * @func
+ * @memberOf R
+ * @since v0.24.0
+ * @category List
+ * @sig [a] -> Boolean
+ * @sig String -> Boolean
+ * @param {*} suffix
+ * @param {*} list
+ * @return {Boolean}
+ * @example
+ *
+ *      R.endsWith('c', 'abc')                //=> true
+ *      R.endsWith('b', 'abc')                //=> false
+ *      R.endsWith(['c'], ['a', 'b', 'c'])    //=> true
+ *      R.endsWith(['b'], ['a', 'b', 'c'])    //=> false
+ */
 
 var endsWith$1 = /*#__PURE__*/_curry2_1(function (suffix, list) {
   return equals_1(takeLast_1(suffix.length, list), suffix);
 });
 var endsWith_1 = endsWith$1;
 
+/**
+ * Takes a function and two values in its domain and returns `true` if the
+ * values map to the same value in the codomain; `false` otherwise.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.18.0
+ * @category Relation
+ * @sig (a -> b) -> a -> a -> Boolean
+ * @param {Function} f
+ * @param {*} x
+ * @param {*} y
+ * @return {Boolean}
+ * @example
+ *
+ *      R.eqBy(Math.abs, 5, -5); //=> true
+ */
+
 var eqBy$1 = /*#__PURE__*/_curry3_1(function eqBy(f, x, y) {
   return equals_1(f(x), f(y));
 });
 var eqBy_1 = eqBy$1;
 
+/**
+ * Reports whether two objects have the same value, in [`R.equals`](#equals)
+ * terms, for the specified property. Useful as a curried predicate.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Object
+ * @sig k -> {k: v} -> {k: v} -> Boolean
+ * @param {String} prop The name of the property to compare
+ * @param {Object} obj1
+ * @param {Object} obj2
+ * @return {Boolean}
+ *
+ * @example
+ *
+ *      var o1 = { a: 1, b: 2, c: 3, d: 4 };
+ *      var o2 = { a: 10, b: 20, c: 3, d: 40 };
+ *      R.eqProps('a', o1, o2); //=> false
+ *      R.eqProps('c', o1, o2); //=> true
+ */
+
 var eqProps$1 = /*#__PURE__*/_curry3_1(function eqProps(prop, obj1, obj2) {
   return equals_1(obj1[prop], obj2[prop]);
 });
 var eqProps_1 = eqProps$1;
+
+/**
+ * Creates a new object by recursively evolving a shallow copy of `object`,
+ * according to the `transformation` functions. All non-primitive properties
+ * are copied by reference.
+ *
+ * A `transformation` function will not be invoked if its corresponding key
+ * does not exist in the evolved object.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.9.0
+ * @category Object
+ * @sig {k: (v -> v)} -> {k: v} -> {k: v}
+ * @param {Object} transformations The object specifying transformation functions to apply
+ *        to the object.
+ * @param {Object} object The object to be transformed.
+ * @return {Object} The transformed object.
+ * @example
+ *
+ *      var tomato  = {firstName: '  Tomato ', data: {elapsed: 100, remaining: 1400}, id:123};
+ *      var transformations = {
+ *        firstName: R.trim,
+ *        lastName: R.trim, // Will not get invoked.
+ *        data: {elapsed: R.add(1), remaining: R.add(-1)}
+ *      };
+ *      R.evolve(transformations, tomato); //=> {firstName: 'Tomato', data: {elapsed: 101, remaining: 1399}, id:123}
+ */
 
 var evolve$1 = /*#__PURE__*/_curry2_1(function evolve(transformations, object) {
   var result = {};
@@ -22179,6 +27127,31 @@ var _xfind = /*#__PURE__*/_curry2_1(function _xfind(f, xf) {
   return new XFind(f, xf);
 });
 var _xfind_1 = _xfind;
+
+/**
+ * Returns the first element of the list which matches the predicate, or
+ * `undefined` if no element matches.
+ *
+ * Dispatches to the `find` method of the second argument, if present.
+ *
+ * Acts as a transducer if a transformer is given in list position.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category List
+ * @sig (a -> Boolean) -> [a] -> a | undefined
+ * @param {Function} fn The predicate function used to determine if the element is the
+ *        desired one.
+ * @param {Array} list The array to consider.
+ * @return {Object} The element found, or `undefined`.
+ * @see R.transduce
+ * @example
+ *
+ *      var xs = [{a: 1}, {a: 2}, {a: 3}];
+ *      R.find(R.propEq('a', 2))(xs); //=> {a: 2}
+ *      R.find(R.propEq('a', 4))(xs); //=> undefined
+ */
 
 var find$1 = /*#__PURE__*/_curry2_1( /*#__PURE__*/_dispatchable_1(['find'], _xfind_1, function find(fn, list) {
   var idx = 0;
@@ -22224,6 +27197,29 @@ var _xfindIndex = /*#__PURE__*/_curry2_1(function _xfindIndex(f, xf) {
 });
 var _xfindIndex_1 = _xfindIndex;
 
+/**
+ * Returns the index of the first element of the list which matches the
+ * predicate, or `-1` if no element matches.
+ *
+ * Acts as a transducer if a transformer is given in list position.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.1
+ * @category List
+ * @sig (a -> Boolean) -> [a] -> Number
+ * @param {Function} fn The predicate function used to determine if the element is the
+ * desired one.
+ * @param {Array} list The array to consider.
+ * @return {Number} The index of the element found, or `-1`.
+ * @see R.transduce
+ * @example
+ *
+ *      var xs = [{a: 1}, {a: 2}, {a: 3}];
+ *      R.findIndex(R.propEq('a', 2))(xs); //=> 1
+ *      R.findIndex(R.propEq('a', 4))(xs); //=> -1
+ */
+
 var findIndex$1 = /*#__PURE__*/_curry2_1( /*#__PURE__*/_dispatchable_1([], _xfindIndex_1, function findIndex(fn, list) {
   var idx = 0;
   var len = list.length;
@@ -22261,6 +27257,29 @@ var _xfindLast = /*#__PURE__*/_curry2_1(function _xfindLast(f, xf) {
   return new XFindLast(f, xf);
 });
 var _xfindLast_1 = _xfindLast;
+
+/**
+ * Returns the last element of the list which matches the predicate, or
+ * `undefined` if no element matches.
+ *
+ * Acts as a transducer if a transformer is given in list position.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.1
+ * @category List
+ * @sig (a -> Boolean) -> [a] -> a | undefined
+ * @param {Function} fn The predicate function used to determine if the element is the
+ * desired one.
+ * @param {Array} list The array to consider.
+ * @return {Object} The element found, or `undefined`.
+ * @see R.transduce
+ * @example
+ *
+ *      var xs = [{a: 1, b: 0}, {a:1, b: 1}];
+ *      R.findLast(R.propEq('a', 1))(xs); //=> {a: 1, b: 1}
+ *      R.findLast(R.propEq('a', 4))(xs); //=> undefined
+ */
 
 var findLast$1 = /*#__PURE__*/_curry2_1( /*#__PURE__*/_dispatchable_1([], _xfindLast_1, function findLast(fn, list) {
   var idx = list.length - 1;
@@ -22301,6 +27320,29 @@ var _xfindLastIndex = /*#__PURE__*/_curry2_1(function _xfindLastIndex(f, xf) {
 });
 var _xfindLastIndex_1 = _xfindLastIndex;
 
+/**
+ * Returns the index of the last element of the list which matches the
+ * predicate, or `-1` if no element matches.
+ *
+ * Acts as a transducer if a transformer is given in list position.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.1
+ * @category List
+ * @sig (a -> Boolean) -> [a] -> Number
+ * @param {Function} fn The predicate function used to determine if the element is the
+ * desired one.
+ * @param {Array} list The array to consider.
+ * @return {Number} The index of the element found, or `-1`.
+ * @see R.transduce
+ * @example
+ *
+ *      var xs = [{a: 1, b: 0}, {a:1, b: 1}];
+ *      R.findLastIndex(R.propEq('a', 1))(xs); //=> 1
+ *      R.findLastIndex(R.propEq('a', 4))(xs); //=> -1
+ */
+
 var findLastIndex$1 = /*#__PURE__*/_curry2_1( /*#__PURE__*/_dispatchable_1([], _xfindLastIndex_1, function findLastIndex(fn, list) {
   var idx = list.length - 1;
   while (idx >= 0) {
@@ -22313,8 +27355,47 @@ var findLastIndex$1 = /*#__PURE__*/_curry2_1( /*#__PURE__*/_dispatchable_1([], _
 }));
 var findLastIndex_1 = findLastIndex$1;
 
+/**
+ * Returns a new list by pulling every item out of it (and all its sub-arrays)
+ * and putting them in a new array, depth-first.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category List
+ * @sig [a] -> [b]
+ * @param {Array} list The array to consider.
+ * @return {Array} The flattened list.
+ * @see R.unnest
+ * @example
+ *
+ *      R.flatten([1, 2, [3, 4], 5, [6, [7, 8, [9, [10, 11], 12]]]]);
+ *      //=> [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+ */
+
 var flatten$1 = /*#__PURE__*/_curry1_1( /*#__PURE__*/_makeFlat_1(true));
 var flatten_1 = flatten$1;
+
+/**
+ * Returns a new function much like the supplied one, except that the first two
+ * arguments' order is reversed.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Function
+ * @sig ((a, b, c, ...) -> z) -> (b -> a -> c -> ... -> z)
+ * @param {Function} fn The function to invoke with its first two parameters reversed.
+ * @return {*} The result of invoking `fn` with its first two parameters' order reversed.
+ * @example
+ *
+ *      var mergeThree = (a, b, c) => [].concat(a, b, c);
+ *
+ *      mergeThree(1, 2, 3); //=> [1, 2, 3]
+ *
+ *      R.flip(mergeThree)(1, 2, 3); //=> [2, 1, 3]
+ * @symb R.flip(f)(a, b, c) = f(b, a, c)
+ */
 
 var flip$1 = /*#__PURE__*/_curry1_1(function flip(fn) {
   return curryN_1(fn.length, function (a, b) {
@@ -22326,6 +27407,41 @@ var flip$1 = /*#__PURE__*/_curry1_1(function flip(fn) {
 });
 var flip_1 = flip$1;
 
+/**
+ * Iterate over an input `list`, calling a provided function `fn` for each
+ * element in the list.
+ *
+ * `fn` receives one argument: *(value)*.
+ *
+ * Note: `R.forEach` does not skip deleted or unassigned indices (sparse
+ * arrays), unlike the native `Array.prototype.forEach` method. For more
+ * details on this behavior, see:
+ * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach#Description
+ *
+ * Also note that, unlike `Array.prototype.forEach`, Ramda's `forEach` returns
+ * the original array. In some libraries this function is named `each`.
+ *
+ * Dispatches to the `forEach` method of the second argument, if present.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.1
+ * @category List
+ * @sig (a -> *) -> [a] -> [a]
+ * @param {Function} fn The function to invoke. Receives one argument, `value`.
+ * @param {Array} list The list to iterate over.
+ * @return {Array} The original list.
+ * @see R.addIndex
+ * @example
+ *
+ *      var printXPlusFive = x => console.log(x + 5);
+ *      R.forEach(printXPlusFive, [1, 2, 3]); //=> [1, 2, 3]
+ *      // logs 6
+ *      // logs 7
+ *      // logs 8
+ * @symb R.forEach(f, [a, b, c]) = [a, b, c]
+ */
+
 var forEach$1 = /*#__PURE__*/_curry2_1( /*#__PURE__*/_checkForMethod_1('forEach', function forEach(fn, list) {
   var len = list.length;
   var idx = 0;
@@ -22336,6 +27452,29 @@ var forEach$1 = /*#__PURE__*/_curry2_1( /*#__PURE__*/_checkForMethod_1('forEach'
   return list;
 }));
 var forEach_1 = forEach$1;
+
+/**
+ * Iterate over an input `object`, calling a provided function `fn` for each
+ * key and value in the object.
+ *
+ * `fn` receives three argument: *(value, key, obj)*.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.23.0
+ * @category Object
+ * @sig ((a, String, StrMap a) -> Any) -> StrMap a -> StrMap a
+ * @param {Function} fn The function to invoke. Receives three argument, `value`, `key`, `obj`.
+ * @param {Object} obj The object to iterate over.
+ * @return {Object} The original object.
+ * @example
+ *
+ *      var printKeyConcatValue = (value, key) => console.log(key + ':' + value);
+ *      R.forEachObjIndexed(printKeyConcatValue, {x: 1, y: 2}); //=> {x: 1, y: 2}
+ *      // logs x:1
+ *      // logs y:2
+ * @symb R.forEachObjIndexed(f, {x: a, y: b}) = {x: a, y: b}
+ */
 
 var forEachObjIndexed$1 = /*#__PURE__*/_curry2_1(function forEachObjIndexed(fn, obj) {
   var keyList = keys_1(obj);
@@ -22349,6 +27488,23 @@ var forEachObjIndexed$1 = /*#__PURE__*/_curry2_1(function forEachObjIndexed(fn, 
 });
 var forEachObjIndexed_1 = forEachObjIndexed$1;
 
+/**
+ * Creates a new object from a list key-value pairs. If a key appears in
+ * multiple pairs, the rightmost pair is included in the object.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.3.0
+ * @category List
+ * @sig [[k,v]] -> {k: v}
+ * @param {Array} pairs An array of two-element arrays that will be the keys and values of the output object.
+ * @return {Object} The object made by pairing up `keys` and `values`.
+ * @see R.toPairs, R.pair
+ * @example
+ *
+ *      R.fromPairs([['a', 1], ['b', 2], ['c', 3]]); //=> {a: 1, b: 2, c: 3}
+ */
+
 var fromPairs$1 = /*#__PURE__*/_curry1_1(function fromPairs(pairs) {
   var result = {};
   var idx = 0;
@@ -22360,6 +27516,47 @@ var fromPairs$1 = /*#__PURE__*/_curry1_1(function fromPairs(pairs) {
 });
 var fromPairs_1 = fromPairs$1;
 
+/**
+ * Splits a list into sub-lists stored in an object, based on the result of
+ * calling a String-returning function on each element, and grouping the
+ * results according to values returned.
+ *
+ * Dispatches to the `groupBy` method of the second argument, if present.
+ *
+ * Acts as a transducer if a transformer is given in list position.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category List
+ * @sig (a -> String) -> [a] -> {String: [a]}
+ * @param {Function} fn Function :: a -> String
+ * @param {Array} list The array to group
+ * @return {Object} An object with the output of `fn` for keys, mapped to arrays of elements
+ *         that produced that key when passed to `fn`.
+ * @see R.transduce
+ * @example
+ *
+ *      var byGrade = R.groupBy(function(student) {
+ *        var score = student.score;
+ *        return score < 65 ? 'F' :
+ *               score < 70 ? 'D' :
+ *               score < 80 ? 'C' :
+ *               score < 90 ? 'B' : 'A';
+ *      });
+ *      var students = [{name: 'Abby', score: 84},
+ *                      {name: 'Eddy', score: 58},
+ *                      // ...
+ *                      {name: 'Jack', score: 69}];
+ *      byGrade(students);
+ *      // {
+ *      //   'A': [{name: 'Dianne', score: 99}],
+ *      //   'B': [{name: 'Abby', score: 84}]
+ *      //   // ...,
+ *      //   'F': [{name: 'Eddy', score: 58}]
+ *      // }
+ */
+
 var groupBy$1 = /*#__PURE__*/_curry2_1( /*#__PURE__*/_checkForMethod_1('groupBy', /*#__PURE__*/reduceBy_1(function (acc, item) {
   if (acc == null) {
     acc = [];
@@ -22368,6 +27565,37 @@ var groupBy$1 = /*#__PURE__*/_curry2_1( /*#__PURE__*/_checkForMethod_1('groupBy'
   return acc;
 }, null)));
 var groupBy_1 = groupBy$1;
+
+/**
+ * Takes a list and returns a list of lists where each sublist's elements are
+ * all satisfied pairwise comparison according to the provided function.
+ * Only adjacent elements are passed to the comparison function.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.21.0
+ * @category List
+ * @sig ((a, a) → Boolean) → [a] → [[a]]
+ * @param {Function} fn Function for determining whether two given (adjacent)
+ *        elements should be in the same group
+ * @param {Array} list The array to group. Also accepts a string, which will be
+ *        treated as a list of characters.
+ * @return {List} A list that contains sublists of elements,
+ *         whose concatenations are equal to the original list.
+ * @example
+ *
+ * R.groupWith(R.equals, [0, 1, 1, 2, 3, 5, 8, 13, 21])
+ * //=> [[0], [1, 1], [2], [3], [5], [8], [13], [21]]
+ *
+ * R.groupWith((a, b) => a + 1 === b, [0, 1, 1, 2, 3, 5, 8, 13, 21])
+ * //=> [[0, 1], [1, 2, 3], [5], [8], [13], [21]]
+ *
+ * R.groupWith((a, b) => a % 2 === b % 2, [0, 1, 1, 2, 3, 5, 8, 13, 21])
+ * //=> [[0], [1, 1], [2], [3, 5], [8], [13, 21]]
+ *
+ * R.groupWith(R.eqBy(isVowel), 'aestiou')
+ * //=> ['ae', 'st', 'iou']
+ */
 
 var groupWith$1 = /*#__PURE__*/_curry2_1(function (fn, list) {
   var res = [];
@@ -22385,23 +27613,141 @@ var groupWith$1 = /*#__PURE__*/_curry2_1(function (fn, list) {
 });
 var groupWith_1 = groupWith$1;
 
+/**
+ * Returns `true` if the first argument is greater than the second; `false`
+ * otherwise.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Relation
+ * @sig Ord a => a -> a -> Boolean
+ * @param {*} a
+ * @param {*} b
+ * @return {Boolean}
+ * @see R.lt
+ * @example
+ *
+ *      R.gt(2, 1); //=> true
+ *      R.gt(2, 2); //=> false
+ *      R.gt(2, 3); //=> false
+ *      R.gt('a', 'z'); //=> false
+ *      R.gt('z', 'a'); //=> true
+ */
+
 var gt$1 = /*#__PURE__*/_curry2_1(function gt(a, b) {
   return a > b;
 });
 var gt_1 = gt$1;
+
+/**
+ * Returns `true` if the first argument is greater than or equal to the second;
+ * `false` otherwise.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Relation
+ * @sig Ord a => a -> a -> Boolean
+ * @param {Number} a
+ * @param {Number} b
+ * @return {Boolean}
+ * @see R.lte
+ * @example
+ *
+ *      R.gte(2, 1); //=> true
+ *      R.gte(2, 2); //=> true
+ *      R.gte(2, 3); //=> false
+ *      R.gte('a', 'z'); //=> false
+ *      R.gte('z', 'a'); //=> true
+ */
 
 var gte$1 = /*#__PURE__*/_curry2_1(function gte(a, b) {
   return a >= b;
 });
 var gte_1 = gte$1;
 
+/**
+ * Returns whether or not an object has an own property with the specified name
+ *
+ * @func
+ * @memberOf R
+ * @since v0.7.0
+ * @category Object
+ * @sig s -> {s: x} -> Boolean
+ * @param {String} prop The name of the property to check for.
+ * @param {Object} obj The object to query.
+ * @return {Boolean} Whether the property exists.
+ * @example
+ *
+ *      var hasName = R.has('name');
+ *      hasName({name: 'alice'});   //=> true
+ *      hasName({name: 'bob'});     //=> true
+ *      hasName({});                //=> false
+ *
+ *      var point = {x: 0, y: 0};
+ *      var pointHas = R.has(R.__, point);
+ *      pointHas('x');  //=> true
+ *      pointHas('y');  //=> true
+ *      pointHas('z');  //=> false
+ */
+
 var has$1 = /*#__PURE__*/_curry2_1(_has_1);
 var has_1 = has$1;
+
+/**
+ * Returns whether or not an object or its prototype chain has a property with
+ * the specified name
+ *
+ * @func
+ * @memberOf R
+ * @since v0.7.0
+ * @category Object
+ * @sig s -> {s: x} -> Boolean
+ * @param {String} prop The name of the property to check for.
+ * @param {Object} obj The object to query.
+ * @return {Boolean} Whether the property exists.
+ * @example
+ *
+ *      function Rectangle(width, height) {
+ *        this.width = width;
+ *        this.height = height;
+ *      }
+ *      Rectangle.prototype.area = function() {
+ *        return this.width * this.height;
+ *      };
+ *
+ *      var square = new Rectangle(2, 2);
+ *      R.hasIn('width', square);  //=> true
+ *      R.hasIn('area', square);  //=> true
+ */
 
 var hasIn$1 = /*#__PURE__*/_curry2_1(function hasIn(prop, obj) {
   return prop in obj;
 });
 var hasIn_1 = hasIn$1;
+
+/**
+ * Returns the first element of the given list or string. In some libraries
+ * this function is named `first`.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category List
+ * @sig [a] -> a | Undefined
+ * @sig String -> String
+ * @param {Array|String} list
+ * @return {*}
+ * @see R.tail, R.init, R.last
+ * @example
+ *
+ *      R.head(['fi', 'fo', 'fum']); //=> 'fi'
+ *      R.head([]); //=> undefined
+ *
+ *      R.head('abc'); //=> 'a'
+ *      R.head(''); //=> ''
+ */
 
 var head$1 = /*#__PURE__*/nth_1(0);
 var head_1 = head$1;
@@ -22411,8 +27757,54 @@ function _identity(x) {
 }
 var _identity_1 = _identity;
 
+/**
+ * A function that does nothing but return the parameter supplied to it. Good
+ * as a default or placeholder function.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Function
+ * @sig a -> a
+ * @param {*} x The value to return.
+ * @return {*} The input value, `x`.
+ * @example
+ *
+ *      R.identity(1); //=> 1
+ *
+ *      var obj = {};
+ *      R.identity(obj) === obj; //=> true
+ * @symb R.identity(a) = a
+ */
+
 var identity$1 = /*#__PURE__*/_curry1_1(_identity_1);
 var identity_1 = identity$1;
+
+/**
+ * Creates a function that will process either the `onTrue` or the `onFalse`
+ * function depending upon the result of the `condition` predicate.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.8.0
+ * @category Logic
+ * @sig (*... -> Boolean) -> (*... -> *) -> (*... -> *) -> (*... -> *)
+ * @param {Function} condition A predicate function
+ * @param {Function} onTrue A function to invoke when the `condition` evaluates to a truthy value.
+ * @param {Function} onFalse A function to invoke when the `condition` evaluates to a falsy value.
+ * @return {Function} A new unary function that will process either the `onTrue` or the `onFalse`
+ *                    function depending upon the result of the `condition` predicate.
+ * @see R.unless, R.when
+ * @example
+ *
+ *      var incCount = R.ifElse(
+ *        R.has('count'),
+ *        R.over(R.lensProp('count'), R.inc),
+ *        R.assoc('count', 1)
+ *      );
+ *      incCount({});           //=> { count: 1 }
+ *      incCount({ count: 1 }); //=> { count: 2 }
+ */
 
 var ifElse$1 = /*#__PURE__*/_curry3_1(function ifElse(condition, onTrue, onFalse) {
   return curryN_1(Math.max(condition.length, onTrue.length, onFalse.length), function _ifElse() {
@@ -22421,21 +27813,141 @@ var ifElse$1 = /*#__PURE__*/_curry3_1(function ifElse(condition, onTrue, onFalse
 });
 var ifElse_1 = ifElse$1;
 
+/**
+ * Increments its argument.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.9.0
+ * @category Math
+ * @sig Number -> Number
+ * @param {Number} n
+ * @return {Number} n + 1
+ * @see R.dec
+ * @example
+ *
+ *      R.inc(42); //=> 43
+ */
+
 var inc$1 = /*#__PURE__*/add_1(1);
 var inc_1 = inc$1;
+
+/**
+ * Given a function that generates a key, turns a list of objects into an
+ * object indexing the objects by the given key. Note that if multiple
+ * objects generate the same value for the indexing key only the last value
+ * will be included in the generated object.
+ *
+ * Acts as a transducer if a transformer is given in list position.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.19.0
+ * @category List
+ * @sig (a -> String) -> [{k: v}] -> {k: {k: v}}
+ * @param {Function} fn Function :: a -> String
+ * @param {Array} array The array of objects to index
+ * @return {Object} An object indexing each array element by the given property.
+ * @example
+ *
+ *      var list = [{id: 'xyz', title: 'A'}, {id: 'abc', title: 'B'}];
+ *      R.indexBy(R.prop('id'), list);
+ *      //=> {abc: {id: 'abc', title: 'B'}, xyz: {id: 'xyz', title: 'A'}}
+ */
 
 var indexBy$1 = /*#__PURE__*/reduceBy_1(function (acc, elem) {
   return elem;
 }, null);
 var indexBy_1 = indexBy$1;
 
+/**
+ * Returns the position of the first occurrence of an item in an array, or -1
+ * if the item is not included in the array. [`R.equals`](#equals) is used to
+ * determine equality.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category List
+ * @sig a -> [a] -> Number
+ * @param {*} target The item to find.
+ * @param {Array} xs The array to search in.
+ * @return {Number} the index of the target, or -1 if the target is not found.
+ * @see R.lastIndexOf
+ * @example
+ *
+ *      R.indexOf(3, [1,2,3,4]); //=> 2
+ *      R.indexOf(10, [1,2,3,4]); //=> -1
+ */
+
 var indexOf$1 = /*#__PURE__*/_curry2_1(function indexOf(target, xs) {
   return typeof xs.indexOf === 'function' && !_isArray(xs) ? xs.indexOf(target) : _indexOf_1(xs, target, 0);
 });
 var indexOf_1 = indexOf$1;
 
+/**
+ * Returns all but the last element of the given list or string.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.9.0
+ * @category List
+ * @sig [a] -> [a]
+ * @sig String -> String
+ * @param {*} list
+ * @return {*}
+ * @see R.last, R.head, R.tail
+ * @example
+ *
+ *      R.init([1, 2, 3]);  //=> [1, 2]
+ *      R.init([1, 2]);     //=> [1]
+ *      R.init([1]);        //=> []
+ *      R.init([]);         //=> []
+ *
+ *      R.init('abc');  //=> 'ab'
+ *      R.init('ab');   //=> 'a'
+ *      R.init('a');    //=> ''
+ *      R.init('');     //=> ''
+ */
+
 var init$1 = /*#__PURE__*/slice_1(0, -1);
 var init_1 = init$1;
+
+/**
+ * Takes a predicate `pred`, a list `xs`, and a list `ys`, and returns a list
+ * `xs'` comprising each of the elements of `xs` which is equal to one or more
+ * elements of `ys` according to `pred`.
+ *
+ * `pred` must be a binary function expecting an element from each list.
+ *
+ * `xs`, `ys`, and `xs'` are treated as sets, semantically, so ordering should
+ * not be significant, but since `xs'` is ordered the implementation guarantees
+ * that its values are in the same order as they appear in `xs`. Duplicates are
+ * not removed, so `xs'` may contain duplicates if `xs` contains duplicates.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.24.0
+ * @category Relation
+ * @sig ((a, b) -> Boolean) -> [a] -> [b] -> [a]
+ * @param {Function} pred
+ * @param {Array} xs
+ * @param {Array} ys
+ * @return {Array}
+ * @see R.intersection
+ * @example
+ *
+ *      R.innerJoin(
+ *        (record, id) => record.id === id,
+ *        [{id: 824, name: 'Richie Furay'},
+ *         {id: 956, name: 'Dewey Martin'},
+ *         {id: 313, name: 'Bruce Palmer'},
+ *         {id: 456, name: 'Stephen Stills'},
+ *         {id: 177, name: 'Neil Young'}],
+ *        [177, 456, 999]
+ *      );
+ *      //=> [{id: 456, name: 'Stephen Stills'}, {id: 177, name: 'Neil Young'}]
+ */
 
 var innerJoin$1 = /*#__PURE__*/_curry3_1(function innerJoin(pred, xs, ys) {
   return _filter_1(function (x) {
@@ -22444,6 +27956,26 @@ var innerJoin$1 = /*#__PURE__*/_curry3_1(function innerJoin(pred, xs, ys) {
 });
 var innerJoin_1 = innerJoin$1;
 
+/**
+ * Inserts the supplied element into the list, at the specified `index`. _Note that
+
+ * this is not destructive_: it returns a copy of the list with the changes.
+ * <small>No lists have been harmed in the application of this function.</small>
+ *
+ * @func
+ * @memberOf R
+ * @since v0.2.2
+ * @category List
+ * @sig Number -> a -> [a] -> [a]
+ * @param {Number} index The position to insert the element
+ * @param {*} elt The element to insert into the Array
+ * @param {Array} list The list to insert into
+ * @return {Array} A new Array with `elt` inserted at `index`.
+ * @example
+ *
+ *      R.insert(2, 'x', [1,2,3,4]); //=> [1,2,'x',3,4]
+ */
+
 var insert$1 = /*#__PURE__*/_curry3_1(function insert(idx, elt, list) {
   idx = idx < list.length && idx >= 0 ? idx : list.length;
   var result = Array.prototype.slice.call(list, 0);
@@ -22451,6 +27983,25 @@ var insert$1 = /*#__PURE__*/_curry3_1(function insert(idx, elt, list) {
   return result;
 });
 var insert_1 = insert$1;
+
+/**
+ * Inserts the sub-list into the list, at the specified `index`. _Note that this is not
+ * destructive_: it returns a copy of the list with the changes.
+ * <small>No lists have been harmed in the application of this function.</small>
+ *
+ * @func
+ * @memberOf R
+ * @since v0.9.0
+ * @category List
+ * @sig Number -> [a] -> [a] -> [a]
+ * @param {Number} index The position to insert the sub-list
+ * @param {Array} elts The sub-list to insert into the Array
+ * @param {Array} list The list to insert the sub-list into
+ * @return {Array} A new Array with `elts` inserted starting at `index`.
+ * @example
+ *
+ *      R.insertAll(2, ['x','y','z'], [1,2,3,4]); //=> [1,2,'x','y','z',3,4]
+ */
 
 var insertAll$1 = /*#__PURE__*/_curry3_1(function insertAll(idx, elts, list) {
   idx = idx < list.length && idx >= 0 ? idx : list.length;
@@ -22631,6 +28182,25 @@ function hasOrAdd(item, shouldAdd, set) {
 // A simple Set type that honours R.equals semantics
 var _Set_1 = _Set;
 
+/**
+ * Returns a new list containing only one copy of each element in the original
+ * list, based upon the value returned by applying the supplied function to
+ * each list element. Prefers the first item if the supplied function produces
+ * the same value on two items. [`R.equals`](#equals) is used for comparison.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.16.0
+ * @category List
+ * @sig (a -> b) -> [a] -> [a]
+ * @param {Function} fn A function used to produce a value to use during comparisons.
+ * @param {Array} list The array to consider.
+ * @return {Array} The list of unique items.
+ * @example
+ *
+ *      R.uniqBy(Math.abs, [-1, -5, 2, 10, 1, 2]); //=> [-1, -5, 2, 10]
+ */
+
 var uniqBy$1 = /*#__PURE__*/_curry2_1(function uniqBy(fn, list) {
   var set = new _Set_1();
   var result = [];
@@ -22649,8 +28219,44 @@ var uniqBy$1 = /*#__PURE__*/_curry2_1(function uniqBy(fn, list) {
 });
 var uniqBy_1 = uniqBy$1;
 
+/**
+ * Returns a new list containing only one copy of each element in the original
+ * list. [`R.equals`](#equals) is used to determine equality.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category List
+ * @sig [a] -> [a]
+ * @param {Array} list The array to consider.
+ * @return {Array} The list of unique items.
+ * @example
+ *
+ *      R.uniq([1, 1, 2, 1]); //=> [1, 2]
+ *      R.uniq([1, '1']);     //=> [1, '1']
+ *      R.uniq([[42], [42]]); //=> [[42]]
+ */
+
 var uniq$1 = /*#__PURE__*/uniqBy_1(identity_1);
 var uniq_1 = uniq$1;
+
+/**
+ * Combines two lists into a set (i.e. no duplicates) composed of those
+ * elements common to both lists.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Relation
+ * @sig [*] -> [*] -> [*]
+ * @param {Array} list1 The first list.
+ * @param {Array} list2 The second list.
+ * @return {Array} The list of elements found in both `list1` and `list2`.
+ * @see R.innerJoin
+ * @example
+ *
+ *      R.intersection([1,2,3,4], [7,6,5,4,3]); //=> [4, 3]
+ */
 
 var intersection$1 = /*#__PURE__*/_curry2_1(function intersection(list1, list2) {
   var lookupList, filteredList;
@@ -22664,6 +28270,24 @@ var intersection$1 = /*#__PURE__*/_curry2_1(function intersection(list1, list2) 
   return uniq_1(_filter_1(flip_1(_contains_1)(lookupList), filteredList));
 });
 var intersection_1 = intersection$1;
+
+/**
+ * Creates a new list with the separator interposed between elements.
+ *
+ * Dispatches to the `intersperse` method of the second argument, if present.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.14.0
+ * @category List
+ * @sig a -> [a] -> [a]
+ * @param {*} separator The element to add to the list.
+ * @param {Array} list The list to be interposed.
+ * @return {Array} The new list.
+ * @example
+ *
+ *      R.intersperse('n', ['ba', 'a', 'a']); //=> ['ba', 'n', 'a', 'n', 'a']
+ */
 
 var intersperse$1 = /*#__PURE__*/_curry2_1( /*#__PURE__*/_checkForMethod_1('intersperse', function intersperse(separator, list) {
   var out = [];
@@ -22680,6 +28304,9 @@ var intersperse$1 = /*#__PURE__*/_curry2_1( /*#__PURE__*/_checkForMethod_1('inte
   return out;
 }));
 var intersperse_1 = intersperse$1;
+
+// Based on https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Object/assign
+
 
 function _objectAssign(target) {
   if (target == null) {
@@ -22705,6 +28332,27 @@ function _objectAssign(target) {
 var _objectAssign_1 = _objectAssign;
 
 var _assign = typeof Object.assign === 'function' ? Object.assign : _objectAssign_1;
+
+/**
+ * Creates an object containing a single key:value pair.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.18.0
+ * @category Object
+ * @sig String -> a -> {String:a}
+ * @param {String} key
+ * @param {*} val
+ * @return {Object}
+ * @see R.pair
+ * @example
+ *
+ *      var matchPhrases = R.compose(
+ *        R.objOf('must'),
+ *        R.map(R.objOf('match_phrase'))
+ *      );
+ *      matchPhrases(['foo', 'bar', 'baz']); //=> {must: [{match_phrase: 'foo'}, {match_phrase: 'bar'}, {match_phrase: 'baz'}]}
+ */
 
 var objOf$1 = /*#__PURE__*/_curry2_1(function objOf(key, val) {
   var obj = {};
@@ -22753,10 +28401,72 @@ function _stepCat(obj) {
 }
 var _stepCat_1 = _stepCat;
 
+/**
+ * Transforms the items of the list with the transducer and appends the
+ * transformed items to the accumulator using an appropriate iterator function
+ * based on the accumulator type.
+ *
+ * The accumulator can be an array, string, object or a transformer. Iterated
+ * items will be appended to arrays and concatenated to strings. Objects will
+ * be merged directly or 2-item arrays will be merged as key, value pairs.
+ *
+ * The accumulator can also be a transformer object that provides a 2-arity
+ * reducing iterator function, step, 0-arity initial value function, init, and
+ * 1-arity result extraction function result. The step function is used as the
+ * iterator function in reduce. The result function is used to convert the
+ * final accumulator into the return type and in most cases is R.identity. The
+ * init function is used to provide the initial accumulator.
+ *
+ * The iteration is performed with [`R.reduce`](#reduce) after initializing the
+ * transducer.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.12.0
+ * @category List
+ * @sig a -> (b -> b) -> [c] -> a
+ * @param {*} acc The initial accumulator value.
+ * @param {Function} xf The transducer function. Receives a transformer and returns a transformer.
+ * @param {Array} list The list to iterate over.
+ * @return {*} The final, accumulated value.
+ * @example
+ *
+ *      var numbers = [1, 2, 3, 4];
+ *      var transducer = R.compose(R.map(R.add(1)), R.take(2));
+ *
+ *      R.into([], transducer, numbers); //=> [2, 3]
+ *
+ *      var intoArray = R.into([]);
+ *      intoArray(transducer, numbers); //=> [2, 3]
+ */
+
 var into$1 = /*#__PURE__*/_curry3_1(function into(acc, xf, list) {
   return _isTransformer_1(acc) ? _reduce_1(xf(acc), acc['@@transducer/init'](), list) : _reduce_1(xf(_stepCat_1(acc)), _clone_1(acc, [], [], false), list);
 });
 var into_1 = into$1;
+
+/**
+ * Same as [`R.invertObj`](#invertObj), however this accounts for objects with
+ * duplicate values by putting the values into an array.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.9.0
+ * @category Object
+ * @sig {s: x} -> {x: [ s, ... ]}
+ * @param {Object} obj The object or array to invert
+ * @return {Object} out A new object with keys in an array.
+ * @see R.invertObj
+ * @example
+ *
+ *      var raceResultsByFirstName = {
+ *        first: 'alice',
+ *        second: 'jake',
+ *        third: 'alice',
+ *      };
+ *      R.invert(raceResultsByFirstName);
+ *      //=> { 'alice': ['first', 'third'], 'jake':['second'] }
+ */
 
 var invert$1 = /*#__PURE__*/_curry1_1(function invert(obj) {
   var props = keys_1(obj);
@@ -22775,6 +28485,34 @@ var invert$1 = /*#__PURE__*/_curry1_1(function invert(obj) {
 });
 var invert_1 = invert$1;
 
+/**
+ * Returns a new object with the keys of the given object as values, and the
+ * values of the given object, which are coerced to strings, as keys. Note
+ * that the last key found is preferred when handling the same value.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.9.0
+ * @category Object
+ * @sig {s: x} -> {x: s}
+ * @param {Object} obj The object or array to invert
+ * @return {Object} out A new object
+ * @see R.invert
+ * @example
+ *
+ *      var raceResults = {
+ *        first: 'alice',
+ *        second: 'jake'
+ *      };
+ *      R.invertObj(raceResults);
+ *      //=> { 'alice': 'first', 'jake':'second' }
+ *
+ *      // Alternatively:
+ *      var raceResults = ['alice', 'jake'];
+ *      R.invertObj(raceResults);
+ *      //=> { 'alice': '0', 'jake':'1' }
+ */
+
 var invertObj$1 = /*#__PURE__*/_curry1_1(function invertObj(obj) {
   var props = keys_1(obj);
   var len = props.length;
@@ -22790,6 +28528,34 @@ var invertObj$1 = /*#__PURE__*/_curry1_1(function invertObj(obj) {
 });
 var invertObj_1 = invertObj$1;
 
+/**
+ * Turns a named method with a specified arity into a function that can be
+ * called directly supplied with arguments and a target object.
+ *
+ * The returned function is curried and accepts `arity + 1` parameters where
+ * the final parameter is the target object.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Function
+ * @sig Number -> String -> (a -> b -> ... -> n -> Object -> *)
+ * @param {Number} arity Number of arguments the returned function should take
+ *        before the target object.
+ * @param {String} method Name of the method to call.
+ * @return {Function} A new curried function.
+ * @see R.construct
+ * @example
+ *
+ *      var sliceFrom = R.invoker(1, 'slice');
+ *      sliceFrom(6, 'abcdefghijklm'); //=> 'ghijklm'
+ *      var sliceFrom6 = R.invoker(2, 'slice')(6);
+ *      sliceFrom6(8, 'abcdefghijklm'); //=> 'gh'
+ * @symb R.invoker(0, 'method')(o) = o['method']()
+ * @symb R.invoker(1, 'method')(a, o) = o['method'](a)
+ * @symb R.invoker(2, 'method')(a, b, o) = o['method'](a, b)
+ */
+
 var invoker$1 = /*#__PURE__*/_curry2_1(function invoker(arity, method) {
   return curryN_1(arity + 1, function () {
     var target = arguments[arity];
@@ -22801,18 +28567,102 @@ var invoker$1 = /*#__PURE__*/_curry2_1(function invoker(arity, method) {
 });
 var invoker_1 = invoker$1;
 
+/**
+ * See if an object (`val`) is an instance of the supplied constructor. This
+ * function will check up the inheritance chain, if any.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.3.0
+ * @category Type
+ * @sig (* -> {*}) -> a -> Boolean
+ * @param {Object} ctor A constructor
+ * @param {*} val The value to test
+ * @return {Boolean}
+ * @example
+ *
+ *      R.is(Object, {}); //=> true
+ *      R.is(Number, 1); //=> true
+ *      R.is(Object, 1); //=> false
+ *      R.is(String, 's'); //=> true
+ *      R.is(String, new String('')); //=> true
+ *      R.is(Object, new String('')); //=> true
+ *      R.is(Object, 's'); //=> false
+ *      R.is(Number, {}); //=> false
+ */
+
 var is$1 = /*#__PURE__*/_curry2_1(function is(Ctor, val) {
   return val != null && val.constructor === Ctor || val instanceof Ctor;
 });
 var is_1 = is$1;
+
+/**
+ * Returns `true` if the given value is its type's empty value; `false`
+ * otherwise.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Logic
+ * @sig a -> Boolean
+ * @param {*} x
+ * @return {Boolean}
+ * @see R.empty
+ * @example
+ *
+ *      R.isEmpty([1, 2, 3]);   //=> false
+ *      R.isEmpty([]);          //=> true
+ *      R.isEmpty('');          //=> true
+ *      R.isEmpty(null);        //=> false
+ *      R.isEmpty({});          //=> true
+ *      R.isEmpty({length: 0}); //=> false
+ */
 
 var isEmpty$1 = /*#__PURE__*/_curry1_1(function isEmpty(x) {
   return x != null && equals_1(x, empty_1(x));
 });
 var isEmpty_1 = isEmpty$1;
 
+/**
+ * Returns a string made by inserting the `separator` between each element and
+ * concatenating all the elements into a single string.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category List
+ * @sig String -> [a] -> String
+ * @param {Number|String} separator The string used to separate the elements.
+ * @param {Array} xs The elements to join into a string.
+ * @return {String} str The string made by concatenating `xs` with `separator`.
+ * @see R.split
+ * @example
+ *
+ *      var spacer = R.join(' ');
+ *      spacer(['a', 2, 3.4]);   //=> 'a 2 3.4'
+ *      R.join('|', [1, 2, 3]);    //=> '1|2|3'
+ */
+
 var join$1 = /*#__PURE__*/invoker_1(1, 'join');
 var join_1 = join$1;
+
+/**
+ * juxt applies a list of functions to a list of values.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.19.0
+ * @category Function
+ * @sig [(a, b, ..., m) -> n] -> ((a, b, ..., m) -> [n])
+ * @param {Array} fns An array of functions
+ * @return {Function} A function that returns a list of values after applying each of the original `fns` to its parameters.
+ * @see R.applySpec
+ * @example
+ *
+ *      var getRange = R.juxt([Math.min, Math.max]);
+ *      getRange(3, 4, 9, -3); //=> [-3, 9]
+ * @symb R.juxt([f, g, h])(a, b) = [f(a, b), g(a, b), h(a, b)]
+ */
 
 var juxt$1 = /*#__PURE__*/_curry1_1(function juxt(fns) {
   return converge_1(function () {
@@ -22820,6 +28670,28 @@ var juxt$1 = /*#__PURE__*/_curry1_1(function juxt(fns) {
   }, fns);
 });
 var juxt_1 = juxt$1;
+
+/**
+ * Returns a list containing the names of all the properties of the supplied
+ * object, including prototype properties.
+ * Note that the order of the output array is not guaranteed to be consistent
+ * across different JS platforms.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.2.0
+ * @category Object
+ * @sig {k: v} -> [k]
+ * @param {Object} obj The object to extract properties from
+ * @return {Array} An array of the object's own and prototype properties.
+ * @see R.keys, R.valuesIn
+ * @example
+ *
+ *      var F = function() { this.x = 'X'; };
+ *      F.prototype.y = 'Y';
+ *      var f = new F();
+ *      R.keysIn(f); //=> ['x', 'y']
+ */
 
 var keysIn$1 = /*#__PURE__*/_curry1_1(function keysIn(obj) {
   var prop;
@@ -22830,6 +28702,26 @@ var keysIn$1 = /*#__PURE__*/_curry1_1(function keysIn(obj) {
   return ks;
 });
 var keysIn_1 = keysIn$1;
+
+/**
+ * Returns the position of the last occurrence of an item in an array, or -1 if
+ * the item is not included in the array. [`R.equals`](#equals) is used to
+ * determine equality.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category List
+ * @sig a -> [a] -> Number
+ * @param {*} target The item to find.
+ * @param {Array} xs The array to search in.
+ * @return {Number} the index of the target, or -1 if the target is not found.
+ * @see R.indexOf
+ * @example
+ *
+ *      R.lastIndexOf(3, [-1,3,3,0,1,2,3,4]); //=> 6
+ *      R.lastIndexOf(10, [1,2,3,4]); //=> -1
+ */
 
 var lastIndexOf$1 = /*#__PURE__*/_curry2_1(function lastIndexOf(target, xs) {
   if (typeof xs.lastIndexOf === 'function' && !_isArray(xs)) {
@@ -22852,10 +28744,50 @@ function _isNumber(x) {
 }
 var _isNumber_1 = _isNumber;
 
+/**
+ * Returns the number of elements in the array by returning `list.length`.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.3.0
+ * @category List
+ * @sig [a] -> Number
+ * @param {Array} list The array to inspect.
+ * @return {Number} The length of the array.
+ * @example
+ *
+ *      R.length([]); //=> 0
+ *      R.length([1, 2, 3]); //=> 3
+ */
+
 var length$1 = /*#__PURE__*/_curry1_1(function length(list) {
   return list != null && _isNumber_1(list.length) ? list.length : NaN;
 });
 var length_1 = length$1;
+
+/**
+ * Returns a lens for the given getter and setter functions. The getter "gets"
+ * the value of the focus; the setter "sets" the value of the focus. The setter
+ * should not mutate the data structure.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.8.0
+ * @category Object
+ * @typedefn Lens s a = Functor f => (a -> f a) -> s -> f s
+ * @sig (s -> a) -> ((a, s) -> s) -> Lens s a
+ * @param {Function} getter
+ * @param {Function} setter
+ * @return {Lens}
+ * @see R.view, R.set, R.over, R.lensIndex, R.lensProp
+ * @example
+ *
+ *      var xLens = R.lens(R.prop('x'), R.assoc('x'));
+ *
+ *      R.view(xLens, {x: 1, y: 2});            //=> 1
+ *      R.set(xLens, 4, {x: 1, y: 2});          //=> {x: 4, y: 2}
+ *      R.over(xLens, R.negate, {x: 1, y: 2});  //=> {x: -1, y: 2}
+ */
 
 var lens$1 = /*#__PURE__*/_curry2_1(function lens(getter, setter) {
   return function (toFunctorFn) {
@@ -22868,30 +28800,176 @@ var lens$1 = /*#__PURE__*/_curry2_1(function lens(getter, setter) {
 });
 var lens_1 = lens$1;
 
+/**
+ * Returns a lens whose focus is the specified index.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.14.0
+ * @category Object
+ * @typedefn Lens s a = Functor f => (a -> f a) -> s -> f s
+ * @sig Number -> Lens s a
+ * @param {Number} n
+ * @return {Lens}
+ * @see R.view, R.set, R.over
+ * @example
+ *
+ *      var headLens = R.lensIndex(0);
+ *
+ *      R.view(headLens, ['a', 'b', 'c']);            //=> 'a'
+ *      R.set(headLens, 'x', ['a', 'b', 'c']);        //=> ['x', 'b', 'c']
+ *      R.over(headLens, R.toUpper, ['a', 'b', 'c']); //=> ['A', 'b', 'c']
+ */
+
 var lensIndex$1 = /*#__PURE__*/_curry1_1(function lensIndex(n) {
   return lens_1(nth_1(n), update_1(n));
 });
 var lensIndex_1 = lensIndex$1;
+
+/**
+ * Returns a lens whose focus is the specified path.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.19.0
+ * @category Object
+ * @typedefn Idx = String | Int
+ * @typedefn Lens s a = Functor f => (a -> f a) -> s -> f s
+ * @sig [Idx] -> Lens s a
+ * @param {Array} path The path to use.
+ * @return {Lens}
+ * @see R.view, R.set, R.over
+ * @example
+ *
+ *      var xHeadYLens = R.lensPath(['x', 0, 'y']);
+ *
+ *      R.view(xHeadYLens, {x: [{y: 2, z: 3}, {y: 4, z: 5}]});
+ *      //=> 2
+ *      R.set(xHeadYLens, 1, {x: [{y: 2, z: 3}, {y: 4, z: 5}]});
+ *      //=> {x: [{y: 1, z: 3}, {y: 4, z: 5}]}
+ *      R.over(xHeadYLens, R.negate, {x: [{y: 2, z: 3}, {y: 4, z: 5}]});
+ *      //=> {x: [{y: -2, z: 3}, {y: 4, z: 5}]}
+ */
 
 var lensPath$1 = /*#__PURE__*/_curry1_1(function lensPath(p) {
   return lens_1(path_1(p), assocPath_1(p));
 });
 var lensPath_1 = lensPath$1;
 
+/**
+ * Returns a lens whose focus is the specified property.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.14.0
+ * @category Object
+ * @typedefn Lens s a = Functor f => (a -> f a) -> s -> f s
+ * @sig String -> Lens s a
+ * @param {String} k
+ * @return {Lens}
+ * @see R.view, R.set, R.over
+ * @example
+ *
+ *      var xLens = R.lensProp('x');
+ *
+ *      R.view(xLens, {x: 1, y: 2});            //=> 1
+ *      R.set(xLens, 4, {x: 1, y: 2});          //=> {x: 4, y: 2}
+ *      R.over(xLens, R.negate, {x: 1, y: 2});  //=> {x: -1, y: 2}
+ */
+
 var lensProp$1 = /*#__PURE__*/_curry1_1(function lensProp(k) {
   return lens_1(prop_1(k), assoc_1(k));
 });
 var lensProp_1 = lensProp$1;
+
+/**
+ * Returns `true` if the first argument is less than the second; `false`
+ * otherwise.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Relation
+ * @sig Ord a => a -> a -> Boolean
+ * @param {*} a
+ * @param {*} b
+ * @return {Boolean}
+ * @see R.gt
+ * @example
+ *
+ *      R.lt(2, 1); //=> false
+ *      R.lt(2, 2); //=> false
+ *      R.lt(2, 3); //=> true
+ *      R.lt('a', 'z'); //=> true
+ *      R.lt('z', 'a'); //=> false
+ */
 
 var lt$1 = /*#__PURE__*/_curry2_1(function lt(a, b) {
   return a < b;
 });
 var lt_1 = lt$1;
 
+/**
+ * Returns `true` if the first argument is less than or equal to the second;
+ * `false` otherwise.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Relation
+ * @sig Ord a => a -> a -> Boolean
+ * @param {Number} a
+ * @param {Number} b
+ * @return {Boolean}
+ * @see R.gte
+ * @example
+ *
+ *      R.lte(2, 1); //=> false
+ *      R.lte(2, 2); //=> true
+ *      R.lte(2, 3); //=> true
+ *      R.lte('a', 'z'); //=> true
+ *      R.lte('z', 'a'); //=> false
+ */
+
 var lte$1 = /*#__PURE__*/_curry2_1(function lte(a, b) {
   return a <= b;
 });
 var lte_1 = lte$1;
+
+/**
+ * The `mapAccum` function behaves like a combination of map and reduce; it
+ * applies a function to each element of a list, passing an accumulating
+ * parameter from left to right, and returning a final value of this
+ * accumulator together with the new list.
+ *
+ * The iterator function receives two arguments, *acc* and *value*, and should
+ * return a tuple *[acc, value]*.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.10.0
+ * @category List
+ * @sig ((acc, x) -> (acc, y)) -> acc -> [x] -> (acc, [y])
+ * @param {Function} fn The function to be called on every element of the input `list`.
+ * @param {*} acc The accumulator value.
+ * @param {Array} list The list to iterate over.
+ * @return {*} The final, accumulated value.
+ * @see R.addIndex, R.mapAccumRight
+ * @example
+ *
+ *      var digits = ['1', '2', '3', '4'];
+ *      var appender = (a, b) => [a + b, a + b];
+ *
+ *      R.mapAccum(appender, 0, digits); //=> ['01234', ['01', '012', '0123', '01234']]
+ * @symb R.mapAccum(f, a, [b, c, d]) = [
+ *   f(f(f(a, b)[0], c)[0], d)[0],
+ *   [
+ *     f(a, b)[1],
+ *     f(f(a, b)[0], c)[1],
+ *     f(f(f(a, b)[0], c)[0], d)[1]
+ *   ]
+ * ]
+ */
 
 var mapAccum$1 = /*#__PURE__*/_curry3_1(function mapAccum(fn, acc, list) {
   var idx = 0;
@@ -22907,6 +28985,44 @@ var mapAccum$1 = /*#__PURE__*/_curry3_1(function mapAccum(fn, acc, list) {
 });
 var mapAccum_1 = mapAccum$1;
 
+/**
+ * The `mapAccumRight` function behaves like a combination of map and reduce; it
+ * applies a function to each element of a list, passing an accumulating
+ * parameter from right to left, and returning a final value of this
+ * accumulator together with the new list.
+ *
+ * Similar to [`mapAccum`](#mapAccum), except moves through the input list from
+ * the right to the left.
+ *
+ * The iterator function receives two arguments, *value* and *acc*, and should
+ * return a tuple *[value, acc]*.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.10.0
+ * @category List
+ * @sig ((x, acc) -> (y, acc)) -> acc -> [x] -> ([y], acc)
+ * @param {Function} fn The function to be called on every element of the input `list`.
+ * @param {*} acc The accumulator value.
+ * @param {Array} list The list to iterate over.
+ * @return {*} The final, accumulated value.
+ * @see R.addIndex, R.mapAccum
+ * @example
+ *
+ *      var digits = ['1', '2', '3', '4'];
+ *      var append = (a, b) => [a + b, a + b];
+ *
+ *      R.mapAccumRight(append, 5, digits); //=> [['12345', '2345', '345', '45'], '12345']
+ * @symb R.mapAccumRight(f, a, [b, c, d]) = [
+ *   [
+ *     f(b, f(c, f(d, a)[0])[0])[1],
+ *     f(c, f(d, a)[0])[1],
+ *     f(d, a)[1],
+ *   ]
+ *   f(b, f(c, f(d, a)[0])[0])[0],
+ * ]
+ */
+
 var mapAccumRight$1 = /*#__PURE__*/_curry3_1(function mapAccumRight(fn, acc, list) {
   var idx = list.length - 1;
   var result = [];
@@ -22920,6 +29036,28 @@ var mapAccumRight$1 = /*#__PURE__*/_curry3_1(function mapAccumRight(fn, acc, lis
 });
 var mapAccumRight_1 = mapAccumRight$1;
 
+/**
+ * An Object-specific version of [`map`](#map). The function is applied to three
+ * arguments: *(value, key, obj)*. If only the value is significant, use
+ * [`map`](#map) instead.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.9.0
+ * @category Object
+ * @sig ((*, String, Object) -> *) -> Object -> Object
+ * @param {Function} fn
+ * @param {Object} obj
+ * @return {Object}
+ * @see R.map
+ * @example
+ *
+ *      var values = { x: 1, y: 2, z: 3 };
+ *      var prependKeyAndDouble = (num, key, obj) => key + (num * 2);
+ *
+ *      R.mapObjIndexed(prependKeyAndDouble, values); //=> { x: 'x2', y: 'y4', z: 'z6' }
+ */
+
 var mapObjIndexed$1 = /*#__PURE__*/_curry2_1(function mapObjIndexed(fn, obj) {
   return _reduce_1(function (acc, key) {
     acc[key] = fn(obj[key], key, obj);
@@ -22928,10 +29066,66 @@ var mapObjIndexed$1 = /*#__PURE__*/_curry2_1(function mapObjIndexed(fn, obj) {
 });
 var mapObjIndexed_1 = mapObjIndexed$1;
 
+/**
+ * Tests a regular expression against a String. Note that this function will
+ * return an empty array when there are no matches. This differs from
+ * [`String.prototype.match`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/match)
+ * which returns `null` when there are no matches.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category String
+ * @sig RegExp -> String -> [String | Undefined]
+ * @param {RegExp} rx A regular expression.
+ * @param {String} str The string to match against
+ * @return {Array} The list of matches or empty array.
+ * @see R.test
+ * @example
+ *
+ *      R.match(/([a-z]a)/g, 'bananas'); //=> ['ba', 'na', 'na']
+ *      R.match(/a/, 'b'); //=> []
+ *      R.match(/a/, null); //=> TypeError: null does not have a method named "match"
+ */
+
 var match$1 = /*#__PURE__*/_curry2_1(function match(rx, str) {
   return str.match(rx) || [];
 });
 var match_1 = match$1;
+
+/**
+ * `mathMod` behaves like the modulo operator should mathematically, unlike the
+ * `%` operator (and by extension, [`R.modulo`](#modulo)). So while
+ * `-17 % 5` is `-2`, `mathMod(-17, 5)` is `3`. `mathMod` requires Integer
+ * arguments, and returns NaN when the modulus is zero or negative.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.3.0
+ * @category Math
+ * @sig Number -> Number -> Number
+ * @param {Number} m The dividend.
+ * @param {Number} p the modulus.
+ * @return {Number} The result of `b mod a`.
+ * @see R.modulo
+ * @example
+ *
+ *      R.mathMod(-17, 5);  //=> 3
+ *      R.mathMod(17, 5);   //=> 2
+ *      R.mathMod(17, -5);  //=> NaN
+ *      R.mathMod(17, 0);   //=> NaN
+ *      R.mathMod(17.2, 5); //=> NaN
+ *      R.mathMod(17, 5.3); //=> NaN
+ *
+ *      var clock = R.mathMod(R.__, 12);
+ *      clock(15); //=> 3
+ *      clock(24); //=> 0
+ *
+ *      var seventeenMod = R.mathMod(17);
+ *      seventeenMod(3);  //=> 2
+ *      seventeenMod(4);  //=> 1
+ *      seventeenMod(10); //=> 7
+ */
 
 var mathMod$1 = /*#__PURE__*/_curry2_1(function mathMod(m, p) {
   if (!_isInteger(m)) {
@@ -22944,18 +29138,94 @@ var mathMod$1 = /*#__PURE__*/_curry2_1(function mathMod(m, p) {
 });
 var mathMod_1 = mathMod$1;
 
+/**
+ * Takes a function and two values, and returns whichever value produces the
+ * larger result when passed to the provided function.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.8.0
+ * @category Relation
+ * @sig Ord b => (a -> b) -> a -> a -> a
+ * @param {Function} f
+ * @param {*} a
+ * @param {*} b
+ * @return {*}
+ * @see R.max, R.minBy
+ * @example
+ *
+ *      //  square :: Number -> Number
+ *      var square = n => n * n;
+ *
+ *      R.maxBy(square, -3, 2); //=> -3
+ *
+ *      R.reduce(R.maxBy(square), 0, [3, -5, 4, 1, -2]); //=> -5
+ *      R.reduce(R.maxBy(square), 0, []); //=> 0
+ */
+
 var maxBy$1 = /*#__PURE__*/_curry3_1(function maxBy(f, a, b) {
   return f(b) > f(a) ? b : a;
 });
 var maxBy_1 = maxBy$1;
 
+/**
+ * Adds together all the elements of a list.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Math
+ * @sig [Number] -> Number
+ * @param {Array} list An array of numbers
+ * @return {Number} The sum of all the numbers in the list.
+ * @see R.reduce
+ * @example
+ *
+ *      R.sum([2,4,6,8,100,1]); //=> 121
+ */
+
 var sum$1 = /*#__PURE__*/reduce_1(add_1, 0);
 var sum_1 = sum$1;
+
+/**
+ * Returns the mean of the given list of numbers.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.14.0
+ * @category Math
+ * @sig [Number] -> Number
+ * @param {Array} list
+ * @return {Number}
+ * @see R.median
+ * @example
+ *
+ *      R.mean([2, 7, 9]); //=> 6
+ *      R.mean([]); //=> NaN
+ */
 
 var mean$1 = /*#__PURE__*/_curry1_1(function mean(list) {
   return sum_1(list) / list.length;
 });
 var mean_1 = mean$1;
+
+/**
+ * Returns the median of the given list of numbers.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.14.0
+ * @category Math
+ * @sig [Number] -> Number
+ * @param {Array} list
+ * @return {Number}
+ * @see R.mean
+ * @example
+ *
+ *      R.median([2, 9, 7]); //=> 7
+ *      R.median([7, 2, 10, 9]); //=> 8
+ *      R.median([]); //=> NaN
+ */
 
 var median$1 = /*#__PURE__*/_curry1_1(function median(list) {
   var len = list.length;
@@ -22970,6 +29240,36 @@ var median$1 = /*#__PURE__*/_curry1_1(function median(list) {
 });
 var median_1 = median$1;
 
+/**
+ * A customisable version of [`R.memoize`](#memoize). `memoizeWith` takes an
+ * additional function that will be applied to a given argument set and used to
+ * create the cache key under which the results of the function to be memoized
+ * will be stored. Care must be taken when implementing key generation to avoid
+ * clashes that may overwrite previous entries erroneously.
+ *
+ *
+ * @func
+ * @memberOf R
+ * @since v0.24.0
+ * @category Function
+ * @sig (*... -> String) -> (*... -> a) -> (*... -> a)
+ * @param {Function} fn The function to generate the cache key.
+ * @param {Function} fn The function to memoize.
+ * @return {Function} Memoized version of `fn`.
+ * @see R.memoize
+ * @example
+ *
+ *      let count = 0;
+ *      const factorial = R.memoizeWith(R.identity, n => {
+ *        count += 1;
+ *        return R.product(R.range(1, n + 1));
+ *      });
+ *      factorial(5); //=> 120
+ *      factorial(5); //=> 120
+ *      factorial(5); //=> 120
+ *      count; //=> 1
+ */
+
 var memoizeWith$1 = /*#__PURE__*/_curry2_1(function memoizeWith(mFn, fn) {
   var cache = {};
   return _arity_1(fn.length, function () {
@@ -22982,20 +29282,117 @@ var memoizeWith$1 = /*#__PURE__*/_curry2_1(function memoizeWith(mFn, fn) {
 });
 var memoizeWith_1 = memoizeWith$1;
 
+/**
+ * Creates a new function that, when invoked, caches the result of calling `fn`
+ * for a given argument set and returns the result. Subsequent calls to the
+ * memoized `fn` with the same argument set will not result in an additional
+ * call to `fn`; instead, the cached result for that set of arguments will be
+ * returned.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Function
+ * @sig (*... -> a) -> (*... -> a)
+ * @param {Function} fn The function to memoize.
+ * @return {Function} Memoized version of `fn`.
+ * @see R.memoizeWith
+ * @deprecated since v0.25.0
+ * @example
+ *
+ *      let count = 0;
+ *      const factorial = R.memoize(n => {
+ *        count += 1;
+ *        return R.product(R.range(1, n + 1));
+ *      });
+ *      factorial(5); //=> 120
+ *      factorial(5); //=> 120
+ *      factorial(5); //=> 120
+ *      count; //=> 1
+ */
+
 var memoize$1 = /*#__PURE__*/memoizeWith_1(function () {
   return toString_1$1(arguments);
 });
 var memoize_1 = memoize$1;
+
+/**
+ * Create a new object with the own properties of the first object merged with
+ * the own properties of the second object. If a key exists in both objects,
+ * the value from the second object will be used.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Object
+ * @sig {k: v} -> {k: v} -> {k: v}
+ * @param {Object} l
+ * @param {Object} r
+ * @return {Object}
+ * @see R.mergeDeepRight, R.mergeWith, R.mergeWithKey
+ * @example
+ *
+ *      R.merge({ 'name': 'fred', 'age': 10 }, { 'age': 40 });
+ *      //=> { 'name': 'fred', 'age': 40 }
+ *
+ *      var resetToDefault = R.merge(R.__, {x: 0});
+ *      resetToDefault({x: 5, y: 2}); //=> {x: 0, y: 2}
+ * @symb R.merge({ x: 1, y: 2 }, { y: 5, z: 3 }) = { x: 1, y: 5, z: 3 }
+ */
 
 var merge$1 = /*#__PURE__*/_curry2_1(function merge(l, r) {
   return _assign({}, l, r);
 });
 var merge_1 = merge$1;
 
+/**
+ * Merges a list of objects together into one object.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.10.0
+ * @category List
+ * @sig [{k: v}] -> {k: v}
+ * @param {Array} list An array of objects
+ * @return {Object} A merged object.
+ * @see R.reduce
+ * @example
+ *
+ *      R.mergeAll([{foo:1},{bar:2},{baz:3}]); //=> {foo:1,bar:2,baz:3}
+ *      R.mergeAll([{foo:1},{foo:2},{bar:2}]); //=> {foo:2,bar:2}
+ * @symb R.mergeAll([{ x: 1 }, { y: 2 }, { z: 3 }]) = { x: 1, y: 2, z: 3 }
+ */
+
 var mergeAll$1 = /*#__PURE__*/_curry1_1(function mergeAll(list) {
   return _assign.apply(null, [{}].concat(list));
 });
 var mergeAll_1 = mergeAll$1;
+
+/**
+ * Creates a new object with the own properties of the two provided objects. If
+ * a key exists in both objects, the provided function is applied to the key
+ * and the values associated with the key in each object, with the result being
+ * used as the value associated with the key in the returned object.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.19.0
+ * @category Object
+ * @sig ((String, a, a) -> a) -> {a} -> {a} -> {a}
+ * @param {Function} fn
+ * @param {Object} l
+ * @param {Object} r
+ * @return {Object}
+ * @see R.mergeDeepWithKey, R.merge, R.mergeWith
+ * @example
+ *
+ *      let concatValues = (k, l, r) => k == 'values' ? R.concat(l, r) : r
+ *      R.mergeWithKey(concatValues,
+ *                     { a: true, thing: 'foo', values: [10, 20] },
+ *                     { b: true, thing: 'bar', values: [15, 35] });
+ *      //=> { a: true, b: true, thing: 'bar', values: [10, 20, 15, 35] }
+ * @symb R.mergeWithKey(f, { x: 1, y: 2 }, { y: 5, z: 3 }) = { x: 1, y: f('y', 2, 5), z: 3 }
+ */
 
 var mergeWithKey$1 = /*#__PURE__*/_curry3_1(function mergeWithKey(fn, l, r) {
   var result = {};
@@ -23017,6 +29414,35 @@ var mergeWithKey$1 = /*#__PURE__*/_curry3_1(function mergeWithKey(fn, l, r) {
 });
 var mergeWithKey_1 = mergeWithKey$1;
 
+/**
+ * Creates a new object with the own properties of the two provided objects.
+ * If a key exists in both objects:
+ * - and both associated values are also objects then the values will be
+ *   recursively merged.
+ * - otherwise the provided function is applied to the key and associated values
+ *   using the resulting value as the new value associated with the key.
+ * If a key only exists in one object, the value will be associated with the key
+ * of the resulting object.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.24.0
+ * @category Object
+ * @sig ((String, a, a) -> a) -> {a} -> {a} -> {a}
+ * @param {Function} fn
+ * @param {Object} lObj
+ * @param {Object} rObj
+ * @return {Object}
+ * @see R.mergeWithKey, R.mergeDeep, R.mergeDeepWith
+ * @example
+ *
+ *      let concatValues = (k, l, r) => k == 'values' ? R.concat(l, r) : r
+ *      R.mergeDeepWithKey(concatValues,
+ *                         { a: true, c: { thing: 'foo', values: [10, 20] }},
+ *                         { b: true, c: { thing: 'bar', values: [15, 35] }});
+ *      //=> { a: true, b: true, c: { thing: 'bar', values: [10, 20, 15, 35] }}
+ */
+
 var mergeDeepWithKey$1 = /*#__PURE__*/_curry3_1(function mergeDeepWithKey(fn, lObj, rObj) {
   return mergeWithKey_1(function (k, lVal, rVal) {
     if (_isObject_1(lVal) && _isObject_1(rVal)) {
@@ -23028,12 +29454,56 @@ var mergeDeepWithKey$1 = /*#__PURE__*/_curry3_1(function mergeDeepWithKey(fn, lO
 });
 var mergeDeepWithKey_1 = mergeDeepWithKey$1;
 
+/**
+ * Creates a new object with the own properties of the first object merged with
+ * the own properties of the second object. If a key exists in both objects:
+ * - and both values are objects, the two values will be recursively merged
+ * - otherwise the value from the first object will be used.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.24.0
+ * @category Object
+ * @sig {a} -> {a} -> {a}
+ * @param {Object} lObj
+ * @param {Object} rObj
+ * @return {Object}
+ * @see R.merge, R.mergeDeepRight, R.mergeDeepWith, R.mergeDeepWithKey
+ * @example
+ *
+ *      R.mergeDeepLeft({ name: 'fred', age: 10, contact: { email: 'moo@example.com' }},
+ *                      { age: 40, contact: { email: 'baa@example.com' }});
+ *      //=> { name: 'fred', age: 10, contact: { email: 'moo@example.com' }}
+ */
+
 var mergeDeepLeft$1 = /*#__PURE__*/_curry2_1(function mergeDeepLeft(lObj, rObj) {
   return mergeDeepWithKey_1(function (k, lVal, rVal) {
     return lVal;
   }, lObj, rObj);
 });
 var mergeDeepLeft_1 = mergeDeepLeft$1;
+
+/**
+ * Creates a new object with the own properties of the first object merged with
+ * the own properties of the second object. If a key exists in both objects:
+ * - and both values are objects, the two values will be recursively merged
+ * - otherwise the value from the second object will be used.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.24.0
+ * @category Object
+ * @sig {a} -> {a} -> {a}
+ * @param {Object} lObj
+ * @param {Object} rObj
+ * @return {Object}
+ * @see R.merge, R.mergeDeepLeft, R.mergeDeepWith, R.mergeDeepWithKey
+ * @example
+ *
+ *      R.mergeDeepRight({ name: 'fred', age: 10, contact: { email: 'moo@example.com' }},
+ *                       { age: 40, contact: { email: 'baa@example.com' }});
+ *      //=> { name: 'fred', age: 40, contact: { email: 'baa@example.com' }}
+ */
 
 var mergeDeepRight$1 = /*#__PURE__*/_curry2_1(function mergeDeepRight(lObj, rObj) {
   return mergeDeepWithKey_1(function (k, lVal, rVal) {
@@ -23042,12 +29512,64 @@ var mergeDeepRight$1 = /*#__PURE__*/_curry2_1(function mergeDeepRight(lObj, rObj
 });
 var mergeDeepRight_1 = mergeDeepRight$1;
 
+/**
+ * Creates a new object with the own properties of the two provided objects.
+ * If a key exists in both objects:
+ * - and both associated values are also objects then the values will be
+ *   recursively merged.
+ * - otherwise the provided function is applied to associated values using the
+ *   resulting value as the new value associated with the key.
+ * If a key only exists in one object, the value will be associated with the key
+ * of the resulting object.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.24.0
+ * @category Object
+ * @sig ((a, a) -> a) -> {a} -> {a} -> {a}
+ * @param {Function} fn
+ * @param {Object} lObj
+ * @param {Object} rObj
+ * @return {Object}
+ * @see R.mergeWith, R.mergeDeep, R.mergeDeepWithKey
+ * @example
+ *
+ *      R.mergeDeepWith(R.concat,
+ *                      { a: true, c: { values: [10, 20] }},
+ *                      { b: true, c: { values: [15, 35] }});
+ *      //=> { a: true, b: true, c: { values: [10, 20, 15, 35] }}
+ */
+
 var mergeDeepWith$1 = /*#__PURE__*/_curry3_1(function mergeDeepWith(fn, lObj, rObj) {
   return mergeDeepWithKey_1(function (k, lVal, rVal) {
     return fn(lVal, rVal);
   }, lObj, rObj);
 });
 var mergeDeepWith_1 = mergeDeepWith$1;
+
+/**
+ * Creates a new object with the own properties of the two provided objects. If
+ * a key exists in both objects, the provided function is applied to the values
+ * associated with the key in each object, with the result being used as the
+ * value associated with the key in the returned object.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.19.0
+ * @category Object
+ * @sig ((a, a) -> a) -> {a} -> {a} -> {a}
+ * @param {Function} fn
+ * @param {Object} l
+ * @param {Object} r
+ * @return {Object}
+ * @see R.mergeDeepWith, R.merge, R.mergeWithKey
+ * @example
+ *
+ *      R.mergeWith(R.concat,
+ *                  { a: true, values: [10, 20] },
+ *                  { b: true, values: [15, 35] });
+ *      //=> { a: true, b: true, values: [10, 20, 15, 35] }
+ */
 
 var mergeWith$1 = /*#__PURE__*/_curry3_1(function mergeWith(fn, l, r) {
   return mergeWithKey_1(function (_, _l, _r) {
@@ -23056,33 +29578,181 @@ var mergeWith$1 = /*#__PURE__*/_curry3_1(function mergeWith(fn, l, r) {
 });
 var mergeWith_1 = mergeWith$1;
 
+/**
+ * Returns the smaller of its two arguments.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Relation
+ * @sig Ord a => a -> a -> a
+ * @param {*} a
+ * @param {*} b
+ * @return {*}
+ * @see R.minBy, R.max
+ * @example
+ *
+ *      R.min(789, 123); //=> 123
+ *      R.min('a', 'b'); //=> 'a'
+ */
+
 var min$2 = /*#__PURE__*/_curry2_1(function min(a, b) {
   return b < a ? b : a;
 });
 var min_1$2 = min$2;
+
+/**
+ * Takes a function and two values, and returns whichever value produces the
+ * smaller result when passed to the provided function.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.8.0
+ * @category Relation
+ * @sig Ord b => (a -> b) -> a -> a -> a
+ * @param {Function} f
+ * @param {*} a
+ * @param {*} b
+ * @return {*}
+ * @see R.min, R.maxBy
+ * @example
+ *
+ *      //  square :: Number -> Number
+ *      var square = n => n * n;
+ *
+ *      R.minBy(square, -3, 2); //=> 2
+ *
+ *      R.reduce(R.minBy(square), Infinity, [3, -5, 4, 1, -2]); //=> 1
+ *      R.reduce(R.minBy(square), Infinity, []); //=> Infinity
+ */
 
 var minBy$1 = /*#__PURE__*/_curry3_1(function minBy(f, a, b) {
   return f(b) < f(a) ? b : a;
 });
 var minBy_1 = minBy$1;
 
+/**
+ * Divides the first parameter by the second and returns the remainder. Note
+ * that this function preserves the JavaScript-style behavior for modulo. For
+ * mathematical modulo see [`mathMod`](#mathMod).
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.1
+ * @category Math
+ * @sig Number -> Number -> Number
+ * @param {Number} a The value to the divide.
+ * @param {Number} b The pseudo-modulus
+ * @return {Number} The result of `b % a`.
+ * @see R.mathMod
+ * @example
+ *
+ *      R.modulo(17, 3); //=> 2
+ *      // JS behavior:
+ *      R.modulo(-17, 3); //=> -2
+ *      R.modulo(17, -3); //=> 2
+ *
+ *      var isOdd = R.modulo(R.__, 2);
+ *      isOdd(42); //=> 0
+ *      isOdd(21); //=> 1
+ */
+
 var modulo$1 = /*#__PURE__*/_curry2_1(function modulo(a, b) {
   return a % b;
 });
 var modulo_1 = modulo$1;
+
+/**
+ * Multiplies two numbers. Equivalent to `a * b` but curried.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Math
+ * @sig Number -> Number -> Number
+ * @param {Number} a The first value.
+ * @param {Number} b The second value.
+ * @return {Number} The result of `a * b`.
+ * @see R.divide
+ * @example
+ *
+ *      var double = R.multiply(2);
+ *      var triple = R.multiply(3);
+ *      double(3);       //=>  6
+ *      triple(4);       //=> 12
+ *      R.multiply(2, 5);  //=> 10
+ */
 
 var multiply$1 = /*#__PURE__*/_curry2_1(function multiply(a, b) {
   return a * b;
 });
 var multiply_1 = multiply$1;
 
+/**
+ * Negates its argument.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.9.0
+ * @category Math
+ * @sig Number -> Number
+ * @param {Number} n
+ * @return {Number}
+ * @example
+ *
+ *      R.negate(42); //=> -42
+ */
+
 var negate$1 = /*#__PURE__*/_curry1_1(function negate(n) {
   return -n;
 });
 var negate_1 = negate$1;
 
+/**
+ * Returns `true` if no elements of the list match the predicate, `false`
+ * otherwise.
+ *
+ * Dispatches to the `any` method of the second argument, if present.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.12.0
+ * @category List
+ * @sig (a -> Boolean) -> [a] -> Boolean
+ * @param {Function} fn The predicate function.
+ * @param {Array} list The array to consider.
+ * @return {Boolean} `true` if the predicate is not satisfied by every element, `false` otherwise.
+ * @see R.all, R.any
+ * @example
+ *
+ *      var isEven = n => n % 2 === 0;
+ *      var isOdd = n => n % 2 === 1;
+ *
+ *      R.none(isEven, [1, 3, 5, 7, 9, 11]); //=> true
+ *      R.none(isOdd, [1, 3, 5, 7, 8, 11]); //=> false
+ */
+
 var none$1 = /*#__PURE__*/_curry2_1( /*#__PURE__*/_complement_1( /*#__PURE__*/_dispatchable_1(['any'], _xany_1, any_1)));
 var none_1 = none$1;
+
+/**
+ * Returns a function which returns its nth argument.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.9.0
+ * @category Function
+ * @sig Number -> *... -> *
+ * @param {Number} n
+ * @return {Function}
+ * @example
+ *
+ *      R.nthArg(1)('a', 'b', 'c'); //=> 'b'
+ *      R.nthArg(-1)('a', 'b', 'c'); //=> 'c'
+ * @symb R.nthArg(-1)(a, b, c) = c
+ * @symb R.nthArg(0)(a, b, c) = a
+ * @symb R.nthArg(1)(a, b, c) = b
+ */
 
 var nthArg$1 = /*#__PURE__*/_curry1_1(function nthArg(n) {
   var arity = n < 0 ? 1 : n + 1;
@@ -23091,6 +29761,32 @@ var nthArg$1 = /*#__PURE__*/_curry1_1(function nthArg(n) {
   });
 });
 var nthArg_1 = nthArg$1;
+
+/**
+ * `o` is a curried composition function that returns a unary function.
+ * Like [`compose`](#compose), `o` performs right-to-left function composition.
+ * Unlike [`compose`](#compose), the rightmost function passed to `o` will be
+ * invoked with only one argument.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.24.0
+ * @category Function
+ * @sig (b -> c) -> (a -> b) -> a -> c
+ * @param {Function} f
+ * @param {Function} g
+ * @return {Function}
+ * @see R.compose, R.pipe
+ * @example
+ *
+ *      var classyGreeting = name => "The name's " + name.last + ", " + name.first + " " + name.last
+ *      var yellGreeting = R.o(R.toUpper, classyGreeting);
+ *      yellGreeting({first: 'James', last: 'Bond'}); //=> "THE NAME'S BOND, JAMES BOND"
+ *
+ *      R.o(R.multiply(10), R.add(10))(-4) //=> 60
+ *
+ * @symb R.o(f, g, x) = f(g(x))
+ */
 
 var o$1 = /*#__PURE__*/_curry3_1(function o(f, g, x) {
   return f(g(x));
@@ -23102,8 +29798,44 @@ function _of(x) {
 }
 var _of_1 = _of;
 
+/**
+ * Returns a singleton array containing the value provided.
+ *
+ * Note this `of` is different from the ES6 `of`; See
+ * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/of
+ *
+ * @func
+ * @memberOf R
+ * @since v0.3.0
+ * @category Function
+ * @sig a -> [a]
+ * @param {*} x any value
+ * @return {Array} An array wrapping `x`.
+ * @example
+ *
+ *      R.of(null); //=> [null]
+ *      R.of([42]); //=> [[42]]
+ */
+
 var of$1 = /*#__PURE__*/_curry1_1(_of_1);
 var of_1 = of$1;
+
+/**
+ * Returns a partial copy of an object omitting the keys specified.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Object
+ * @sig [String] -> {String: *} -> {String: *}
+ * @param {Array} names an array of String property names to omit from the new object
+ * @param {Object} obj The object to copy from
+ * @return {Object} A new object with properties from `names` not on it.
+ * @see R.pick
+ * @example
+ *
+ *      R.omit(['a', 'd'], {a: 1, b: 2, c: 3, d: 4}); //=> {b: 2, c: 3}
+ */
 
 var omit$1 = /*#__PURE__*/_curry2_1(function omit(names, obj) {
   var result = {};
@@ -23125,6 +29857,26 @@ var omit$1 = /*#__PURE__*/_curry2_1(function omit(names, obj) {
 });
 var omit_1 = omit$1;
 
+/**
+ * Accepts a function `fn` and returns a function that guards invocation of
+ * `fn` such that `fn` can only ever be called once, no matter how many times
+ * the returned function is invoked. The first value calculated is returned in
+ * subsequent invocations.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Function
+ * @sig (a... -> b) -> (a... -> b)
+ * @param {Function} fn The function to wrap in a call-only-once wrapper.
+ * @return {Function} The wrapped function.
+ * @example
+ *
+ *      var addOneOnce = R.once(x => x + 1);
+ *      addOneOnce(10); //=> 11
+ *      addOneOnce(addOneOnce(50)); //=> 11
+ */
+
 var once$1 = /*#__PURE__*/_curry1_1(function once(fn) {
   var called = false;
   var result;
@@ -23138,6 +29890,10 @@ var once$1 = /*#__PURE__*/_curry1_1(function once(fn) {
   });
 });
 var once_1 = once$1;
+
+// `Identity` is a functor that holds a single value, where `map` simply
+// transforms the held value with the provided function.
+
 
 var Identity = function (x) {
   return { value: x, map: function (f) {
@@ -23177,6 +29933,23 @@ var over$1 = /*#__PURE__*/_curry3_1(function over(lens, f, x) {
 });
 var over_1 = over$1;
 
+/**
+ * Takes two arguments, `fst` and `snd`, and returns `[fst, snd]`.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.18.0
+ * @category List
+ * @sig a -> b -> (a,b)
+ * @param {*} fst
+ * @param {*} snd
+ * @return {Array}
+ * @see R.objOf, R.of
+ * @example
+ *
+ *      R.pair('foo', 'bar'); //=> ['foo', 'bar']
+ */
+
 var pair$1 = /*#__PURE__*/_curry2_1(function pair(fst, snd) {
   return [fst, snd];
 });
@@ -23191,29 +29964,192 @@ function _createPartialApplicator(concat) {
 }
 var _createPartialApplicator_1 = _createPartialApplicator;
 
+/**
+ * Takes a function `f` and a list of arguments, and returns a function `g`.
+ * When applied, `g` returns the result of applying `f` to the arguments
+ * provided initially followed by the arguments provided to `g`.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.10.0
+ * @category Function
+ * @sig ((a, b, c, ..., n) -> x) -> [a, b, c, ...] -> ((d, e, f, ..., n) -> x)
+ * @param {Function} f
+ * @param {Array} args
+ * @return {Function}
+ * @see R.partialRight
+ * @example
+ *
+ *      var multiply2 = (a, b) => a * b;
+ *      var double = R.partial(multiply2, [2]);
+ *      double(2); //=> 4
+ *
+ *      var greet = (salutation, title, firstName, lastName) =>
+ *        salutation + ', ' + title + ' ' + firstName + ' ' + lastName + '!';
+ *
+ *      var sayHello = R.partial(greet, ['Hello']);
+ *      var sayHelloToMs = R.partial(sayHello, ['Ms.']);
+ *      sayHelloToMs('Jane', 'Jones'); //=> 'Hello, Ms. Jane Jones!'
+ * @symb R.partial(f, [a, b])(c, d) = f(a, b, c, d)
+ */
+
 var partial$1 = /*#__PURE__*/_createPartialApplicator_1(_concat_1);
 var partial_1 = partial$1;
+
+/**
+ * Takes a function `f` and a list of arguments, and returns a function `g`.
+ * When applied, `g` returns the result of applying `f` to the arguments
+ * provided to `g` followed by the arguments provided initially.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.10.0
+ * @category Function
+ * @sig ((a, b, c, ..., n) -> x) -> [d, e, f, ..., n] -> ((a, b, c, ...) -> x)
+ * @param {Function} f
+ * @param {Array} args
+ * @return {Function}
+ * @see R.partial
+ * @example
+ *
+ *      var greet = (salutation, title, firstName, lastName) =>
+ *        salutation + ', ' + title + ' ' + firstName + ' ' + lastName + '!';
+ *
+ *      var greetMsJaneJones = R.partialRight(greet, ['Ms.', 'Jane', 'Jones']);
+ *
+ *      greetMsJaneJones('Hello'); //=> 'Hello, Ms. Jane Jones!'
+ * @symb R.partialRight(f, [a, b])(c, d) = f(c, d, a, b)
+ */
 
 var partialRight$1 = /*#__PURE__*/_createPartialApplicator_1( /*#__PURE__*/flip_1(_concat_1));
 var partialRight_1 = partialRight$1;
 
+/**
+ * Takes a predicate and a list or other `Filterable` object and returns the
+ * pair of filterable objects of the same type of elements which do and do not
+ * satisfy, the predicate, respectively. Filterable objects include plain objects or any object
+ * that has a filter method such as `Array`.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.4
+ * @category List
+ * @sig Filterable f => (a -> Boolean) -> f a -> [f a, f a]
+ * @param {Function} pred A predicate to determine which side the element belongs to.
+ * @param {Array} filterable the list (or other filterable) to partition.
+ * @return {Array} An array, containing first the subset of elements that satisfy the
+ *         predicate, and second the subset of elements that do not satisfy.
+ * @see R.filter, R.reject
+ * @example
+ *
+ *      R.partition(R.contains('s'), ['sss', 'ttt', 'foo', 'bars']);
+ *      // => [ [ 'sss', 'bars' ],  [ 'ttt', 'foo' ] ]
+ *
+ *      R.partition(R.contains('s'), { a: 'sss', b: 'ttt', foo: 'bars' });
+ *      // => [ { a: 'sss', foo: 'bars' }, { b: 'ttt' }  ]
+ */
+
 var partition$1 = /*#__PURE__*/juxt_1([filter_1, reject_1]);
 var partition_1 = partition$1;
+
+/**
+ * Determines whether a nested path on an object has a specific value, in
+ * [`R.equals`](#equals) terms. Most likely used to filter a list.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.7.0
+ * @category Relation
+ * @typedefn Idx = String | Int
+ * @sig [Idx] -> a -> {a} -> Boolean
+ * @param {Array} path The path of the nested property to use
+ * @param {*} val The value to compare the nested property with
+ * @param {Object} obj The object to check the nested property in
+ * @return {Boolean} `true` if the value equals the nested object property,
+ *         `false` otherwise.
+ * @example
+ *
+ *      var user1 = { address: { zipCode: 90210 } };
+ *      var user2 = { address: { zipCode: 55555 } };
+ *      var user3 = { name: 'Bob' };
+ *      var users = [ user1, user2, user3 ];
+ *      var isFamous = R.pathEq(['address', 'zipCode'], 90210);
+ *      R.filter(isFamous, users); //=> [ user1 ]
+ */
 
 var pathEq$1 = /*#__PURE__*/_curry3_1(function pathEq(_path, val, obj) {
   return equals_1(path_1(_path, obj), val);
 });
 var pathEq_1 = pathEq$1;
 
+/**
+ * If the given, non-null object has a value at the given path, returns the
+ * value at that path. Otherwise returns the provided default value.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.18.0
+ * @category Object
+ * @typedefn Idx = String | Int
+ * @sig a -> [Idx] -> {a} -> a
+ * @param {*} d The default value.
+ * @param {Array} p The path to use.
+ * @param {Object} obj The object to retrieve the nested property from.
+ * @return {*} The data at `path` of the supplied object or the default value.
+ * @example
+ *
+ *      R.pathOr('N/A', ['a', 'b'], {a: {b: 2}}); //=> 2
+ *      R.pathOr('N/A', ['a', 'b'], {c: {b: 2}}); //=> "N/A"
+ */
+
 var pathOr$1 = /*#__PURE__*/_curry3_1(function pathOr(d, p, obj) {
   return defaultTo_1(d, path_1(p, obj));
 });
 var pathOr_1 = pathOr$1;
 
+/**
+ * Returns `true` if the specified object property at given path satisfies the
+ * given predicate; `false` otherwise.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.19.0
+ * @category Logic
+ * @typedefn Idx = String | Int
+ * @sig (a -> Boolean) -> [Idx] -> {a} -> Boolean
+ * @param {Function} pred
+ * @param {Array} propPath
+ * @param {*} obj
+ * @return {Boolean}
+ * @see R.propSatisfies, R.path
+ * @example
+ *
+ *      R.pathSatisfies(y => y > 0, ['x', 'y'], {x: {y: 2}}); //=> true
+ */
+
 var pathSatisfies$1 = /*#__PURE__*/_curry3_1(function pathSatisfies(pred, propPath, obj) {
   return propPath.length > 0 && pred(path_1(propPath, obj));
 });
 var pathSatisfies_1 = pathSatisfies$1;
+
+/**
+ * Returns a partial copy of an object containing only the keys specified. If
+ * the key does not exist, the property is ignored.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Object
+ * @sig [k] -> {k: v} -> {k: v}
+ * @param {Array} names an array of String property names to copy onto a new object
+ * @param {Object} obj The object to copy from
+ * @return {Object} A new object with only properties from `names` on it.
+ * @see R.omit, R.props
+ * @example
+ *
+ *      R.pick(['a', 'd'], {a: 1, b: 2, c: 3, d: 4}); //=> {a: 1, d: 4}
+ *      R.pick(['a', 'e', 'f'], {a: 1, b: 2, c: 3, d: 4}); //=> {a: 1}
+ */
 
 var pick$1 = /*#__PURE__*/_curry2_1(function pick(names, obj) {
   var result = {};
@@ -23228,6 +30164,25 @@ var pick$1 = /*#__PURE__*/_curry2_1(function pick(names, obj) {
 });
 var pick_1 = pick$1;
 
+/**
+ * Similar to `pick` except that this one includes a `key: undefined` pair for
+ * properties that don't exist.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Object
+ * @sig [k] -> {k: v} -> {k: v}
+ * @param {Array} names an array of String property names to copy onto a new object
+ * @param {Object} obj The object to copy from
+ * @return {Object} A new object with only properties from `names` on it.
+ * @see R.pick
+ * @example
+ *
+ *      R.pickAll(['a', 'd'], {a: 1, b: 2, c: 3, d: 4}); //=> {a: 1, d: 4}
+ *      R.pickAll(['a', 'e', 'f'], {a: 1, b: 2, c: 3, d: 4}); //=> {a: 1, e: undefined, f: undefined}
+ */
+
 var pickAll$1 = /*#__PURE__*/_curry2_1(function pickAll(names, obj) {
   var result = {};
   var idx = 0;
@@ -23241,6 +30196,27 @@ var pickAll$1 = /*#__PURE__*/_curry2_1(function pickAll(names, obj) {
 });
 var pickAll_1 = pickAll$1;
 
+/**
+ * Returns a partial copy of an object containing only the keys that satisfy
+ * the supplied predicate.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.8.0
+ * @category Object
+ * @sig ((v, k) -> Boolean) -> {k: v} -> {k: v}
+ * @param {Function} pred A predicate to determine whether or not a key
+ *        should be included on the output object.
+ * @param {Object} obj The object to copy from
+ * @return {Object} A new object with only properties that satisfy `pred`
+ *         on it.
+ * @see R.pick, R.filter
+ * @example
+ *
+ *      var isUpperCase = (val, key) => key.toUpperCase() === key;
+ *      R.pickBy(isUpperCase, {a: 1, b: 2, A: 3, B: 4}); //=> {A: 3, B: 4}
+ */
+
 var pickBy$1 = /*#__PURE__*/_curry2_1(function pickBy(test, obj) {
   var result = {};
   for (var prop in obj) {
@@ -23252,6 +30228,41 @@ var pickBy$1 = /*#__PURE__*/_curry2_1(function pickBy(test, obj) {
 });
 var pickBy_1 = pickBy$1;
 
+/**
+ * Returns the left-to-right Kleisli composition of the provided functions,
+ * each of which must return a value of a type supported by [`chain`](#chain).
+ *
+ * `R.pipeK(f, g, h)` is equivalent to `R.pipe(f, R.chain(g), R.chain(h))`.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.16.0
+ * @category Function
+ * @sig Chain m => ((a -> m b), (b -> m c), ..., (y -> m z)) -> (a -> m z)
+ * @param {...Function}
+ * @return {Function}
+ * @see R.composeK
+ * @example
+ *
+ *      //  parseJson :: String -> Maybe *
+ *      //  get :: String -> Object -> Maybe *
+ *
+ *      //  getStateCode :: Maybe String -> Maybe String
+ *      var getStateCode = R.pipeK(
+ *        parseJson,
+ *        get('user'),
+ *        get('address'),
+ *        get('state'),
+ *        R.compose(Maybe.of, R.toUpper)
+ *      );
+ *
+ *      getStateCode('{"user":{"address":{"state":"ny"}}}');
+ *      //=> Just('NY')
+ *      getStateCode('[Invalid JSON]');
+ *      //=> Nothing()
+ * @symb R.pipeK(f, g, h)(a) = R.chain(h, R.chain(g, f(a)))
+ */
+
 function pipeK$1() {
   if (arguments.length === 0) {
     throw new Error('pipeK requires at least one argument');
@@ -23260,13 +30271,77 @@ function pipeK$1() {
 }
 var pipeK_1 = pipeK$1;
 
+/**
+ * Returns a new list with the given element at the front, followed by the
+ * contents of the list.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category List
+ * @sig a -> [a] -> [a]
+ * @param {*} el The item to add to the head of the output list.
+ * @param {Array} list The array to add to the tail of the output list.
+ * @return {Array} A new array.
+ * @see R.append
+ * @example
+ *
+ *      R.prepend('fee', ['fi', 'fo', 'fum']); //=> ['fee', 'fi', 'fo', 'fum']
+ */
+
 var prepend$1 = /*#__PURE__*/_curry2_1(function prepend(el, list) {
   return _concat_1([el], list);
 });
 var prepend_1 = prepend$1;
 
+/**
+ * Multiplies together all the elements of a list.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Math
+ * @sig [Number] -> Number
+ * @param {Array} list An array of numbers
+ * @return {Number} The product of all the numbers in the list.
+ * @see R.reduce
+ * @example
+ *
+ *      R.product([2,4,6,8,100,1]); //=> 38400
+ */
+
 var product$1 = /*#__PURE__*/reduce_1(multiply_1, 1);
 var product_1 = product$1;
+
+/**
+ * Accepts a function `fn` and a list of transformer functions and returns a
+ * new curried function. When the new function is invoked, it calls the
+ * function `fn` with parameters consisting of the result of calling each
+ * supplied handler on successive arguments to the new function.
+ *
+ * If more arguments are passed to the returned function than transformer
+ * functions, those arguments are passed directly to `fn` as additional
+ * parameters. If you expect additional arguments that don't need to be
+ * transformed, although you can ignore them, it's best to pass an identity
+ * function so that the new function reports the correct arity.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Function
+ * @sig ((x1, x2, ...) -> z) -> [(a -> x1), (b -> x2), ...] -> (a -> b -> ... -> z)
+ * @param {Function} fn The function to wrap.
+ * @param {Array} transformers A list of transformer functions
+ * @return {Function} The wrapped function.
+ * @see R.converge
+ * @example
+ *
+ *      R.useWith(Math.pow, [R.identity, R.identity])(3, 4); //=> 81
+ *      R.useWith(Math.pow, [R.identity, R.identity])(3)(4); //=> 81
+ *      R.useWith(Math.pow, [R.dec, R.inc])(3, 4); //=> 32
+ *      R.useWith(Math.pow, [R.dec, R.inc])(3)(4); //=> 32
+ * @symb R.useWith(f, [g, h])(a, b) = f(g(a), h(b))
+ */
 
 var useWith$1 = /*#__PURE__*/_curry2_1(function useWith(fn, transformers) {
   return curryN_1(transformers.length, function () {
@@ -23281,28 +30356,163 @@ var useWith$1 = /*#__PURE__*/_curry2_1(function useWith(fn, transformers) {
 });
 var useWith_1 = useWith$1;
 
+/**
+ * Reasonable analog to SQL `select` statement.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Object
+ * @category Relation
+ * @sig [k] -> [{k: v}] -> [{k: v}]
+ * @param {Array} props The property names to project
+ * @param {Array} objs The objects to query
+ * @return {Array} An array of objects with just the `props` properties.
+ * @example
+ *
+ *      var abby = {name: 'Abby', age: 7, hair: 'blond', grade: 2};
+ *      var fred = {name: 'Fred', age: 12, hair: 'brown', grade: 7};
+ *      var kids = [abby, fred];
+ *      R.project(['name', 'grade'], kids); //=> [{name: 'Abby', grade: 2}, {name: 'Fred', grade: 7}]
+ */
+
 var project$1 = /*#__PURE__*/useWith_1(_map_1, [pickAll_1, identity_1]); // passing `identity` gives correct arity
 var project_1 = project$1;
+
+/**
+ * Returns `true` if the specified object property is equal, in
+ * [`R.equals`](#equals) terms, to the given value; `false` otherwise.
+ * You can test multiple properties with [`R.where`](#where).
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Relation
+ * @sig String -> a -> Object -> Boolean
+ * @param {String} name
+ * @param {*} val
+ * @param {*} obj
+ * @return {Boolean}
+ * @see R.whereEq, R.propSatisfies, R.equals
+ * @example
+ *
+ *      var abby = {name: 'Abby', age: 7, hair: 'blond'};
+ *      var fred = {name: 'Fred', age: 12, hair: 'brown'};
+ *      var rusty = {name: 'Rusty', age: 10, hair: 'brown'};
+ *      var alois = {name: 'Alois', age: 15, disposition: 'surly'};
+ *      var kids = [abby, fred, rusty, alois];
+ *      var hasBrownHair = R.propEq('hair', 'brown');
+ *      R.filter(hasBrownHair, kids); //=> [fred, rusty]
+ */
 
 var propEq$1 = /*#__PURE__*/_curry3_1(function propEq(name, val, obj) {
   return equals_1(val, obj[name]);
 });
 var propEq_1 = propEq$1;
 
+/**
+ * Returns `true` if the specified object property is of the given type;
+ * `false` otherwise.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.16.0
+ * @category Type
+ * @sig Type -> String -> Object -> Boolean
+ * @param {Function} type
+ * @param {String} name
+ * @param {*} obj
+ * @return {Boolean}
+ * @see R.is, R.propSatisfies
+ * @example
+ *
+ *      R.propIs(Number, 'x', {x: 1, y: 2});  //=> true
+ *      R.propIs(Number, 'x', {x: 'foo'});    //=> false
+ *      R.propIs(Number, 'x', {});            //=> false
+ */
+
 var propIs$1 = /*#__PURE__*/_curry3_1(function propIs(type, name, obj) {
   return is_1(type, obj[name]);
 });
 var propIs_1 = propIs$1;
+
+/**
+ * If the given, non-null object has an own property with the specified name,
+ * returns the value of that property. Otherwise returns the provided default
+ * value.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.6.0
+ * @category Object
+ * @sig a -> String -> Object -> a
+ * @param {*} val The default value.
+ * @param {String} p The name of the property to return.
+ * @param {Object} obj The object to query.
+ * @return {*} The value of given property of the supplied object or the default value.
+ * @example
+ *
+ *      var alice = {
+ *        name: 'ALICE',
+ *        age: 101
+ *      };
+ *      var favorite = R.prop('favoriteLibrary');
+ *      var favoriteWithDefault = R.propOr('Ramda', 'favoriteLibrary');
+ *
+ *      favorite(alice);  //=> undefined
+ *      favoriteWithDefault(alice);  //=> 'Ramda'
+ */
 
 var propOr$1 = /*#__PURE__*/_curry3_1(function propOr(val, p, obj) {
   return obj != null && _has_1(p, obj) ? obj[p] : val;
 });
 var propOr_1 = propOr$1;
 
+/**
+ * Returns `true` if the specified object property satisfies the given
+ * predicate; `false` otherwise. You can test multiple properties with
+ * [`R.where`](#where).
+ *
+ * @func
+ * @memberOf R
+ * @since v0.16.0
+ * @category Logic
+ * @sig (a -> Boolean) -> String -> {String: a} -> Boolean
+ * @param {Function} pred
+ * @param {String} name
+ * @param {*} obj
+ * @return {Boolean}
+ * @see R.where, R.propEq, R.propIs
+ * @example
+ *
+ *      R.propSatisfies(x => x > 0, 'x', {x: 1, y: 2}); //=> true
+ */
+
 var propSatisfies$1 = /*#__PURE__*/_curry3_1(function propSatisfies(pred, name, obj) {
   return pred(obj[name]);
 });
 var propSatisfies_1 = propSatisfies$1;
+
+/**
+ * Acts as multiple `prop`: array of keys in, array of values out. Preserves
+ * order.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Object
+ * @sig [k] -> {k: v} -> [v]
+ * @param {Array} ps The property names to fetch
+ * @param {Object} obj The object to query
+ * @return {Array} The corresponding values or partially applied function.
+ * @example
+ *
+ *      R.props(['x', 'y'], {x: 1, y: 2}); //=> [1, 2]
+ *      R.props(['c', 'a', 'b'], {b: 2, a: 1}); //=> [undefined, 1, 2]
+ *
+ *      var fullName = R.compose(R.join(' '), R.props(['first', 'last']));
+ *      fullName({last: 'Bullet-Tooth', age: 33, first: 'Tony'}); //=> 'Tony Bullet-Tooth'
+ */
 
 var props$1 = /*#__PURE__*/_curry2_1(function props(ps, obj) {
   var len = ps.length;
@@ -23318,6 +30528,23 @@ var props$1 = /*#__PURE__*/_curry2_1(function props(ps, obj) {
 });
 var props_1 = props$1;
 
+/**
+ * Returns a list of numbers from `from` (inclusive) to `to` (exclusive).
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category List
+ * @sig Number -> Number -> [Number]
+ * @param {Number} from The first number in the list.
+ * @param {Number} to One more than the last number in the list.
+ * @return {Array} The list of numbers in tthe set `[a, b)`.
+ * @example
+ *
+ *      R.range(1, 5);    //=> [1, 2, 3, 4]
+ *      R.range(50, 53);  //=> [50, 51, 52]
+ */
+
 var range$1 = /*#__PURE__*/_curry2_1(function range(from, to) {
   if (!(_isNumber_1(from) && _isNumber_1(to))) {
     throw new TypeError('Both arguments to range must be numbers');
@@ -23332,6 +30559,49 @@ var range$1 = /*#__PURE__*/_curry2_1(function range(from, to) {
 });
 var range_1 = range$1;
 
+/**
+ * Returns a single item by iterating through the list, successively calling
+ * the iterator function and passing it an accumulator value and the current
+ * value from the array, and then passing the result to the next call.
+ *
+ * Similar to [`reduce`](#reduce), except moves through the input list from the
+ * right to the left.
+ *
+ * The iterator function receives two values: *(value, acc)*, while the arguments'
+ * order of `reduce`'s iterator function is *(acc, value)*.
+ *
+ * Note: `R.reduceRight` does not skip deleted or unassigned indices (sparse
+ * arrays), unlike the native `Array.prototype.reduceRight` method. For more details
+ * on this behavior, see:
+ * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduceRight#Description
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category List
+ * @sig ((a, b) -> b) -> b -> [a] -> b
+ * @param {Function} fn The iterator function. Receives two values, the current element from the array
+ *        and the accumulator.
+ * @param {*} acc The accumulator value.
+ * @param {Array} list The list to iterate over.
+ * @return {*} The final, accumulated value.
+ * @see R.reduce, R.addIndex
+ * @example
+ *
+ *      R.reduceRight(R.subtract, 0, [1, 2, 3, 4]) // => (1 - (2 - (3 - (4 - 0)))) = -2
+ *      //    -               -2
+ *      //   / \              / \
+ *      //  1   -            1   3
+ *      //     / \              / \
+ *      //    2   -     ==>    2  -1
+ *      //       / \              / \
+ *      //      3   -            3   4
+ *      //         / \              / \
+ *      //        4   0            4   0
+ *
+ * @symb R.reduceRight(f, a, [b, c, d]) = f(b, f(c, f(d, a)))
+ */
+
 var reduceRight$1 = /*#__PURE__*/_curry3_1(function reduceRight(fn, acc, list) {
   var idx = list.length - 1;
   while (idx >= 0) {
@@ -23342,6 +30612,36 @@ var reduceRight$1 = /*#__PURE__*/_curry3_1(function reduceRight(fn, acc, list) {
 });
 var reduceRight_1 = reduceRight$1;
 
+/**
+ * Like [`reduce`](#reduce), `reduceWhile` returns a single item by iterating
+ * through the list, successively calling the iterator function. `reduceWhile`
+ * also takes a predicate that is evaluated before each step. If the predicate
+ * returns `false`, it "short-circuits" the iteration and returns the current
+ * value of the accumulator.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.22.0
+ * @category List
+ * @sig ((a, b) -> Boolean) -> ((a, b) -> a) -> a -> [b] -> a
+ * @param {Function} pred The predicate. It is passed the accumulator and the
+ *        current element.
+ * @param {Function} fn The iterator function. Receives two values, the
+ *        accumulator and the current element.
+ * @param {*} a The accumulator value.
+ * @param {Array} list The list to iterate over.
+ * @return {*} The final, accumulated value.
+ * @see R.reduce, R.reduced
+ * @example
+ *
+ *      var isOdd = (acc, x) => x % 2 === 1;
+ *      var xs = [1, 3, 5, 60, 777, 800];
+ *      R.reduceWhile(isOdd, R.add, 0, xs); //=> 9
+ *
+ *      var ys = [2, 4, 6]
+ *      R.reduceWhile(isOdd, R.add, 111, ys); //=> 111
+ */
+
 var reduceWhile$1 = /*#__PURE__*/_curryN_1(4, [], function _reduceWhile(pred, fn, a, list) {
   return _reduce_1(function (acc, x) {
     return pred(acc, x) ? fn(acc, x) : _reduced_1(acc);
@@ -23349,8 +30649,57 @@ var reduceWhile$1 = /*#__PURE__*/_curryN_1(4, [], function _reduceWhile(pred, fn
 });
 var reduceWhile_1 = reduceWhile$1;
 
+/**
+ * Returns a value wrapped to indicate that it is the final value of the reduce
+ * and transduce functions. The returned value should be considered a black
+ * box: the internal structure is not guaranteed to be stable.
+ *
+ * Note: this optimization is unavailable to functions not explicitly listed
+ * above. For instance, it is not currently supported by
+ * [`reduceRight`](#reduceRight).
+ *
+ * @func
+ * @memberOf R
+ * @since v0.15.0
+ * @category List
+ * @sig a -> *
+ * @param {*} x The final value of the reduce.
+ * @return {*} The wrapped value.
+ * @see R.reduce, R.transduce
+ * @example
+ *
+ *     R.reduce(
+ *       (acc, item) => item > 3 ? R.reduced(acc) : acc.concat(item),
+ *       [],
+ *       [1, 2, 3, 4, 5]) // [1, 2, 3]
+ */
+
 var reduced$1 = /*#__PURE__*/_curry1_1(_reduced_1);
 var reduced_1 = reduced$1;
+
+/**
+ * Calls an input function `n` times, returning an array containing the results
+ * of those function calls.
+ *
+ * `fn` is passed one argument: The current value of `n`, which begins at `0`
+ * and is gradually incremented to `n - 1`.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.2.3
+ * @category List
+ * @sig (Number -> a) -> Number -> [a]
+ * @param {Function} fn The function to invoke. Passed one argument, the current value of `n`.
+ * @param {Number} n A value between `0` and `n - 1`. Increments after each function call.
+ * @return {Array} An array containing the return values of all calls to `fn`.
+ * @see R.repeat
+ * @example
+ *
+ *      R.times(R.identity, 5); //=> [0, 1, 2, 3, 4]
+ * @symb R.times(f, 0) = []
+ * @symb R.times(f, 1) = [f(0)]
+ * @symb R.times(f, 2) = [f(0), f(1)]
+ */
 
 var times$1 = /*#__PURE__*/_curry2_1(function times(fn, n) {
   var len = Number(n);
@@ -23369,15 +30718,82 @@ var times$1 = /*#__PURE__*/_curry2_1(function times(fn, n) {
 });
 var times_1 = times$1;
 
+/**
+ * Returns a fixed list of size `n` containing a specified identical value.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.1
+ * @category List
+ * @sig a -> n -> [a]
+ * @param {*} value The value to repeat.
+ * @param {Number} n The desired size of the output list.
+ * @return {Array} A new array containing `n` `value`s.
+ * @see R.times
+ * @example
+ *
+ *      R.repeat('hi', 5); //=> ['hi', 'hi', 'hi', 'hi', 'hi']
+ *
+ *      var obj = {};
+ *      var repeatedObjs = R.repeat(obj, 5); //=> [{}, {}, {}, {}, {}]
+ *      repeatedObjs[0] === repeatedObjs[1]; //=> true
+ * @symb R.repeat(a, 0) = []
+ * @symb R.repeat(a, 1) = [a]
+ * @symb R.repeat(a, 2) = [a, a]
+ */
+
 var repeat$1 = /*#__PURE__*/_curry2_1(function repeat(value, n) {
   return times_1(always_1(value), n);
 });
 var repeat_1 = repeat$1;
 
+/**
+ * Replace a substring or regex match in a string with a replacement.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.7.0
+ * @category String
+ * @sig RegExp|String -> String -> String -> String
+ * @param {RegExp|String} pattern A regular expression or a substring to match.
+ * @param {String} replacement The string to replace the matches with.
+ * @param {String} str The String to do the search and replacement in.
+ * @return {String} The result.
+ * @example
+ *
+ *      R.replace('foo', 'bar', 'foo foo foo'); //=> 'bar foo foo'
+ *      R.replace(/foo/, 'bar', 'foo foo foo'); //=> 'bar foo foo'
+ *
+ *      // Use the "g" (global) flag to replace all occurrences:
+ *      R.replace(/foo/g, 'bar', 'foo foo foo'); //=> 'bar bar bar'
+ */
+
 var replace$1 = /*#__PURE__*/_curry3_1(function replace(regex, replacement, str) {
   return str.replace(regex, replacement);
 });
 var replace_1 = replace$1;
+
+/**
+ * Scan is similar to [`reduce`](#reduce), but returns a list of successively
+ * reduced values from the left
+ *
+ * @func
+ * @memberOf R
+ * @since v0.10.0
+ * @category List
+ * @sig ((a, b) -> a) -> a -> [b] -> [a]
+ * @param {Function} fn The iterator function. Receives two values, the accumulator and the
+ *        current element from the array
+ * @param {*} acc The accumulator value.
+ * @param {Array} list The list to iterate over.
+ * @return {Array} A list of all intermediately reduced values.
+ * @see R.reduce
+ * @example
+ *
+ *      var numbers = [1, 2, 3, 4];
+ *      var factorials = R.scan(R.multiply, 1, numbers); //=> [1, 1, 2, 6, 24]
+ * @symb R.scan(f, a, [b, c]) = [a, f(a, b), f(f(a, b), c)]
+ */
 
 var scan$1 = /*#__PURE__*/_curry3_1(function scan(fn, acc, list) {
   var idx = 0;
@@ -23392,6 +30808,31 @@ var scan$1 = /*#__PURE__*/_curry3_1(function scan(fn, acc, list) {
 });
 var scan_1 = scan$1;
 
+/**
+ * Transforms a [Traversable](https://github.com/fantasyland/fantasy-land#traversable)
+ * of [Applicative](https://github.com/fantasyland/fantasy-land#applicative) into an
+ * Applicative of Traversable.
+ *
+ * Dispatches to the `sequence` method of the second argument, if present.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.19.0
+ * @category List
+ * @sig (Applicative f, Traversable t) => (a -> f a) -> t (f a) -> f (t a)
+ * @param {Function} of
+ * @param {*} traversable
+ * @return {*}
+ * @see R.traverse
+ * @example
+ *
+ *      R.sequence(Maybe.of, [Just(1), Just(2), Just(3)]);   //=> Just([1, 2, 3])
+ *      R.sequence(Maybe.of, [Just(1), Just(2), Nothing()]); //=> Nothing()
+ *
+ *      R.sequence(R.of, Just([1, 2, 3])); //=> [Just(1), Just(2), Just(3)]
+ *      R.sequence(R.of, Nothing());       //=> [Nothing()]
+ */
+
 var sequence$1 = /*#__PURE__*/_curry2_1(function sequence(of, traversable) {
   return typeof traversable.sequence === 'function' ? traversable.sequence(of) : reduceRight_1(function (x, acc) {
     return ap_1(map_1(prepend_1, x), acc);
@@ -23399,15 +30840,92 @@ var sequence$1 = /*#__PURE__*/_curry2_1(function sequence(of, traversable) {
 });
 var sequence_1 = sequence$1;
 
+/**
+ * Returns the result of "setting" the portion of the given data structure
+ * focused by the given lens to the given value.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.16.0
+ * @category Object
+ * @typedefn Lens s a = Functor f => (a -> f a) -> s -> f s
+ * @sig Lens s a -> a -> s -> s
+ * @param {Lens} lens
+ * @param {*} v
+ * @param {*} x
+ * @return {*}
+ * @see R.prop, R.lensIndex, R.lensProp
+ * @example
+ *
+ *      var xLens = R.lensProp('x');
+ *
+ *      R.set(xLens, 4, {x: 1, y: 2});  //=> {x: 4, y: 2}
+ *      R.set(xLens, 8, {x: 1, y: 2});  //=> {x: 8, y: 2}
+ */
+
 var set$1 = /*#__PURE__*/_curry3_1(function set(lens, v, x) {
   return over_1(lens, always_1(v), x);
 });
 var set_1 = set$1;
 
+/**
+ * Returns a copy of the list, sorted according to the comparator function,
+ * which should accept two values at a time and return a negative number if the
+ * first value is smaller, a positive number if it's larger, and zero if they
+ * are equal. Please note that this is a **copy** of the list. It does not
+ * modify the original.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category List
+ * @sig ((a, a) -> Number) -> [a] -> [a]
+ * @param {Function} comparator A sorting function :: a -> b -> Int
+ * @param {Array} list The list to sort
+ * @return {Array} a new array with its elements sorted by the comparator function.
+ * @example
+ *
+ *      var diff = function(a, b) { return a - b; };
+ *      R.sort(diff, [4,2,7,5]); //=> [2, 4, 5, 7]
+ */
+
 var sort$1 = /*#__PURE__*/_curry2_1(function sort(comparator, list) {
   return Array.prototype.slice.call(list, 0).sort(comparator);
 });
 var sort_1 = sort$1;
+
+/**
+ * Sorts the list according to the supplied function.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Relation
+ * @sig Ord b => (a -> b) -> [a] -> [a]
+ * @param {Function} fn
+ * @param {Array} list The list to sort.
+ * @return {Array} A new list sorted by the keys generated by `fn`.
+ * @example
+ *
+ *      var sortByFirstItem = R.sortBy(R.prop(0));
+ *      var sortByNameCaseInsensitive = R.sortBy(R.compose(R.toLower, R.prop('name')));
+ *      var pairs = [[-1, 1], [-2, 2], [-3, 3]];
+ *      sortByFirstItem(pairs); //=> [[-3, 3], [-2, 2], [-1, 1]]
+ *      var alice = {
+ *        name: 'ALICE',
+ *        age: 101
+ *      };
+ *      var bob = {
+ *        name: 'Bob',
+ *        age: -10
+ *      };
+ *      var clara = {
+ *        name: 'clara',
+ *        age: 314.159
+ *      };
+ *      var people = [clara, bob, alice];
+ *      sortByNameCaseInsensitive(people); //=> [alice, bob, clara]
+ */
 
 var sortBy$1 = /*#__PURE__*/_curry2_1(function sortBy(fn, list) {
   return Array.prototype.slice.call(list, 0).sort(function (a, b) {
@@ -23417,6 +30935,39 @@ var sortBy$1 = /*#__PURE__*/_curry2_1(function sortBy(fn, list) {
   });
 });
 var sortBy_1 = sortBy$1;
+
+/**
+ * Sorts a list according to a list of comparators.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.23.0
+ * @category Relation
+ * @sig [(a, a) -> Number] -> [a] -> [a]
+ * @param {Array} functions A list of comparator functions.
+ * @param {Array} list The list to sort.
+ * @return {Array} A new list sorted according to the comarator functions.
+ * @example
+ *
+ *      var alice = {
+ *        name: 'alice',
+ *        age: 40
+ *      };
+ *      var bob = {
+ *        name: 'bob',
+ *        age: 30
+ *      };
+ *      var clara = {
+ *        name: 'clara',
+ *        age: 40
+ *      };
+ *      var people = [clara, bob, alice];
+ *      var ageNameSort = R.sortWith([
+ *        R.descend(R.prop('age')),
+ *        R.ascend(R.prop('name'))
+ *      ]);
+ *      ageNameSort(people); //=> [alice, clara, bob]
+ */
 
 var sortWith$1 = /*#__PURE__*/_curry2_1(function sortWith(fns, list) {
   return Array.prototype.slice.call(list, 0).sort(function (a, b) {
@@ -23431,13 +30982,71 @@ var sortWith$1 = /*#__PURE__*/_curry2_1(function sortWith(fns, list) {
 });
 var sortWith_1 = sortWith$1;
 
+/**
+ * Splits a string into an array of strings based on the given
+ * separator.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category String
+ * @sig (String | RegExp) -> String -> [String]
+ * @param {String|RegExp} sep The pattern.
+ * @param {String} str The string to separate into an array.
+ * @return {Array} The array of strings from `str` separated by `str`.
+ * @see R.join
+ * @example
+ *
+ *      var pathComponents = R.split('/');
+ *      R.tail(pathComponents('/usr/local/bin/node')); //=> ['usr', 'local', 'bin', 'node']
+ *
+ *      R.split('.', 'a.b.c.xyz.d'); //=> ['a', 'b', 'c', 'xyz', 'd']
+ */
+
 var split$1 = /*#__PURE__*/invoker_1(1, 'split');
 var split_1 = split$1;
+
+/**
+ * Splits a given list or string at a given index.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.19.0
+ * @category List
+ * @sig Number -> [a] -> [[a], [a]]
+ * @sig Number -> String -> [String, String]
+ * @param {Number} index The index where the array/string is split.
+ * @param {Array|String} array The array/string to be split.
+ * @return {Array}
+ * @example
+ *
+ *      R.splitAt(1, [1, 2, 3]);          //=> [[1], [2, 3]]
+ *      R.splitAt(5, 'hello world');      //=> ['hello', ' world']
+ *      R.splitAt(-1, 'foobar');          //=> ['fooba', 'r']
+ */
 
 var splitAt$1 = /*#__PURE__*/_curry2_1(function splitAt(index, array) {
   return [slice_1(0, index, array), slice_1(index, length_1(array), array)];
 });
 var splitAt_1 = splitAt$1;
+
+/**
+ * Splits a collection into slices of the specified length.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.16.0
+ * @category List
+ * @sig Number -> [a] -> [[a]]
+ * @sig Number -> String -> [String]
+ * @param {Number} n
+ * @param {Array} list
+ * @return {Array}
+ * @example
+ *
+ *      R.splitEvery(3, [1, 2, 3, 4, 5, 6, 7]); //=> [[1, 2, 3], [4, 5, 6], [7]]
+ *      R.splitEvery(3, 'foobarbaz'); //=> ['foo', 'bar', 'baz']
+ */
 
 var splitEvery$1 = /*#__PURE__*/_curry2_1(function splitEvery(n, list) {
   if (n <= 0) {
@@ -23451,6 +31060,26 @@ var splitEvery$1 = /*#__PURE__*/_curry2_1(function splitEvery(n, list) {
   return result;
 });
 var splitEvery_1 = splitEvery$1;
+
+/**
+ * Takes a list and a predicate and returns a pair of lists with the following properties:
+ *
+ *  - the result of concatenating the two output lists is equivalent to the input list;
+ *  - none of the elements of the first output list satisfies the predicate; and
+ *  - if the second output list is non-empty, its first element satisfies the predicate.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.19.0
+ * @category List
+ * @sig (a -> Boolean) -> [a] -> [[a], [a]]
+ * @param {Function} pred The predicate that determines where the array is split.
+ * @param {Array} list The array to be split.
+ * @return {Array}
+ * @example
+ *
+ *      R.splitWhen(R.equals(2), [1, 2, 3, 1, 2, 3]);   //=> [[1], [2, 3, 1, 2, 3]]
+ */
 
 var splitWhen$1 = /*#__PURE__*/_curry2_1(function splitWhen(pred, list) {
   var idx = 0;
@@ -23466,25 +31095,137 @@ var splitWhen$1 = /*#__PURE__*/_curry2_1(function splitWhen(pred, list) {
 });
 var splitWhen_1 = splitWhen$1;
 
+/**
+ * Checks if a list starts with the provided values
+ *
+ * @func
+ * @memberOf R
+ * @since v0.24.0
+ * @category List
+ * @sig [a] -> Boolean
+ * @sig String -> Boolean
+ * @param {*} prefix
+ * @param {*} list
+ * @return {Boolean}
+ * @example
+ *
+ *      R.startsWith('a', 'abc')                //=> true
+ *      R.startsWith('b', 'abc')                //=> false
+ *      R.startsWith(['a'], ['a', 'b', 'c'])    //=> true
+ *      R.startsWith(['b'], ['a', 'b', 'c'])    //=> false
+ */
+
 var startsWith$1 = /*#__PURE__*/_curry2_1(function (prefix, list) {
   return equals_1(take_1(prefix.length, list), prefix);
 });
 var startsWith_1 = startsWith$1;
+
+/**
+ * Subtracts its second argument from its first argument.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Math
+ * @sig Number -> Number -> Number
+ * @param {Number} a The first value.
+ * @param {Number} b The second value.
+ * @return {Number} The result of `a - b`.
+ * @see R.add
+ * @example
+ *
+ *      R.subtract(10, 8); //=> 2
+ *
+ *      var minus5 = R.subtract(R.__, 5);
+ *      minus5(17); //=> 12
+ *
+ *      var complementaryAngle = R.subtract(90);
+ *      complementaryAngle(30); //=> 60
+ *      complementaryAngle(72); //=> 18
+ */
 
 var subtract$1 = /*#__PURE__*/_curry2_1(function subtract(a, b) {
   return Number(a) - Number(b);
 });
 var subtract_1 = subtract$1;
 
+/**
+ * Finds the set (i.e. no duplicates) of all elements contained in the first or
+ * second list, but not both.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.19.0
+ * @category Relation
+ * @sig [*] -> [*] -> [*]
+ * @param {Array} list1 The first list.
+ * @param {Array} list2 The second list.
+ * @return {Array} The elements in `list1` or `list2`, but not both.
+ * @see R.symmetricDifferenceWith, R.difference, R.differenceWith
+ * @example
+ *
+ *      R.symmetricDifference([1,2,3,4], [7,6,5,4,3]); //=> [1,2,7,6,5]
+ *      R.symmetricDifference([7,6,5,4,3], [1,2,3,4]); //=> [7,6,5,1,2]
+ */
+
 var symmetricDifference$1 = /*#__PURE__*/_curry2_1(function symmetricDifference(list1, list2) {
   return concat_1(difference_1(list1, list2), difference_1(list2, list1));
 });
 var symmetricDifference_1 = symmetricDifference$1;
 
+/**
+ * Finds the set (i.e. no duplicates) of all elements contained in the first or
+ * second list, but not both. Duplication is determined according to the value
+ * returned by applying the supplied predicate to two list elements.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.19.0
+ * @category Relation
+ * @sig ((a, a) -> Boolean) -> [a] -> [a] -> [a]
+ * @param {Function} pred A predicate used to test whether two items are equal.
+ * @param {Array} list1 The first list.
+ * @param {Array} list2 The second list.
+ * @return {Array} The elements in `list1` or `list2`, but not both.
+ * @see R.symmetricDifference, R.difference, R.differenceWith
+ * @example
+ *
+ *      var eqA = R.eqBy(R.prop('a'));
+ *      var l1 = [{a: 1}, {a: 2}, {a: 3}, {a: 4}];
+ *      var l2 = [{a: 3}, {a: 4}, {a: 5}, {a: 6}];
+ *      R.symmetricDifferenceWith(eqA, l1, l2); //=> [{a: 1}, {a: 2}, {a: 5}, {a: 6}]
+ */
+
 var symmetricDifferenceWith$1 = /*#__PURE__*/_curry3_1(function symmetricDifferenceWith(pred, list1, list2) {
   return concat_1(differenceWith_1(pred, list1, list2), differenceWith_1(pred, list2, list1));
 });
 var symmetricDifferenceWith_1 = symmetricDifferenceWith$1;
+
+/**
+ * Returns a new list containing the last `n` elements of a given list, passing
+ * each value to the supplied predicate function, and terminating when the
+ * predicate function returns `false`. Excludes the element that caused the
+ * predicate function to fail. The predicate function is passed one argument:
+ * *(value)*.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.16.0
+ * @category List
+ * @sig (a -> Boolean) -> [a] -> [a]
+ * @sig (a -> Boolean) -> String -> String
+ * @param {Function} fn The function called per iteration.
+ * @param {Array} xs The collection to iterate over.
+ * @return {Array} A new array.
+ * @see R.dropLastWhile, R.addIndex
+ * @example
+ *
+ *      var isNotOne = x => x !== 1;
+ *
+ *      R.takeLastWhile(isNotOne, [1, 2, 3, 4]); //=> [2, 3, 4]
+ *
+ *      R.takeLastWhile(x => x !== 'R' , 'Ramda'); //=> 'amda'
+ */
 
 var takeLastWhile$1 = /*#__PURE__*/_curry2_1(function takeLastWhile(fn, xs) {
   var idx = xs.length - 1;
@@ -23514,6 +31255,36 @@ var _xtakeWhile = /*#__PURE__*/_curry2_1(function _xtakeWhile(f, xf) {
   return new XTakeWhile(f, xf);
 });
 var _xtakeWhile_1 = _xtakeWhile;
+
+/**
+ * Returns a new list containing the first `n` elements of a given list,
+ * passing each value to the supplied predicate function, and terminating when
+ * the predicate function returns `false`. Excludes the element that caused the
+ * predicate function to fail. The predicate function is passed one argument:
+ * *(value)*.
+ *
+ * Dispatches to the `takeWhile` method of the second argument, if present.
+ *
+ * Acts as a transducer if a transformer is given in list position.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category List
+ * @sig (a -> Boolean) -> [a] -> [a]
+ * @sig (a -> Boolean) -> String -> String
+ * @param {Function} fn The function called per iteration.
+ * @param {Array} xs The collection to iterate over.
+ * @return {Array} A new array.
+ * @see R.dropWhile, R.transduce, R.addIndex
+ * @example
+ *
+ *      var isNotFour = x => x !== 4;
+ *
+ *      R.takeWhile(isNotFour, [1, 2, 3, 4, 3, 2, 1]); //=> [1, 2, 3]
+ *
+ *      R.takeWhile(x => x !== 'd' , 'Ramda'); //=> 'Ram'
+ */
 
 var takeWhile$1 = /*#__PURE__*/_curry2_1( /*#__PURE__*/_dispatchable_1(['takeWhile'], _xtakeWhile_1, function takeWhile(fn, xs) {
   var idx = 0;
@@ -23546,6 +31317,27 @@ var _xtap = /*#__PURE__*/_curry2_1(function _xtap(f, xf) {
 });
 var _xtap_1 = _xtap;
 
+/**
+ * Runs the given function with the supplied object, then returns the object.
+ *
+ * Acts as a transducer if a transformer is given as second parameter.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Function
+ * @sig (a -> *) -> a -> a
+ * @param {Function} fn The function to call with `x`. The return value of `fn` will be thrown away.
+ * @param {*} x
+ * @return {*} `x`.
+ * @example
+ *
+ *      var sayX = x => console.log('x is ' + x);
+ *      R.tap(sayX, 100); //=> 100
+ *      // logs 'x is 100'
+ * @symb R.tap(f, a) = a
+ */
+
 var tap$1 = /*#__PURE__*/_curry2_1( /*#__PURE__*/_dispatchable_1([], _xtap_1, function tap(fn, x) {
   fn(x);
   return x;
@@ -23557,6 +31349,24 @@ function _isRegExp(x) {
 }
 var _isRegExp_1 = _isRegExp;
 
+/**
+ * Determines whether a given string matches a given regular expression.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.12.0
+ * @category String
+ * @sig RegExp -> String -> Boolean
+ * @param {RegExp} pattern
+ * @param {String} str
+ * @return {Boolean}
+ * @see R.match
+ * @example
+ *
+ *      R.test(/^x/, 'xyz'); //=> true
+ *      R.test(/^y/, 'xyz'); //=> false
+ */
+
 var test$1 = /*#__PURE__*/_curry2_1(function test(pattern, str) {
   if (!_isRegExp_1(pattern)) {
     throw new TypeError('‘test’ requires a value of type RegExp as its first argument; received ' + toString_1$1(pattern));
@@ -23565,8 +31375,43 @@ var test$1 = /*#__PURE__*/_curry2_1(function test(pattern, str) {
 });
 var test_1 = test$1;
 
+/**
+ * The lower case version of a string.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.9.0
+ * @category String
+ * @sig String -> String
+ * @param {String} str The string to lower case.
+ * @return {String} The lower case version of `str`.
+ * @see R.toUpper
+ * @example
+ *
+ *      R.toLower('XYZ'); //=> 'xyz'
+ */
+
 var toLower$1 = /*#__PURE__*/invoker_1(0, 'toLowerCase');
 var toLower_1 = toLower$1;
+
+/**
+ * Converts an object into an array of key, value arrays. Only the object's
+ * own properties are used.
+ * Note that the order of the output array is not guaranteed to be consistent
+ * across different JS platforms.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.4.0
+ * @category Object
+ * @sig {String: *} -> [[String,*]]
+ * @param {Object} obj The object to extract from
+ * @return {Array} An array of key, value arrays from the object's own properties.
+ * @see R.fromPairs
+ * @example
+ *
+ *      R.toPairs({a: 1, b: 2, c: 3}); //=> [['a', 1], ['b', 2], ['c', 3]]
+ */
 
 var toPairs$1 = /*#__PURE__*/_curry1_1(function toPairs(obj) {
   var pairs = [];
@@ -23579,6 +31424,28 @@ var toPairs$1 = /*#__PURE__*/_curry1_1(function toPairs(obj) {
 });
 var toPairs_1 = toPairs$1;
 
+/**
+ * Converts an object into an array of key, value arrays. The object's own
+ * properties and prototype properties are used. Note that the order of the
+ * output array is not guaranteed to be consistent across different JS
+ * platforms.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.4.0
+ * @category Object
+ * @sig {String: *} -> [[String,*]]
+ * @param {Object} obj The object to extract from
+ * @return {Array} An array of key, value arrays from the object's own
+ *         and prototype properties.
+ * @example
+ *
+ *      var F = function() { this.x = 'X'; };
+ *      F.prototype.y = 'Y';
+ *      var f = new F();
+ *      R.toPairsIn(f); //=> [['x','X'], ['y','Y']]
+ */
+
 var toPairsIn$1 = /*#__PURE__*/_curry1_1(function toPairsIn(obj) {
   var pairs = [];
   for (var prop in obj) {
@@ -23588,13 +31455,102 @@ var toPairsIn$1 = /*#__PURE__*/_curry1_1(function toPairsIn(obj) {
 });
 var toPairsIn_1 = toPairsIn$1;
 
+/**
+ * The upper case version of a string.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.9.0
+ * @category String
+ * @sig String -> String
+ * @param {String} str The string to upper case.
+ * @return {String} The upper case version of `str`.
+ * @see R.toLower
+ * @example
+ *
+ *      R.toUpper('abc'); //=> 'ABC'
+ */
+
 var toUpper$1 = /*#__PURE__*/invoker_1(0, 'toUpperCase');
 var toUpper_1 = toUpper$1;
+
+/**
+ * Initializes a transducer using supplied iterator function. Returns a single
+ * item by iterating through the list, successively calling the transformed
+ * iterator function and passing it an accumulator value and the current value
+ * from the array, and then passing the result to the next call.
+ *
+ * The iterator function receives two values: *(acc, value)*. It will be
+ * wrapped as a transformer to initialize the transducer. A transformer can be
+ * passed directly in place of an iterator function. In both cases, iteration
+ * may be stopped early with the [`R.reduced`](#reduced) function.
+ *
+ * A transducer is a function that accepts a transformer and returns a
+ * transformer and can be composed directly.
+ *
+ * A transformer is an an object that provides a 2-arity reducing iterator
+ * function, step, 0-arity initial value function, init, and 1-arity result
+ * extraction function, result. The step function is used as the iterator
+ * function in reduce. The result function is used to convert the final
+ * accumulator into the return type and in most cases is
+ * [`R.identity`](#identity). The init function can be used to provide an
+ * initial accumulator, but is ignored by transduce.
+ *
+ * The iteration is performed with [`R.reduce`](#reduce) after initializing the transducer.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.12.0
+ * @category List
+ * @sig (c -> c) -> ((a, b) -> a) -> a -> [b] -> a
+ * @param {Function} xf The transducer function. Receives a transformer and returns a transformer.
+ * @param {Function} fn The iterator function. Receives two values, the accumulator and the
+ *        current element from the array. Wrapped as transformer, if necessary, and used to
+ *        initialize the transducer
+ * @param {*} acc The initial accumulator value.
+ * @param {Array} list The list to iterate over.
+ * @return {*} The final, accumulated value.
+ * @see R.reduce, R.reduced, R.into
+ * @example
+ *
+ *      var numbers = [1, 2, 3, 4];
+ *      var transducer = R.compose(R.map(R.add(1)), R.take(2));
+ *      R.transduce(transducer, R.flip(R.append), [], numbers); //=> [2, 3]
+ *
+ *      var isOdd = (x) => x % 2 === 1;
+ *      var firstOddTransducer = R.compose(R.filter(isOdd), R.take(1));
+ *      R.transduce(firstOddTransducer, R.flip(R.append), [], R.range(0, 100)); //=> [1]
+ */
 
 var transduce$1 = /*#__PURE__*/curryN_1(4, function transduce(xf, fn, acc, list) {
   return _reduce_1(xf(typeof fn === 'function' ? _xwrap_1(fn) : fn), acc, list);
 });
 var transduce_1 = transduce$1;
+
+/**
+ * Transposes the rows and columns of a 2D list.
+ * When passed a list of `n` lists of length `x`,
+ * returns a list of `x` lists of length `n`.
+ *
+ *
+ * @func
+ * @memberOf R
+ * @since v0.19.0
+ * @category List
+ * @sig [[a]] -> [[a]]
+ * @param {Array} list A 2D list
+ * @return {Array} A 2D list
+ * @example
+ *
+ *      R.transpose([[1, 'a'], [2, 'b'], [3, 'c']]) //=> [[1, 2, 3], ['a', 'b', 'c']]
+ *      R.transpose([[1, 2, 3], ['a', 'b', 'c']]) //=> [[1, 'a'], [2, 'b'], [3, 'c']]
+ *
+ *      // If some of the rows are shorter than the following rows, their elements are skipped:
+ *      R.transpose([[10, 11], [20], [], [30, 31, 32]]) //=> [[10, 20, 30], [11, 31], [32]]
+ * @symb R.transpose([[a], [b], [c]]) = [a, b, c]
+ * @symb R.transpose([[a, b], [c, d]]) = [[a, c], [b, d]]
+ * @symb R.transpose([[a, b], [c]]) = [[a, c], [b]]
+ */
 
 var transpose$1 = /*#__PURE__*/_curry1_1(function transpose(outerlist) {
   var i = 0;
@@ -23614,6 +31570,33 @@ var transpose$1 = /*#__PURE__*/_curry1_1(function transpose(outerlist) {
   return result;
 });
 var transpose_1 = transpose$1;
+
+/**
+ * Maps an [Applicative](https://github.com/fantasyland/fantasy-land#applicative)-returning
+ * function over a [Traversable](https://github.com/fantasyland/fantasy-land#traversable),
+ * then uses [`sequence`](#sequence) to transform the resulting Traversable of Applicative
+ * into an Applicative of Traversable.
+ *
+ * Dispatches to the `traverse` method of the third argument, if present.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.19.0
+ * @category List
+ * @sig (Applicative f, Traversable t) => (a -> f a) -> (a -> f b) -> t a -> f (t b)
+ * @param {Function} of
+ * @param {Function} f
+ * @param {*} traversable
+ * @return {*}
+ * @see R.sequence
+ * @example
+ *
+ *      // Returns `Nothing` if the given divisor is `0`
+ *      safeDiv = n => d => d === 0 ? Nothing() : Just(n / d)
+ *
+ *      R.traverse(Maybe.of, safeDiv(10), [2, 4, 5]); //=> Just([5, 2.5, 2])
+ *      R.traverse(Maybe.of, safeDiv(10), [2, 0, 5]); //=> Nothing
+ */
 
 var traverse$1 = /*#__PURE__*/_curry3_1(function traverse(of, f, traversable) {
   return typeof traversable['fantasy-land/traverse'] === 'function' ? traversable['fantasy-land/traverse'](f, of) : sequence_1(of, map_1(f, traversable));
@@ -23648,6 +31631,28 @@ var _trim = !hasProtoTrim || /*#__PURE__*/ws.trim() || ! /*#__PURE__*/zeroWidth.
 var trim$1 = /*#__PURE__*/_curry1_1(_trim);
 var trim_1 = trim$1;
 
+/**
+ * `tryCatch` takes two functions, a `tryer` and a `catcher`. The returned
+ * function evaluates the `tryer`; if it does not throw, it simply returns the
+ * result. If the `tryer` *does* throw, the returned function evaluates the
+ * `catcher` function and returns its result. Note that for effective
+ * composition with this function, both the `tryer` and `catcher` functions
+ * must return the same type of results.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.20.0
+ * @category Function
+ * @sig (...x -> a) -> ((e, ...x) -> a) -> (...x -> a)
+ * @param {Function} tryer The function that may throw.
+ * @param {Function} catcher The function that will be evaluated if `tryer` throws.
+ * @return {Function} A new function that will catch exceptions and send then to the catcher.
+ * @example
+ *
+ *      R.tryCatch(R.prop('x'), R.F)({x: true}); //=> true
+ *      R.tryCatch(R.prop('x'), R.F)(null);      //=> false
+ */
+
 var tryCatch$1 = /*#__PURE__*/_curry2_1(function _tryCatch(tryer, catcher) {
   return _arity_1(tryer.length, function () {
     try {
@@ -23659,6 +31664,31 @@ var tryCatch$1 = /*#__PURE__*/_curry2_1(function _tryCatch(tryer, catcher) {
 });
 var tryCatch_1 = tryCatch$1;
 
+/**
+ * Takes a function `fn`, which takes a single array argument, and returns a
+ * function which:
+ *
+ *   - takes any number of positional arguments;
+ *   - passes these arguments to `fn` as an array; and
+ *   - returns the result.
+ *
+ * In other words, `R.unapply` derives a variadic function from a function which
+ * takes an array. `R.unapply` is the inverse of [`R.apply`](#apply).
+ *
+ * @func
+ * @memberOf R
+ * @since v0.8.0
+ * @category Function
+ * @sig ([*...] -> a) -> (*... -> a)
+ * @param {Function} fn
+ * @return {Function}
+ * @see R.apply
+ * @example
+ *
+ *      R.unapply(JSON.stringify)(1, 2, 3); //=> '[1,2,3]'
+ * @symb R.unapply(f)(a, b) = f([a, b])
+ */
+
 var unapply$1 = /*#__PURE__*/_curry1_1(function unapply(fn) {
   return function () {
     return fn(Array.prototype.slice.call(arguments, 0));
@@ -23666,10 +31696,59 @@ var unapply$1 = /*#__PURE__*/_curry1_1(function unapply(fn) {
 });
 var unapply_1 = unapply$1;
 
+/**
+ * Wraps a function of any arity (including nullary) in a function that accepts
+ * exactly 1 parameter. Any extraneous parameters will not be passed to the
+ * supplied function.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.2.0
+ * @category Function
+ * @sig (* -> b) -> (a -> b)
+ * @param {Function} fn The function to wrap.
+ * @return {Function} A new function wrapping `fn`. The new function is guaranteed to be of
+ *         arity 1.
+ * @see R.binary, R.nAry
+ * @example
+ *
+ *      var takesTwoArgs = function(a, b) {
+ *        return [a, b];
+ *      };
+ *      takesTwoArgs.length; //=> 2
+ *      takesTwoArgs(1, 2); //=> [1, 2]
+ *
+ *      var takesOneArg = R.unary(takesTwoArgs);
+ *      takesOneArg.length; //=> 1
+ *      // Only 1 argument is passed to the wrapped function
+ *      takesOneArg(1, 2); //=> [1, undefined]
+ * @symb R.unary(f)(a, b, c) = f(a)
+ */
+
 var unary$1 = /*#__PURE__*/_curry1_1(function unary(fn) {
   return nAry_1(1, fn);
 });
 var unary_1 = unary$1;
+
+/**
+ * Returns a function of arity `n` from a (manually) curried function.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.14.0
+ * @category Function
+ * @sig Number -> (a -> b) -> (a -> c)
+ * @param {Number} length The arity for the returned function.
+ * @param {Function} fn The function to uncurry.
+ * @return {Function} A new function.
+ * @see R.curry
+ * @example
+ *
+ *      var addFour = a => b => c => d => a + b + c + d;
+ *
+ *      var uncurriedAddFour = R.uncurryN(4, addFour);
+ *      uncurriedAddFour(1, 2, 3, 4); //=> 10
+ */
 
 var uncurryN$1 = /*#__PURE__*/_curry2_1(function uncurryN(depth, fn) {
   return curryN_1(depth, function () {
@@ -23688,6 +31767,32 @@ var uncurryN$1 = /*#__PURE__*/_curry2_1(function uncurryN(depth, fn) {
 });
 var uncurryN_1 = uncurryN$1;
 
+/**
+ * Builds a list from a seed value. Accepts an iterator function, which returns
+ * either false to stop iteration or an array of length 2 containing the value
+ * to add to the resulting list and the seed to be used in the next call to the
+ * iterator function.
+ *
+ * The iterator function receives one argument: *(seed)*.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.10.0
+ * @category List
+ * @sig (a -> [b]) -> * -> [b]
+ * @param {Function} fn The iterator function. receives one argument, `seed`, and returns
+ *        either false to quit iteration or an array of length two to proceed. The element
+ *        at index 0 of this array will be added to the resulting array, and the element
+ *        at index 1 will be passed to the next call to `fn`.
+ * @param {*} seed The seed value.
+ * @return {Array} The final list.
+ * @example
+ *
+ *      var f = n => n > 50 ? false : [-n, n + 10];
+ *      R.unfold(f, 10); //=> [-10, -20, -30, -40, -50]
+ * @symb R.unfold(f, x) = [f(x)[0], f(f(x)[1])[0], f(f(f(x)[1])[1])[0], ...]
+ */
+
 var unfold$1 = /*#__PURE__*/_curry2_1(function unfold(fn, seed) {
   var pair = fn(seed);
   var result = [];
@@ -23699,8 +31804,49 @@ var unfold$1 = /*#__PURE__*/_curry2_1(function unfold(fn, seed) {
 });
 var unfold_1 = unfold$1;
 
+/**
+ * Combines two lists into a set (i.e. no duplicates) composed of the elements
+ * of each list.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Relation
+ * @sig [*] -> [*] -> [*]
+ * @param {Array} as The first list.
+ * @param {Array} bs The second list.
+ * @return {Array} The first and second lists concatenated, with
+ *         duplicates removed.
+ * @example
+ *
+ *      R.union([1, 2, 3], [2, 3, 4]); //=> [1, 2, 3, 4]
+ */
+
 var union$1 = /*#__PURE__*/_curry2_1( /*#__PURE__*/compose_1(uniq_1, _concat_1));
 var union_1 = union$1;
+
+/**
+ * Returns a new list containing only one copy of each element in the original
+ * list, based upon the value returned by applying the supplied predicate to
+ * two list elements. Prefers the first item if two items compare equal based
+ * on the predicate.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.2.0
+ * @category List
+ * @sig ((a, a) -> Boolean) -> [a] -> [a]
+ * @param {Function} pred A predicate used to test whether two items are equal.
+ * @param {Array} list The array to consider.
+ * @return {Array} The list of unique items.
+ * @example
+ *
+ *      var strEq = R.eqBy(String);
+ *      R.uniqWith(strEq)([1, '1', 2, 1]); //=> [1, 2]
+ *      R.uniqWith(strEq)([{}, {}]);       //=> [{}]
+ *      R.uniqWith(strEq)([1, '1', 1]);    //=> [1]
+ *      R.uniqWith(strEq)(['1', 1, 1]);    //=> ['1']
+ */
 
 var uniqWith$1 = /*#__PURE__*/_curry2_1(function uniqWith(pred, list) {
   var idx = 0;
@@ -23718,18 +31864,104 @@ var uniqWith$1 = /*#__PURE__*/_curry2_1(function uniqWith(pred, list) {
 });
 var uniqWith_1 = uniqWith$1;
 
+/**
+ * Combines two lists into a set (i.e. no duplicates) composed of the elements
+ * of each list. Duplication is determined according to the value returned by
+ * applying the supplied predicate to two list elements.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Relation
+ * @sig ((a, a) -> Boolean) -> [*] -> [*] -> [*]
+ * @param {Function} pred A predicate used to test whether two items are equal.
+ * @param {Array} list1 The first list.
+ * @param {Array} list2 The second list.
+ * @return {Array} The first and second lists concatenated, with
+ *         duplicates removed.
+ * @see R.union
+ * @example
+ *
+ *      var l1 = [{a: 1}, {a: 2}];
+ *      var l2 = [{a: 1}, {a: 4}];
+ *      R.unionWith(R.eqBy(R.prop('a')), l1, l2); //=> [{a: 1}, {a: 2}, {a: 4}]
+ */
+
 var unionWith$1 = /*#__PURE__*/_curry3_1(function unionWith(pred, list1, list2) {
   return uniqWith_1(pred, _concat_1(list1, list2));
 });
 var unionWith_1 = unionWith$1;
+
+/**
+ * Tests the final argument by passing it to the given predicate function. If
+ * the predicate is not satisfied, the function will return the result of
+ * calling the `whenFalseFn` function with the same argument. If the predicate
+ * is satisfied, the argument is returned as is.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.18.0
+ * @category Logic
+ * @sig (a -> Boolean) -> (a -> a) -> a -> a
+ * @param {Function} pred        A predicate function
+ * @param {Function} whenFalseFn A function to invoke when the `pred` evaluates
+ *                               to a falsy value.
+ * @param {*}        x           An object to test with the `pred` function and
+ *                               pass to `whenFalseFn` if necessary.
+ * @return {*} Either `x` or the result of applying `x` to `whenFalseFn`.
+ * @see R.ifElse, R.when
+ * @example
+ *
+ *      let safeInc = R.unless(R.isNil, R.inc);
+ *      safeInc(null); //=> null
+ *      safeInc(1); //=> 2
+ */
 
 var unless$1 = /*#__PURE__*/_curry3_1(function unless(pred, whenFalseFn, x) {
   return pred(x) ? x : whenFalseFn(x);
 });
 var unless_1 = unless$1;
 
+/**
+ * Shorthand for `R.chain(R.identity)`, which removes one level of nesting from
+ * any [Chain](https://github.com/fantasyland/fantasy-land#chain).
+ *
+ * @func
+ * @memberOf R
+ * @since v0.3.0
+ * @category List
+ * @sig Chain c => c (c a) -> c a
+ * @param {*} list
+ * @return {*}
+ * @see R.flatten, R.chain
+ * @example
+ *
+ *      R.unnest([1, [2], [[3]]]); //=> [1, 2, [3]]
+ *      R.unnest([[1, 2], [3, 4], [5, 6]]); //=> [1, 2, 3, 4, 5, 6]
+ */
+
 var unnest$1 = /*#__PURE__*/chain_1(_identity_1);
 var unnest_1 = unnest$1;
+
+/**
+ * Takes a predicate, a transformation function, and an initial value,
+ * and returns a value of the same type as the initial value.
+ * It does so by applying the transformation until the predicate is satisfied,
+ * at which point it returns the satisfactory value.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.20.0
+ * @category Logic
+ * @sig (a -> Boolean) -> (a -> a) -> a -> a
+ * @param {Function} pred A predicate function
+ * @param {Function} fn The iterator function
+ * @param {*} init Initial value
+ * @return {*} Final value that satisfies predicate
+ * @example
+ *
+ *      R.until(R.gt(R.__, 100), R.multiply(2))(1) // => 128
+ */
 
 var until$1 = /*#__PURE__*/_curry3_1(function until(pred, fn, init) {
   var val = init;
@@ -23740,6 +31972,28 @@ var until$1 = /*#__PURE__*/_curry3_1(function until(pred, fn, init) {
 });
 var until_1 = until$1;
 
+/**
+ * Returns a list of all the properties, including prototype properties, of the
+ * supplied object.
+ * Note that the order of the output array is not guaranteed to be consistent
+ * across different JS platforms.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.2.0
+ * @category Object
+ * @sig {k: v} -> [v]
+ * @param {Object} obj The object to extract values from
+ * @return {Array} An array of the values of the object's own and prototype properties.
+ * @see R.values, R.keysIn
+ * @example
+ *
+ *      var F = function() { this.x = 'X'; };
+ *      F.prototype.y = 'Y';
+ *      var f = new F();
+ *      R.valuesIn(f); //=> ['X', 'Y']
+ */
+
 var valuesIn$1 = /*#__PURE__*/_curry1_1(function valuesIn(obj) {
   var prop;
   var vs = [];
@@ -23749,6 +32003,9 @@ var valuesIn$1 = /*#__PURE__*/_curry1_1(function valuesIn(obj) {
   return vs;
 });
 var valuesIn_1 = valuesIn$1;
+
+// `Const` is a functor that effectively ignores the function given to `map`.
+
 
 var Const = function (x) {
   return { value: x, 'fantasy-land/map': function () {
@@ -23784,10 +32041,75 @@ var view$1 = /*#__PURE__*/_curry2_1(function view(lens, x) {
 });
 var view_1 = view$1;
 
+/**
+ * Tests the final argument by passing it to the given predicate function. If
+ * the predicate is satisfied, the function will return the result of calling
+ * the `whenTrueFn` function with the same argument. If the predicate is not
+ * satisfied, the argument is returned as is.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.18.0
+ * @category Logic
+ * @sig (a -> Boolean) -> (a -> a) -> a -> a
+ * @param {Function} pred       A predicate function
+ * @param {Function} whenTrueFn A function to invoke when the `condition`
+ *                              evaluates to a truthy value.
+ * @param {*}        x          An object to test with the `pred` function and
+ *                              pass to `whenTrueFn` if necessary.
+ * @return {*} Either `x` or the result of applying `x` to `whenTrueFn`.
+ * @see R.ifElse, R.unless
+ * @example
+ *
+ *      // truncate :: String -> String
+ *      var truncate = R.when(
+ *        R.propSatisfies(R.gt(R.__, 10), 'length'),
+ *        R.pipe(R.take(10), R.append('…'), R.join(''))
+ *      );
+ *      truncate('12345');         //=> '12345'
+ *      truncate('0123456789ABC'); //=> '0123456789…'
+ */
+
 var when$1 = /*#__PURE__*/_curry3_1(function when(pred, whenTrueFn, x) {
   return pred(x) ? whenTrueFn(x) : x;
 });
 var when_1 = when$1;
+
+/**
+ * Takes a spec object and a test object; returns true if the test satisfies
+ * the spec. Each of the spec's own properties must be a predicate function.
+ * Each predicate is applied to the value of the corresponding property of the
+ * test object. `where` returns true if all the predicates return true, false
+ * otherwise.
+ *
+ * `where` is well suited to declaratively expressing constraints for other
+ * functions such as [`filter`](#filter) and [`find`](#find).
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.1
+ * @category Object
+ * @sig {String: (* -> Boolean)} -> {String: *} -> Boolean
+ * @param {Object} spec
+ * @param {Object} testObj
+ * @return {Boolean}
+ * @see R.propSatisfies, R.whereEq
+ * @example
+ *
+ *      // pred :: Object -> Boolean
+ *      var pred = R.where({
+ *        a: R.equals('foo'),
+ *        b: R.complement(R.equals('bar')),
+ *        x: R.gt(R.__, 10),
+ *        y: R.lt(R.__, 20)
+ *      });
+ *
+ *      pred({a: 'foo', b: 'xxx', x: 11, y: 19}); //=> true
+ *      pred({a: 'xxx', b: 'xxx', x: 11, y: 19}); //=> false
+ *      pred({a: 'foo', b: 'bar', x: 11, y: 19}); //=> false
+ *      pred({a: 'foo', b: 'xxx', x: 10, y: 19}); //=> false
+ *      pred({a: 'foo', b: 'xxx', x: 11, y: 20}); //=> false
+ */
 
 var where$1 = /*#__PURE__*/_curry2_1(function where(spec, testObj) {
   for (var prop in spec) {
@@ -23799,15 +32121,83 @@ var where$1 = /*#__PURE__*/_curry2_1(function where(spec, testObj) {
 });
 var where_1 = where$1;
 
+/**
+ * Takes a spec object and a test object; returns true if the test satisfies
+ * the spec, false otherwise. An object satisfies the spec if, for each of the
+ * spec's own properties, accessing that property of the object gives the same
+ * value (in [`R.equals`](#equals) terms) as accessing that property of the
+ * spec.
+ *
+ * `whereEq` is a specialization of [`where`](#where).
+ *
+ * @func
+ * @memberOf R
+ * @since v0.14.0
+ * @category Object
+ * @sig {String: *} -> {String: *} -> Boolean
+ * @param {Object} spec
+ * @param {Object} testObj
+ * @return {Boolean}
+ * @see R.propEq, R.where
+ * @example
+ *
+ *      // pred :: Object -> Boolean
+ *      var pred = R.whereEq({a: 1, b: 2});
+ *
+ *      pred({a: 1});              //=> false
+ *      pred({a: 1, b: 2});        //=> true
+ *      pred({a: 1, b: 2, c: 3});  //=> true
+ *      pred({a: 1, b: 1});        //=> false
+ */
+
 var whereEq$1 = /*#__PURE__*/_curry2_1(function whereEq(spec, testObj) {
   return where_1(map_1(equals_1, spec), testObj);
 });
 var whereEq_1 = whereEq$1;
 
+/**
+ * Returns a new list without values in the first argument.
+ * [`R.equals`](#equals) is used to determine equality.
+ *
+ * Acts as a transducer if a transformer is given in list position.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.19.0
+ * @category List
+ * @sig [a] -> [a] -> [a]
+ * @param {Array} list1 The values to be removed from `list2`.
+ * @param {Array} list2 The array to remove values from.
+ * @return {Array} The new array without values in `list1`.
+ * @see R.transduce, R.difference
+ * @example
+ *
+ *      R.without([1, 2], [1, 2, 1, 3, 4]); //=> [3, 4]
+ */
+
 var without$1 = /*#__PURE__*/_curry2_1(function (xs, list) {
   return reject_1(flip_1(_contains_1)(xs), list);
 });
 var without_1 = without$1;
+
+/**
+ * Creates a new list out of the two supplied by creating each possible pair
+ * from the lists.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category List
+ * @sig [a] -> [b] -> [[a,b]]
+ * @param {Array} as The first list.
+ * @param {Array} bs The second list.
+ * @return {Array} The list made by combining each possible pair from
+ *         `as` and `bs` into pairs (`[a, b]`).
+ * @example
+ *
+ *      R.xprod([1, 2], ['a', 'b']); //=> [[1, 'a'], [1, 'b'], [2, 'a'], [2, 'b']]
+ * @symb R.xprod([a, b], [c, d]) = [[a, c], [a, d], [b, c], [b, d]]
+ */
 
 var xprod$1 = /*#__PURE__*/_curry2_1(function xprod(a, b) {
   // = xprodWith(prepend); (takes about 3 times as long...)
@@ -23828,6 +32218,26 @@ var xprod$1 = /*#__PURE__*/_curry2_1(function xprod(a, b) {
 });
 var xprod_1 = xprod$1;
 
+/**
+ * Creates a new list out of the two supplied by pairing up equally-positioned
+ * items from both lists. The returned list is truncated to the length of the
+ * shorter of the two input lists.
+ * Note: `zip` is equivalent to `zipWith(function(a, b) { return [a, b] })`.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category List
+ * @sig [a] -> [b] -> [[a,b]]
+ * @param {Array} list1 The first array to consider.
+ * @param {Array} list2 The second array to consider.
+ * @return {Array} The list made by pairing up same-indexed elements of `list1` and `list2`.
+ * @example
+ *
+ *      R.zip([1, 2, 3], ['a', 'b', 'c']); //=> [[1, 'a'], [2, 'b'], [3, 'c']]
+ * @symb R.zip([a, b, c], [d, e, f]) = [[a, d], [b, e], [c, f]]
+ */
+
 var zip$1 = /*#__PURE__*/_curry2_1(function zip(a, b) {
   var rv = [];
   var idx = 0;
@@ -23840,6 +32250,24 @@ var zip$1 = /*#__PURE__*/_curry2_1(function zip(a, b) {
 });
 var zip_1 = zip$1;
 
+/**
+ * Creates a new object out of a list of keys and a list of values.
+ * Key/value pairing is truncated to the length of the shorter of the two lists.
+ * Note: `zipObj` is equivalent to `pipe(zip, fromPairs)`.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.3.0
+ * @category List
+ * @sig [String] -> [*] -> {String: *}
+ * @param {Array} keys The array that will be properties on the output object.
+ * @param {Array} values The list of values on the output object.
+ * @return {Object} The object made by pairing up same-indexed elements of `keys` and `values`.
+ * @example
+ *
+ *      R.zipObj(['a', 'b', 'c'], [1, 2, 3]); //=> {a: 1, b: 2, c: 3}
+ */
+
 var zipObj$1 = /*#__PURE__*/_curry2_1(function zipObj(keys, values) {
   var idx = 0;
   var len = Math.min(keys.length, values.length);
@@ -23851,6 +32279,31 @@ var zipObj$1 = /*#__PURE__*/_curry2_1(function zipObj(keys, values) {
   return out;
 });
 var zipObj_1 = zipObj$1;
+
+/**
+ * Creates a new list out of the two supplied by applying the function to each
+ * equally-positioned pair in the lists. The returned list is truncated to the
+ * length of the shorter of the two input lists.
+ *
+ * @function
+ * @memberOf R
+ * @since v0.1.0
+ * @category List
+ * @sig ((a, b) -> c) -> [a] -> [b] -> [c]
+ * @param {Function} fn The function used to combine the two elements into one value.
+ * @param {Array} list1 The first array to consider.
+ * @param {Array} list2 The second array to consider.
+ * @return {Array} The list made by combining same-indexed elements of `list1` and `list2`
+ *         using `fn`.
+ * @example
+ *
+ *      var f = (x, y) => {
+ *        // ...
+ *      };
+ *      R.zipWith(f, [1, 2, 3], ['a', 'b', 'c']);
+ *      //=> [f(1, 'a'), f(2, 'b'), f(3, 'c')]
+ * @symb R.zipWith(fn, [a, b, c], [d, e, f]) = [fn(a, d), fn(b, e), fn(c, f)]
+ */
 
 var zipWith$1 = /*#__PURE__*/_curry3_1(function zipWith(fn, a, b) {
   var rv = [];
@@ -24359,6 +32812,9 @@ src.zip = zip;
 src.zipObj = zipObj;
 src.zipWith = zipWith;
 
+// Unique ID creation requires a high quality random # generator.  In node.js
+// this is pretty straight-forward - we use the crypto API.
+
 var rb = crypto.randomBytes;
 
 function rng() {
@@ -24384,6 +32840,12 @@ function bytesToUuid(buf, offset) {
 
 var bytesToUuid_1 = bytesToUuid;
 
+// **`v1()` - Generate time-based UUID**
+//
+// Inspired by https://github.com/LiosK/UUID.js
+// and http://docs.python.org/library/uuid.html
+
+// random #'s we need to init node and clockseq
 var _seedBytes = rng_1();
 
 // Per 4.5, create and 48-bit node id, (47 random bits + multicast bit = 1)
@@ -24517,20 +32979,30 @@ const commonMerchants = {
   walmart: buildMerchant("Walmart")
 };
 
-const mortgageCompanies = src.map(buildMerchant, ["Wells Fargo", "Chase", "Quicken Loans", "U.S. Bancorp", "Bank of America"]);
+const mortgageCompanies = src.map(buildMerchant, ["Wells Fargo Home Mortgage", "Chase Mortgage", "Quicken Loans", "U.S. Bancorp", "Bank of America", "Ally Bank", "Citibank, N. A.", "USAA"]);
 
-const groceryStores = src.pipe(src.map(buildMerchant), src.concat([commonMerchants.target, commonMerchants.walmart]))(["Kroger", "Meijer", "Aldi's"]);
+const autoLenders = src.map(buildMerchant, ["Ally Auto Finance", "Toyota Finance", "Honda Finance", "Capital One Auto Finance", "Bank of America", "PNC Bank", "Fifth Third Bank", "USAA"]);
 
-const restaurants = src.map(buildMerchant, ["The Ram", "Steak and Shake", "Olive Garden"]);
+const creditCards = src.map(buildMerchant, ["Barclaycard Visa", "American Express", "Banana Republic Visa", "Discover Card", "Bank of America"]);
 
-const electricCompanies = src.map(buildMerchant, ["Duke Energy", "Citizens Energy Group"]);
+const groceryStores = src.pipe(src.map(buildMerchant), src.concat([commonMerchants.target, commonMerchants.walmart]))(["Kroger", "Meijer", "Aldi", "Trader Joe's", "Food Lion", "Whole Foods", "Schnucks", "Tom Thumb", "Meijer", "Cub Foods", "Publix", "Fresh Market", "Wegmans", "Westborn Market", "Hong Kong Supermarket", "Great Wall Supermarket", "Seafood City", "Ocean Mart", "Assi Market", "Global Food International", "New India Bazar", "Fiesta Mart", "Earth Fare"]);
 
-const gasCompanies = src.map(buildMerchant, ["Vectren"]);
+const restaurants = src.map(buildMerchant, ["Applebee's", "Arby's", "Auntie Anne's", "Baja Fresh", "Baskin-Robbins", "Boston Market", "Bonefish Grill", "Buffalo Wild Wings", "California Pizza Kitchen", "Carrabba's Italian Grill", "Cheddar's Casual Cafe", "Cheesecake Factory", "Chester Fried Chicken", "Chevys Fresh Mex", "Chick-fil-A", "Chili's", "Chipotle Mexican Grill", "Cinnabon", "Cracker Barrel Old Country Store", "Culver's", "Dairy Queen", "Dave & Busters", "Del Taco", "Dunkin Donuts", "Famous Dave's", "Fazoli's", "Five Guys", "Freebirds World Burrito", "Fuddruckers", "Giordano's Pizzeria", "Hardee's", "IHOP", "In-N-Out Burger", "Jersey Mike's Subs", "Jimmy John's", "Johnny Rockets", "KFC", "Krispy Kreme", "Little Caesar's", "Logan's Roadhouse", "Lone Star Steakhouse", "Luby's", "Maggiano's", "Moe's Southwest Grill", "Noodles & Company", "O'Charley's", "The Old Spaghetti Factory", "Olive Garden", "On The Border Mexican Grill", "The Original Pancake House", "Outback Steakhouse", "P. F. Chang's China Bistro", "Panda Express", "Panera Bread", "Papa John's", "Pei Wei Asian Diner", "Pita Pit", "Pizza Hut", "Popeyes Chicken & Biscuits", "Potbelly Sandwich Works", "Qdoba Mexican Grill", "RA Sushi", "Raising Cane's Chicken Fingers", "Rally's", "Red Lobster", "Red Robin", "Romano's Macaroni Grill", "Ruby Tuesday", "Sbarro", "Schlotzsky's", "Seattle's Best Coffee", "Shake Shack", "Skyline Chili", "Smashburger", "Sonic Drive-In", "Steak 'n Shake", "St. Louis Bread Company", "Sticky Fingers", "T.G.I. Friday's", "Taco Cabana", "Texas Roadhouse", "Tijuana Flats", "Tony Roma's", "Umami Burger", "Wetzel's Pretzels", "Whataburger", "Which Wich", "Zaxby's"]);
 
-const waterCompanies = src.map(buildMerchant, ["Indiana American Water"]);
+const electricCompanies = src.map(buildMerchant, ["Duke Energy", "Citizens Energy Group", "Consumers Energy", "Consolidated Edison", "DTE Energy", "Public Service Elec & Gas", "American Electric Power", "NiSource", "MidAmerican Energy", "Westar Energy", "Direct Energy", "Xcel Energy", "EnergyUnited", "Central Power Electric Cooperative", "CenterPoint Energy", "CPS Energy", "CoServ Electric", "Tara Energy", "FirstEnergy"]);
+
+const gasCompanies = src.map(buildMerchant, ["Enstar Natural Gas", "CenterPoint Energy", "Atmos Energy", "Xcel Energy", "Mirabito Gas", "Public Service Elec & Gas", "Hudson Energy", "Direct Energy", "Entergy", "Vectren", "Peoples Energy", "Eversource Energy", "Sandpiper Energy", "Colonial Gas"]);
+
+const waterCompanies = src.map(buildMerchant, ["Aqua America", "Valley Water District", "Regional Water Authority", "KWI North America", "United Water", "American Water"]);
+
+const cableCompanies = src.map(buildMerchant, ["Comcast", "AT&T"]);
+
+const phoneCompanies = src.map(buildMerchant, ["Verizon", "AT&T"]);
+
+const insuranceCompanies = src.map(buildMerchant, ["Allstate", "State Farm"]);
 
 // Maybe need to rename from 'merchants' to 'companies?'
-const employers = src.map(buildMerchant, ["General Electric, Inc.", "Amazon, Inc.", "Walmart, Inc."]);
+const employers = src.map(buildMerchant, ["General Electric, Inc.", "Amazon, Inc.", "Walmart, Inc.", "United Parcel Service", "FedEx", "Ford Motor Company", "U.S. Department of Defense", "International Business Machines", "Target Corporation", "PepsiCo", "Deloitte", "Cognizant Technology Solutions", "J.P. Morgan Chase", "Lowe's", "Ernst & Young", "UnitedHealth Group", "Microsoft Corporation", "SAP", "Salesforce", "Symantec", "Adobe Systems", "Oracle", "Facebook", "Uber", "Priceline Group", "Alphabet, Inc.", "Groupon", "Tata Consultancy Services", "Eli Lilly and Company", "University of Phoenix"]);
 
 /**
  * This user has a regular salary and generally spends within their budget.
@@ -24551,6 +33023,7 @@ const employers = src.map(buildMerchant, ["General Electric, Inc.", "Amazon, Inc
  * Second paycheck:
  * - Deposit paycheck
  * - Pay car loan (same FI)
+ * - Pay credit card
  * - Pay other utilties (water and gas)
  * - Buy groceries
  * - Restaurants, discretionary spending
@@ -24641,7 +33114,6 @@ const monthlyTransactionBuilder = ({
   budget,
   context,
   monthlySalary,
-  mortgagePayment,
   targetCheckingBalance,
   initialDate
 }) => (acc, index) => {
@@ -24671,6 +33143,14 @@ const monthlyTransactionBuilder = ({
     amount: monthlySalary * budget.mortgage,
     type: "debit",
     category: "housing"
+  };
+
+  const creditCard = {
+    description: context.creditCard.name,
+    date: randomDate(20, 3),
+    amount: monthlySalary * budget.creditCard,
+    type: "debit",
+    category: "debt"
   };
 
   // Consider adding a seasonal variance
@@ -24719,7 +33199,7 @@ const monthlyTransactionBuilder = ({
     category: "dining"
   }), splitDates(timesEatingOut));
 
-  let checkingTransactions = src.flatten([paychecks, mortgage, electricBill, gasBill, waterBill, groceries, dining]);
+  let checkingTransactions = src.flatten([paychecks, mortgage, creditCard, electricBill, gasBill, waterBill, groceries, dining]);
 
   const totalCheckingAccountBalance = src.pipe(src.map(getSignedTransactionAmount), src.sum, src.add(acc.accounts.checking.balance))(checkingTransactions);
 
@@ -24764,6 +33244,7 @@ var responsibleSpender = (({
   const context = {
     mortgage: faker_1.random.arrayElement(mortgageCompanies),
     employer: faker_1.random.arrayElement(employers),
+    creditCard: faker_1.random.arrayElement(creditCards),
     electric: faker_1.random.arrayElement(electricCompanies),
     gas: faker_1.random.arrayElement(gasCompanies),
     water: faker_1.random.arrayElement(waterCompanies)
@@ -24773,6 +33254,7 @@ var responsibleSpender = (({
 
   const budget = {
     mortgage: 0.15,
+    creditCard: 0.03,
     groceries: 0.1,
     dining: 0.1,
     electric: 0.0375,
