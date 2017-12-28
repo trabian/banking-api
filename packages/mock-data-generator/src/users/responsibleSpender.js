@@ -37,7 +37,7 @@ import {
   startOfMonth,
   addMonths,
   addDays,
-  addMinutes
+  getDaysInMonth
 } from "date-fns";
 
 import R from "ramda";
@@ -49,11 +49,13 @@ const mapIndexed = R.addIndex(R.map);
 
 const sortByDate = R.sort(R.ascend(R.prop("date")));
 
-const randomAmount = (min, max) =>
+const sortByDescendingDate = R.sort(R.descend(R.prop("date")));
+
+const randomAmount = (min, max, precision = 0.01) =>
   faker.random.number({
     min,
     max,
-    precision: 0.01
+    precision
   });
 
 const randomDate = (date, maxDelta) =>
@@ -69,23 +71,22 @@ const randomBudgetAmount = (budget, maxVariance = 0.5) =>
     precision: 0.0001
   });
 
+const getSignedTransactionAmount = transaction =>
+  transaction.type === "credit" ? transaction.amount : -1 * transaction.amount;
+
 // Remove additional precision. These are not audited financial statements.
 // Give us a break.
 const toFixed = (num, fixed) => parseFloat(num.toFixed(fixed));
 
 const transactionReducer = (acc, transaction) => {
-  const transAmount = toFixed(transaction.amount, 2);
+  const transAmount = toFixed(getSignedTransactionAmount(transaction), 2);
 
-  const balance = toFixed(
-    acc.balance +
-      (transaction.type === "credit" ? transAmount : -1 * transAmount),
-    2
-  );
+  const balance = toFixed(acc.balance + transAmount, 2);
 
   const updatedTransaction = R.merge(transaction, {
     id: uuid.v4(),
     date: addDays(acc.initialDate, transaction.date - 1), // Dates are 1-indexed
-    amount: transAmount,
+    amount: Math.abs(transAmount),
     balance
   });
 
@@ -115,11 +116,31 @@ const splitDates = times => {
   );
 };
 
+const addNewTransactions = (transactions, initialDate) => account => {
+  const transactionsWithBalances = R.pipe(
+    sortByDate,
+    R.reduce(transactionReducer, {
+      balance: account.balance,
+      initialDate,
+      transactions: []
+    })
+  )(transactions);
+
+  return R.evolve(
+    {
+      balance: R.always(transactionsWithBalances.balance),
+      transactions: R.concat(R.__, transactionsWithBalances.transactions)
+    },
+    account
+  );
+};
+
 const monthlyTransactionBuilder = ({
   budget,
   context,
   monthlySalary,
   mortgagePayment,
+  targetCheckingBalance,
   initialDate
 }) => (acc, index) => {
   const currentMonth = addMonths(initialDate, index);
@@ -175,11 +196,7 @@ const monthlyTransactionBuilder = ({
     date: randomDate(20, 3),
     amount: monthlySalary * randomBudgetAmount(budget.water),
     type: "debit",
-    category: "utilities",
-    message: {
-      messageMarkdown: "You spend **WAY** too much money on water.",
-      url: "/personal"
-    }
+    category: "utilities"
   };
 
   const groceries = mapIndexed((date, index) => {
@@ -206,7 +223,7 @@ const monthlyTransactionBuilder = ({
     splitDates(timesEatingOut)
   );
 
-  const transactions = R.flatten([
+  let checkingTransactions = R.flatten([
     paychecks,
     mortgage,
     electricBill,
@@ -216,25 +233,60 @@ const monthlyTransactionBuilder = ({
     dining
   ]);
 
-  const transactionsWithBalances = R.pipe(
-    sortByDate,
-    R.reduce(transactionReducer, {
-      balance: acc.balance,
-      initialDate: currentMonth,
-      transactions: []
-    })
-  )(transactions);
+  const totalCheckingAccountBalance = R.pipe(
+    R.map(getSignedTransactionAmount),
+    R.sum,
+    R.add(acc.accounts.checking.balance)
+  )(checkingTransactions);
+
+  let savingsTransactions = [];
+
+  if (totalCheckingAccountBalance > targetCheckingBalance) {
+    const maxTransfer = totalCheckingAccountBalance - targetCheckingBalance;
+
+    const transfer = {
+      date: getDaysInMonth(currentMonth),
+      amount: randomAmount(maxTransfer * 0.85, maxTransfer, 1),
+      category: "transfer"
+    };
+
+    checkingTransactions = R.append(
+      R.merge(
+        {
+          description: "Transfer to savings",
+          type: "debit"
+        },
+        transfer
+      )
+    )(checkingTransactions);
+
+    savingsTransactions = R.append(
+      R.merge(
+        {
+          description: "Transfer from checking",
+          type: "credit"
+        },
+        transfer
+      )
+    )(savingsTransactions);
+  }
 
   return R.evolve(
     {
-      balance: R.always(transactionsWithBalances.balance),
-      transactions: R.concat(R.__, transactionsWithBalances.transactions)
+      accounts: {
+        checking: addNewTransactions(checkingTransactions, currentMonth),
+        savings: addNewTransactions(savingsTransactions, currentMonth)
+      }
     },
     acc
   );
 };
 
-export default ({ initialBalance = 10, months = 12 } = {}) => {
+export default ({
+  accounts,
+  months = 12,
+  targetCheckingBalance = 500
+} = {}) => {
   const annualSalary = randomAmount(40000, 100000);
   const monthlySalary = toFixed(annualSalary / 12, 2);
 
@@ -262,16 +314,29 @@ export default ({ initialBalance = 10, months = 12 } = {}) => {
       budget,
       context,
       monthlySalary,
+      targetCheckingBalance,
       initialDate
     }),
     {
-      balance: initialBalance,
-      transactions: []
+      accounts: {
+        checking: {
+          balance: R.pathOr(10, ["checking", "initialBalance"], accounts),
+          transactions: []
+        },
+        savings: {
+          balance: R.pathOr(10, ["savings", "initialBalance"], accounts),
+          transactions: []
+        }
+      }
     },
     R.range(1, months + 1)
   );
 
   return R.evolve({
-    transactions: R.sort(R.descend(R.prop("date")))
+    accounts: R.map(
+      R.evolve({
+        transactions: sortByDescendingDate
+      })
+    )
   })(accountData);
 };

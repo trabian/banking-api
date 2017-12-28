@@ -24,7 +24,8 @@ export default {
           "addMonths",
           "subMonths",
           "addMinutes",
-          "startOfMonth"
+          "startOfMonth",
+          "getDaysInMonth"
         ]
       }
     }),
