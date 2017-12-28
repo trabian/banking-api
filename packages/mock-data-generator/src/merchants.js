@@ -215,7 +215,8 @@ export const phoneCompanies = R.map(buildMerchant, ["Verizon", "AT&T"]);
 
 export const insuranceCompanies = R.map(buildMerchant, [
   "Allstate",
-  "State Farm"
+  "State Farm",
+  "USAA Insurance"
 ]);
 
 // Maybe need to rename from 'merchants' to 'companies?'

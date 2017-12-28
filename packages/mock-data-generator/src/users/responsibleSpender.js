@@ -11,14 +11,16 @@
  * - Deposit paycheck
  * - Pay the mortgage (external FI)
  * - Pay electric bill
+ * - Pay cable bill
  * - Buy groceries
+ * - Pays insurance
  * - Restaurants, discretionary spending
  *
  * Second paycheck:
  * - Deposit paycheck
- * - Pay car loan (same FI)
+ * - Pay car loan
  * - Pay credit card
- * - Pay other utilties (water and gas)
+ * - Pay other utilties (water, phone and gas)
  * - Buy groceries
  * - Restaurants, discretionary spending
  * - Transfer to savings account (same FI)
@@ -161,11 +163,43 @@ const monthlyTransactionBuilder = ({
     category: "debt"
   };
 
+  const autoLoan = {
+    description: context.autoLoan.name,
+    date: randomDate(20, 3),
+    amount: monthlySalary * budget.autoLoan,
+    type: "debit",
+    category: "debt"
+  };
+
+  const insurance = {
+    description: context.insurance.name,
+    date: randomDate(5, 3),
+    amount: monthlySalary * budget.insurance,
+    type: "debit",
+    category: "insurance"
+  };
+
   // Consider adding a seasonal variance
   const electricBill = {
     description: context.electric.name,
     date: randomDate(5, 3),
     amount: monthlySalary * randomBudgetAmount(budget.electric),
+    type: "debit",
+    category: "utilities"
+  };
+
+  const phoneBill = {
+    description: context.phoneBill.name,
+    date: randomDate(21, 3),
+    amount: monthlySalary * randomBudgetAmount(budget.phoneBill),
+    type: "debit",
+    category: "utilities"
+  };
+
+  const cableBill = {
+    description: context.cableBill.name,
+    date: randomDate(7, 3),
+    amount: monthlySalary * randomBudgetAmount(budget.cableBill),
     type: "debit",
     category: "utilities"
   };
@@ -218,8 +252,12 @@ const monthlyTransactionBuilder = ({
     paychecks,
     mortgage,
     creditCard,
+    autoLoan,
+    cableBill,
+    insurance,
     electricBill,
     gasBill,
+    phoneBill,
     waterBill,
     groceries,
     dining
@@ -251,6 +289,10 @@ export default ({ initialBalance = 10, months = 12 } = {}) => {
     mortgage: faker.random.arrayElement(merchants.mortgageCompanies),
     employer: faker.random.arrayElement(merchants.employers),
     creditCard: faker.random.arrayElement(merchants.creditCards),
+    autoLoan: faker.random.arrayElement(merchants.autoLenders),
+    cableBill: faker.random.arrayElement(merchants.cableCompanies),
+    phoneBill: faker.random.arrayElement(merchants.phoneCompanies),
+    insurance: faker.random.arrayElement(merchants.insuranceCompanies),
     electric: faker.random.arrayElement(merchants.electricCompanies),
     gas: faker.random.arrayElement(merchants.gasCompanies),
     water: faker.random.arrayElement(merchants.waterCompanies)
@@ -261,9 +303,13 @@ export default ({ initialBalance = 10, months = 12 } = {}) => {
   const budget = {
     mortgage: 0.15,
     creditCard: 0.03,
+    cableBill: 0.025,
+    autoLoan: 0.1,
+    insurance: 0.0125,
     groceries: 0.1,
     dining: 0.1,
     electric: 0.0375,
+    phoneBill: 0.025,
     gas: 0.01825,
     water: 0.00725
   };
