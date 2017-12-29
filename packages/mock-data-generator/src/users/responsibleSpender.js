@@ -36,14 +36,17 @@
 import faker from "faker";
 
 import {
-  subMonths,
-  startOfMonth,
-  addMonths,
   addDays,
-  getDaysInMonth,
-  parse,
+  addMilliseconds,
+  addMonths,
   format,
-  addMilliseconds
+  getDaysInMonth,
+  isBefore,
+  isPast,
+  isThisMonth,
+  parse,
+  startOfMonth,
+  subMonths
 } from "date-fns";
 
 import R from "ramda";
@@ -92,12 +95,8 @@ const setTime = (date, time) => {
 // Give us a break.
 const toFixed = (num, fixed) => parseFloat(num.toFixed(fixed));
 
-const transactionReducer = (acc, transaction) => {
-  const transAmount = toFixed(getSignedTransactionAmount(transaction), 2);
-
-  const balance = toFixed(acc.balance + transAmount, 2);
-
-  let date = addDays(acc.initialDate, transaction.date - 1); // Dates are 1-indexed
+const addTransactionDate = initialDate => transaction => {
+  let date = addDays(initialDate, transaction.date - 1); // Dates are 1-indexed
 
   if (transaction.time) {
     date = setTime(date, transaction.time);
@@ -111,16 +110,23 @@ const transactionReducer = (acc, transaction) => {
     );
   }
 
+  return R.pipe(R.assoc("date", date), R.dissoc("time"))(transaction);
+};
+
+const transactionReducer = (acc, transaction) => {
+  const transAmount = toFixed(getSignedTransactionAmount(transaction), 2);
+
+  const balance = toFixed(acc.balance + transAmount, 2);
+
   const updatedTransaction = R.merge(transaction, {
     id: uuid.v4(),
-    date,
     amount: Math.abs(transAmount),
     balance
   });
 
   return R.evolve(
     {
-      transactions: R.append(R.omit(["time"], updatedTransaction)),
+      transactions: R.append(updatedTransaction),
       balance: R.always(balance)
     },
     acc
@@ -143,15 +149,39 @@ const splitDates = times => {
   );
 };
 
+const now = new Date();
+
 const addNewTransactions = (transactions, initialDate) => account => {
-  const transactionsWithBalances = R.pipe(
-    sortByDate,
-    R.reduce(transactionReducer, {
+  let sortedTransactions = R.pipe(
+    R.map(addTransactionDate(initialDate)),
+    sortByDate
+  )(transactions);
+
+  if (isThisMonth(initialDate)) {
+    const cutoff = addDays(new Date(), 3);
+
+    sortedTransactions = R.pipe(
+      R.filter(transaction =>
+        isBefore(transaction.date, transaction.nonPending ? now : cutoff)
+      ),
+      R.map(
+        transaction =>
+          isPast(transaction.date)
+            ? transaction
+            : R.assoc("pending", true, transaction)
+      )
+    )(sortedTransactions);
+  }
+
+  const transactionsWithBalances = R.reduce(
+    transactionReducer,
+    {
       balance: account.balance,
       initialDate,
       transactions: []
-    })
-  )(transactions);
+    },
+    sortedTransactions
+  );
 
   return R.evolve(
     {
@@ -167,6 +197,8 @@ const monthlyTransactionBuilder = ({
   context,
   monthlySalary,
   targetCheckingBalance,
+  minSavingsBalance,
+  targetSavingsBalance,
   initialDate
 }) => (acc, index) => {
   const currentMonth = addMonths(initialDate, index);
@@ -337,14 +369,27 @@ const monthlyTransactionBuilder = ({
     }
   ];
 
+  let moneyMarketTransactions = [
+    {
+      description: "Interest",
+      date: getDaysInMonth(currentMonth),
+      time: "23:59",
+      amount:
+        acc.accounts.moneyMarket.balance * acc.accounts.moneyMarket.apy / 12,
+      category: categories.interest,
+      type: "credit"
+    }
+  ];
+
   if (totalCheckingAccountBalance > targetCheckingBalance) {
     const maxTransfer = totalCheckingAccountBalance - targetCheckingBalance;
 
     const transfer = {
       date: getDaysInMonth(currentMonth),
       time: "11:00",
-      amount: randomAmount(maxTransfer * 0.85, maxTransfer, 1),
-      category: categories.transfer
+      amount: randomAmount(maxTransfer * 0.95, maxTransfer, 1),
+      category: categories.transfer,
+      nonPending: true
     };
 
     checkingTransactions = R.append(
@@ -368,11 +413,50 @@ const monthlyTransactionBuilder = ({
     )(savingsTransactions);
   }
 
+  const totalSavingsAccountBalance = R.pipe(
+    R.map(getSignedTransactionAmount),
+    R.sum,
+    R.add(acc.accounts.savings.balance)
+  )(savingsTransactions);
+
+  if (totalSavingsAccountBalance > targetSavingsBalance) {
+    const maxTransfer = totalSavingsAccountBalance - minSavingsBalance;
+
+    const transfer = {
+      date: getDaysInMonth(currentMonth),
+      time: "11:30",
+      amount: randomAmount(maxTransfer * 0.85, maxTransfer, 1),
+      category: categories.transfer,
+      nonPending: true
+    };
+
+    savingsTransactions = R.append(
+      R.merge(
+        {
+          description: "Transfer to money market",
+          type: "debit"
+        },
+        transfer
+      )
+    )(savingsTransactions);
+
+    moneyMarketTransactions = R.append(
+      R.merge(
+        {
+          description: "Transfer from savings",
+          type: "credit"
+        },
+        transfer
+      )
+    )(moneyMarketTransactions);
+  }
+
   return R.evolve(
     {
       accounts: {
         checking: addNewTransactions(checkingTransactions, currentMonth),
-        savings: addNewTransactions(savingsTransactions, currentMonth)
+        savings: addNewTransactions(savingsTransactions, currentMonth),
+        moneyMarket: addNewTransactions(moneyMarketTransactions, currentMonth)
       }
     },
     acc
@@ -382,7 +466,9 @@ const monthlyTransactionBuilder = ({
 export default ({
   accounts,
   months = 12,
-  targetCheckingBalance = 500
+  targetCheckingBalance = 500,
+  minSavingsBalance = 2000,
+  targetSavingsBalance = 10000
 } = {}) => {
   const annualSalary = randomAmount(40000, 100000);
   const monthlySalary = toFixed(annualSalary / 12, 2);
@@ -401,6 +487,12 @@ export default ({
   };
 
   const initialDate = subMonths(startOfMonth(new Date()), months);
+
+  const getTotalPending = R.pipe(
+    R.filter(R.propEq("pending", true)),
+    R.map(getSignedTransactionAmount),
+    R.sum
+  );
 
   const budget = {
     mortgage: 0.25,
@@ -423,6 +515,8 @@ export default ({
       context,
       monthlySalary,
       targetCheckingBalance,
+      minSavingsBalance,
+      targetSavingsBalance,
       initialDate
     }),
     {
@@ -435,6 +529,11 @@ export default ({
           balance: R.pathOr(10, ["savings", "initialBalance"], accounts),
           apy: R.pathOr(0.0025, ["savings", "apy"], accounts),
           transactions: []
+        },
+        moneyMarket: {
+          balance: R.pathOr(10, ["moneyMarket", "initialBalance"], accounts),
+          apy: R.pathOr(0.011, ["moneyMarket", "apy"], accounts),
+          transactions: []
         }
       }
     },
@@ -442,10 +541,10 @@ export default ({
   );
 
   return R.evolve({
-    accounts: R.map(
-      R.evolve({
-        transactions: sortByDescendingDate
-      })
-    )
+    accounts: R.map(account => ({
+      transactions: sortByDescendingDate(account.transactions),
+      actualBalance: account.balance - getTotalPending(account.transactions),
+      availableBalance: account.balance
+    }))
   })(accountData);
 };

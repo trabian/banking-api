@@ -1,7 +1,7 @@
 import { gql } from "./utils";
 
-const Date = gql`
+const DateScalar = gql`
   scalar Date
 `;
 
-export default () => [Date];
+export default () => [DateScalar];

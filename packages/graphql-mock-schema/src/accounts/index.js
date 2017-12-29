@@ -12,26 +12,41 @@ const responsibleSpenderAccounts = responsibleSpender({
 }).accounts;
 
 const accounts = [
-  {
-    id: uuid.v4(),
-    name: "Primary Checking",
-    type: "CHECKING",
-    availableBalance: responsibleSpenderAccounts.checking.balance,
-    transactions: responsibleSpenderAccounts.checking.transactions,
-    userId: "responsible-spender"
-  },
-  {
-    id: uuid.v4(),
-    name: "Savings",
-    type: "SAVINGS",
-    availableBalance: responsibleSpenderAccounts.savings.balance,
-    transactions: responsibleSpenderAccounts.savings.transactions,
-    userId: "responsible-spender"
-  },
+  R.merge(
+    {
+      id: uuid.v4(),
+      name: "Primary Checking",
+      type: "CHECKING",
+      accountNumber: "21341234",
+      userId: "responsible-spender"
+    },
+    responsibleSpenderAccounts.checking
+  ),
+  R.merge(
+    {
+      id: uuid.v4(),
+      name: "Savings",
+      type: "SAVINGS",
+      accountNumber: "21343456",
+      userId: "responsible-spender"
+    },
+    responsibleSpenderAccounts.savings
+  ),
+  R.merge(
+    {
+      id: uuid.v4(),
+      name: "Money Market",
+      type: "SAVINGS",
+      accountNumber: "21343801",
+      userId: "responsible-spender"
+    },
+    responsibleSpenderAccounts.moneyMarket
+  ),
   {
     id: uuid.v4(),
     name: "Primary Savings",
     type: "SAVINGS",
+    accountNumber: "23223142",
     availableBalance: 10,
     userId: "2345"
   }

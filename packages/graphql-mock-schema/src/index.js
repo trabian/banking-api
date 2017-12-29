@@ -5,6 +5,8 @@ import R from "ramda";
 import { GraphQLScalarType } from "graphql";
 import { Kind } from "graphql/language";
 
+import matchSorter from "match-sorter";
+
 import {
   getAccountForUser,
   getAccountsForUser,
@@ -29,17 +31,25 @@ const resolvers = {
     }
   }),
   Account: {
-    transactions: ({ transactions }, { limit, categoryId }) =>
+    transactions: ({ transactions }, { limit, categoryId, query }) =>
       R.pipe(
         R.unless(
           () => R.isNil(categoryId),
           R.filter(R.pathEq(["category", "id"], categoryId))
         ),
+        R.unless(
+          () => R.isNil(query),
+          transactions =>
+            matchSorter(transactions, query, {
+              keys: ["description"]
+            })
+        ),
         R.take(limit)
       )(transactions || [])
   },
   Transaction: {
-    type: R.pipe(R.prop("type"), R.toUpper)
+    type: R.pipe(R.prop("type"), R.toUpper),
+    status: ({ pending }) => (pending ? "PENDING" : "POSTED")
   },
   RootQuery: {
     account: (obj, { id: accountId }, { user: { id: userId } }) =>
