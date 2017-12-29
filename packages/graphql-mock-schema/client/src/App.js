@@ -1,9 +1,10 @@
-import React from "react";
+import React, { Component } from "react";
 import GraphiQL from "graphiql";
 import fetch from "isomorphic-fetch";
+import { parse, print } from "graphql";
 
 function graphQLFetcher(graphQLParams) {
-  return fetch("http://trabian-banking-api.herokuapp.com/graphql", {
+  return fetch("/graphql", {
     method: "post",
     headers: {
       "Content-Type": "application/json",
@@ -67,10 +68,41 @@ const defaultQuery = `
 }
 `;
 
-const App = () => (
-  <div>
-    <GraphiQL fetcher={graphQLFetcher} defaultQuery={defaultQuery} />
-  </div>
-);
+class App extends Component {
+  handleClickPrettifyButton = event => {
+    console.warn("this", this.graphiql);
+    const editor = this.graphiql.getQueryEditor();
+    console.warn("editor", editor);
+    const currentText = editor.getValue();
+
+    const prettyText = print(parse(currentText));
+    editor.setValue(prettyText);
+  };
+
+  render() {
+    return (
+      <GraphiQL
+        ref={c => {
+          console.warn("ref", c);
+          this.graphiql = c;
+        }}
+        fetcher={graphQLFetcher}
+        defaultQuery={defaultQuery}
+      >
+        <GraphiQL.Toolbar>
+          <GraphiQL.Button
+            onClick={this.handleClickPrettifyButton}
+            label="Prettify"
+            title="Prettify Query (Shift-Ctrl-P)"
+          />
+
+          <GraphiQL.Menu label="File" title="File">
+            <GraphiQL.MenuItem label="Save" title="Save" />
+          </GraphiQL.Menu>
+        </GraphiQL.Toolbar>
+      </GraphiQL>
+    );
+  }
+}
 
 export default App;
