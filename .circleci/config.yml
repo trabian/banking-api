@@ -28,4 +28,4 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
  
-      - run: cd packages/mock-data-generator && yarn build && cd ../..
+      - run: yarn build:server
