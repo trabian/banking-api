@@ -1,25 +1,14 @@
 import { gql } from "./utils";
 
 import Account from "./Account";
-import Date from "./Date";
-import Transaction from "./Transaction";
+import DateScalar from "./Date";
+import Transaction, { Category } from "./Transaction";
 import User from "./User";
-
-const TransferMutation = gql`
-  input TransferInput {
-    toAccountId: ID!
-    fromAccountId: ID!
-    amount: Float!
-    message: String
-    scheduledDate: Date
-  }
-  
-  mutation createTransfer(transfer: TransferInput!): TransferConfirmation
-`;
 
 const RootQuery = gql`
   type RootQuery {
     me: User
+    category(id: ID): Category
     account(id: ID!): Account
   }
 `;
@@ -30,4 +19,4 @@ const Schema = gql`
   }
 `;
 
-export default [Schema, RootQuery, Account, Date, Transaction, User];
+export default [Schema, RootQuery, Account, DateScalar, Transaction, User];

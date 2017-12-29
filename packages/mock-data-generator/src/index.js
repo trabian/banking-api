@@ -1,3 +1,5 @@
 import responsibleSpender from "./users/responsibleSpender";
 
-export { responsibleSpender };
+import { categories } from "./merchants";
+
+export { responsibleSpender, categories };

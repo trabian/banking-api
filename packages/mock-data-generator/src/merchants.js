@@ -1,17 +1,33 @@
 import R from "ramda";
 import uuid from "uuid";
 
-const buildMerchant = name => ({
+const createNamedEntity = name => ({
   id: uuid.v4(),
   name
 });
 
+export const categories = R.map(createNamedEntity, {
+  clothing: "Clothing",
+  debt: "Debt",
+  dining: "Dining",
+  groceries: "Groceries",
+  housing: "Housing",
+  income: "Income",
+  insurance: "Insurance",
+  interest: "Interest",
+  medical: "Medical",
+  miscellaneous: "Miscellaneous",
+  personalCare: "Personal Care",
+  transfer: "Transfer",
+  utilities: "Utilities"
+});
+
 const commonMerchants = {
-  target: buildMerchant("Target"),
-  walmart: buildMerchant("Walmart")
+  target: createNamedEntity("Target"),
+  walmart: createNamedEntity("Walmart")
 };
 
-export const mortgageCompanies = R.map(buildMerchant, [
+export const mortgageCompanies = R.map(createNamedEntity, [
   "Wells Fargo Home Mortgage",
   "Chase Mortgage",
   "Quicken Loans",
@@ -22,7 +38,7 @@ export const mortgageCompanies = R.map(buildMerchant, [
   "USAA"
 ]);
 
-export const autoLenders = R.map(buildMerchant, [
+export const autoLenders = R.map(createNamedEntity, [
   "Ally Auto Finance",
   "Toyota Finance",
   "Honda Finance",
@@ -33,7 +49,7 @@ export const autoLenders = R.map(buildMerchant, [
   "USAA"
 ]);
 
-export const creditCards = R.map(buildMerchant, [
+export const creditCards = R.map(createNamedEntity, [
   "Barclaycard Visa",
   "American Express",
   "Banana Republic Visa",
@@ -42,7 +58,7 @@ export const creditCards = R.map(buildMerchant, [
 ]);
 
 export const groceryStores = R.pipe(
-  R.map(buildMerchant),
+  R.map(createNamedEntity),
   R.concat([commonMerchants.target, commonMerchants.walmart])
 )([
   "Kroger",
@@ -70,7 +86,7 @@ export const groceryStores = R.pipe(
   "Earth Fare"
 ]);
 
-export const restaurants = R.map(buildMerchant, [
+export const restaurants = R.map(createNamedEntity, [
   "Applebee's",
   "Arby's",
   "Auntie Anne's",
@@ -161,7 +177,7 @@ export const restaurants = R.map(buildMerchant, [
   "Zaxby's"
 ]);
 
-export const electricCompanies = R.map(buildMerchant, [
+export const electricCompanies = R.map(createNamedEntity, [
   "Duke Energy",
   "Citizens Energy Group",
   "Consumers Energy",
@@ -183,7 +199,7 @@ export const electricCompanies = R.map(buildMerchant, [
   "FirstEnergy"
 ]);
 
-export const gasCompanies = R.map(buildMerchant, [
+export const gasCompanies = R.map(createNamedEntity, [
   "Enstar Natural Gas",
   "CenterPoint Energy",
   "Atmos Energy",
@@ -200,7 +216,7 @@ export const gasCompanies = R.map(buildMerchant, [
   "Colonial Gas"
 ]);
 
-export const waterCompanies = R.map(buildMerchant, [
+export const waterCompanies = R.map(createNamedEntity, [
   "Aqua America",
   "Valley Water District",
   "Regional Water Authority",
@@ -209,18 +225,18 @@ export const waterCompanies = R.map(buildMerchant, [
   "American Water"
 ]);
 
-export const cableCompanies = R.map(buildMerchant, ["Comcast", "AT&T"]);
+export const cableCompanies = R.map(createNamedEntity, ["Comcast", "AT&T"]);
 
-export const phoneCompanies = R.map(buildMerchant, ["Verizon", "AT&T"]);
+export const phoneCompanies = R.map(createNamedEntity, ["Verizon", "AT&T"]);
 
-export const insuranceCompanies = R.map(buildMerchant, [
+export const insuranceCompanies = R.map(createNamedEntity, [
   "Allstate",
   "State Farm",
   "USAA Insurance"
 ]);
 
 // Maybe need to rename from 'merchants' to 'companies?'
-export const employers = R.map(buildMerchant, [
+export const employers = R.map(createNamedEntity, [
   "General Electric, Inc.",
   "Amazon, Inc.",
   "Walmart, Inc.",
@@ -251,4 +267,21 @@ export const employers = R.map(buildMerchant, [
   "Tata Consultancy Services",
   "Eli Lilly and Company",
   "University of Phoenix"
+]);
+
+const addId = transaction => R.assoc("id", uuid.v4(), transaction);
+
+export const miscellaneous = R.map(addId, [
+  {
+    name: "CVS",
+    category: categories.medical
+  },
+  {
+    name: "Classic Cleaners",
+    category: categories.personalCare
+  },
+  {
+    name: "TJ Maxx",
+    category: categories.clothing
+  }
 ]);

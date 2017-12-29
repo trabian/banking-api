@@ -2,5 +2,10 @@
   "name": "@trabian-banking/root",
   "private": true,
   "workspaces": ["packages/*"],
-  "author": "Matt Dean <matt@trabian.com>"
+  "author": "Matt Dean <matt@trabian.com>",
+  "scripts": {
+    "start": "cd packages/graphql-mock-schema && yarn start",
+    "build:server":
+      "cd packages/mock-data-generator && yarn build && cd ../graphql-types && yarn build && cd ../graphql-mock-schema && yarn build:server"
+  }
 }

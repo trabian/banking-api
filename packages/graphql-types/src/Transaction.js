@@ -1,11 +1,27 @@
 import { gql } from "./utils";
 
-import Date from "./Date";
+import DateScalar from "./Date";
+
+export const Category = gql`
+  type Category {
+    id: ID!
+    name: String!
+  }
+`;
 
 const Merchant = gql`
   type Merchant {
     id: ID!
     name: String!
+  }
+`;
+
+const TransactionStatus = gql`
+  enum TransactionStatus {
+    POSTED
+    PENDING
+    DENIED
+    VOID
   }
 `;
 
@@ -53,7 +69,11 @@ export const Transaction = gql`
     # The running balance of this transaction's account.
     balance: Float
 
-    category: String
+    # The current status of the transaction. This may be part of a session or
+    # after the session has ended.
+    status: TransactionStatus
+
+    category: Category
 
     merchant: Merchant
 
@@ -61,4 +81,12 @@ export const Transaction = gql`
   }
 `;
 
-export default () => [Date, Transaction, TransactionType, Merchant, Message];
+export default () => [
+  DateScalar,
+  Transaction,
+  TransactionStatus,
+  TransactionType,
+  Merchant,
+  Message,
+  Category
+];

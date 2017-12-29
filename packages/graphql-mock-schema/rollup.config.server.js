@@ -1,16 +1,19 @@
 import resolve from "rollup-plugin-node-resolve";
 import babel from "rollup-plugin-babel";
 import commonjs from "rollup-plugin-commonjs";
-
-import pkg from "./package.json";
+import filesize from "rollup-plugin-filesize";
+import json from "rollup-plugin-json";
 
 export default {
-  input: "src/index.js",
+  input: "src/server.js",
   output: {
-    file: pkg.main,
+    file: "bundle.server.js",
     format: "cjs"
   },
   plugins: [
+    json({
+      include: "../../node_modules/**"
+    }),
     resolve({
       jsnext: false,
       main: true,
@@ -19,25 +22,14 @@ export default {
     commonjs({
       namedExports: {
         "graphql-tools": ["makeExecutableSchema"],
-        "date-fns": [
-          "addDays",
-          "addMilliseconds",
-          "addMinutes",
-          "addMonths",
-          "format",
-          "getDaysInMonth",
-          "isBefore",
-          "isPast",
-          "isThisMonth",
-          "parse",
-          "startOfMonth",
-          "subMonths"
-        ]
+        "graphql-server-express": ["graphqlExpress", "graphiqlExpress"],
+        graphql: ["GraphQLScalarType "]
       }
     }),
     babel({
       exclude: "node_modules/**" // only transpile our source code
-    })
+    }),
+    filesize()
   ],
   watch: {
     include: "src/**"
