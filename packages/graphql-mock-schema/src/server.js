@@ -3,7 +3,7 @@ import bodyParser from "body-parser";
 import { graphqlExpress, graphiqlExpress } from "graphql-server-express";
 import cors from "cors";
 
-import { addMockFunctionsToSchema, makeExecutableSchema } from "graphql-tools";
+import { makeExecutableSchema } from "graphql-tools";
 
 import { typeDefs, resolvers } from "./index.js";
 

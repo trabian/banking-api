@@ -13,6 +13,12 @@ jobs:
     steps:
 
       - checkout: { path: ~/repo }
+      
+      - setup_remote_docker
+
+      - run:
+          name: Login to heroku docker
+          command: docker login -u $HEROKU_EMAIL -p $HEROKU_PASS registry.heroku.com
 
       # Download and cache dependencies
       - restore_cache:

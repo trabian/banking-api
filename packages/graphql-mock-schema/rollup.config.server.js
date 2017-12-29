@@ -22,7 +22,8 @@ export default {
     commonjs({
       namedExports: {
         "graphql-tools": ["makeExecutableSchema"],
-        "graphql-server-express": ["graphqlExpress", "graphiqlExpress"]
+        "graphql-server-express": ["graphqlExpress", "graphiqlExpress"],
+        graphql: ["GraphQLScalarType "]
       }
     }),
     babel({
@@ -30,7 +31,6 @@ export default {
     }),
     filesize()
   ],
-  external: ["graphql", "graphql-tools"],
   watch: {
     include: "src/**"
   }
