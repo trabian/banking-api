@@ -40,6 +40,6 @@ jobs:
           name: Deploy Master to Heroku
           command: |
             TAG=$CIRCLE_BRANCH-$CIRCLE_SHA1
-            docker build -f Dockerfile -t trabian/banking-api:$TAG .
+            docker build -f Dockerfile -t trabian/trabian-banking-api:$TAG .
             docker tag trabian/trabian-banking-api:$TAG registry.heroku.com/trabian-banking-api/web
             docker push registry.heroku.com/trabian-banking-api/web
