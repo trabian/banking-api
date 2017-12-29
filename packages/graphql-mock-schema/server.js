@@ -2,10 +2,11 @@ import express from "express";
 import bodyParser from "body-parser";
 import { graphqlExpress, graphiqlExpress } from "graphql-server-express";
 import cors from "cors";
+import path from "path";
 
 import { makeExecutableSchema } from "graphql-tools";
 
-import { typeDefs, resolvers } from "./index.js";
+import { typeDefs, resolvers } from "./src/index.js";
 
 const schema = makeExecutableSchema({ typeDefs, resolvers });
 
@@ -14,6 +15,10 @@ const schema = makeExecutableSchema({ typeDefs, resolvers });
 const PORT = process.env.PORT || 3001;
 
 const app = express();
+
+const paths = {
+  public: path.join(__dirname, "client", "build")
+};
 
 app.use(cors());
 
@@ -37,5 +42,7 @@ app.use(
     endpointURL: "/graphql"
   })
 );
+
+app.use("/", express.static(paths.public));
 
 app.listen(PORT, () => console.warn(`listening on port: ${PORT}`));

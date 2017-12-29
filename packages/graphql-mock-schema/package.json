@@ -21,7 +21,7 @@
   },
   "scripts": {
     "dev": "nodemon -r @std/esm src/index.js",
-    "dev:server": "nodemon -r @std/esm src/server.js",
+    "dev:server": "nodemon -r @std/esm server.js",
     "build": "rollup -c",
     "build:watch": "rollup -w -c",
     "build:server": "rollup -c rollup.config.server.js",

@@ -4,7 +4,7 @@ FROM node:alpine
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
-COPY packages/graphql-mock-schema/bundle.server.js /usr/src/app/bundle.server.js
+COPY packages/graphql-mock-schema /usr/src/app
 
 ENV PORT 3000
 

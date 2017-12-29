@@ -5,7 +5,7 @@ import filesize from "rollup-plugin-filesize";
 import json from "rollup-plugin-json";
 
 export default {
-  input: "src/server.js",
+  input: "server.js",
   output: {
     file: "bundle.server.js",
     format: "cjs"
