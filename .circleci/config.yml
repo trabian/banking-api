@@ -35,3 +35,11 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
  
       - run: yarn build:server
+
+      - run:
+          name: Deploy Master to Heroku
+          command: |
+            TAG=$CIRCLE_BRANCH-$CIRCLE_SHA1
+            docker build -f Dockerfile.prod -t trabian/banking-api:$TAG .
+            docker tag trabian/trabian-banking-api:$TAG registry.heroku.com/trabian-banking-api/web
+            docker push registry.heroku.com/trabian-banking-api/web

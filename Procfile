@@ -1,1 +1,0 @@
-web: node packages/graphql-mock-schema/bundle.server.js
