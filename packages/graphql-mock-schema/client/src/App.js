@@ -70,38 +70,36 @@ const defaultQuery = `
 
 class App extends Component {
   handleClickPrettifyButton = event => {
-    console.warn("this", this.graphiql);
     const editor = this.graphiql.getQueryEditor();
-    console.warn("editor", editor);
     const currentText = editor.getValue();
-
     const prettyText = print(parse(currentText));
     editor.setValue(prettyText);
   };
 
   render() {
-    return (
-      <GraphiQL
-        ref={c => {
-          console.warn("ref", c);
-          this.graphiql = c;
-        }}
-        fetcher={graphQLFetcher}
-        defaultQuery={defaultQuery}
-      >
-        <GraphiQL.Toolbar>
-          <GraphiQL.Button
-            onClick={this.handleClickPrettifyButton}
-            label="Prettify"
-            title="Prettify Query (Shift-Ctrl-P)"
-          />
+    return <GraphiQL fetcher={graphQLFetcher} defaultQuery={defaultQuery} />;
+    // return (
+    //   <GraphiQL
+    //     ref={c => {
+    //       console.warn("ref", c);
+    //       this.graphiql = c;
+    //     }}
+    //     fetcher={graphQLFetcher}
+    //     defaultQuery={defaultQuery}
+    //   >
+    //     <GraphiQL.Toolbar>
+    //       <GraphiQL.Button
+    //         onClick={this.handleClickPrettifyButton}
+    //         label="Prettify"
+    //         title="Prettify Query (Shift-Ctrl-P)"
+    //       />
 
-          <GraphiQL.Menu label="File" title="File">
-            <GraphiQL.MenuItem label="Save" title="Save" />
-          </GraphiQL.Menu>
-        </GraphiQL.Toolbar>
-      </GraphiQL>
-    );
+    //       <GraphiQL.Menu label="File" title="File">
+    //         <GraphiQL.MenuItem label="Save" title="Save" />
+    //       </GraphiQL.Menu>
+    //     </GraphiQL.Toolbar>
+    //   </GraphiQL>
+    // );
   }
 }
 
