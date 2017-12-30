@@ -2,16 +2,22 @@ import typeDefs from "@trabian-banking/graphql-types";
 
 import R from "ramda";
 
+import uuid from "uuid";
+
 import { GraphQLScalarType } from "graphql";
 import { Kind } from "graphql/language";
 
 import matchSorter from "match-sorter";
 
-import {
-  getAccountForUser,
-  getAccountsForUser,
-  getCategoryForUser
-} from "./accounts";
+import { getAccountForUser, getCategoryForUser } from "./accounts";
+
+import { store, createMockUsers } from "./state";
+
+import { getAccountsForUser } from "./state/accounts";
+
+createMockUsers(store, { count: 5 });
+
+console.warn("state", store.getState());
 
 const resolvers = {
   Date: new GraphQLScalarType({
@@ -57,11 +63,9 @@ const resolvers = {
     category: (obj, { id: categoryId }, { user: { id: userId } }) =>
       categoryId && getCategoryForUser(userId, categoryId),
     me: (obj, args, { user: { id } }) => ({
-      accounts: getAccountsForUser(id)
+      accounts: getAccountsForUser(id, store.getState())
     })
   }
 };
-
-const accounts = getAccountsForUser("responsible-spender");
 
 export { resolvers, typeDefs };

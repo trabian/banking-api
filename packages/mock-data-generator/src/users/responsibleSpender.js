@@ -194,7 +194,7 @@ const addNewTransactions = (transactions, initialDate) => account => {
 
 const monthlyTransactionBuilder = ({
   budget,
-  context,
+  regularProviders,
   monthlySalary,
   targetCheckingBalance,
   minSavingsBalance,
@@ -207,7 +207,7 @@ const monthlyTransactionBuilder = ({
 
   const paychecks = R.map(
     date => ({
-      description: context.employer.name,
+      description: regularProviders.employer.name,
       date,
       time: "9:00",
       amount: paycheck,
@@ -218,7 +218,7 @@ const monthlyTransactionBuilder = ({
   );
 
   const mortgage = {
-    description: context.mortgage.name,
+    description: regularProviders.mortgage.name,
     date: randomDate(4, 3),
     amount: monthlySalary * budget.mortgage,
     type: "debit",
@@ -226,7 +226,7 @@ const monthlyTransactionBuilder = ({
   };
 
   const creditCard = {
-    description: context.creditCard.name,
+    description: regularProviders.creditCard.name,
     date: randomDate(20, 3),
     amount: monthlySalary * budget.creditCard,
     type: "debit",
@@ -234,7 +234,7 @@ const monthlyTransactionBuilder = ({
   };
 
   const autoLoan = {
-    description: context.autoLoan.name,
+    description: regularProviders.autoLoan.name,
     date: randomDate(20, 3),
     amount: monthlySalary * budget.autoLoan,
     type: "debit",
@@ -242,7 +242,7 @@ const monthlyTransactionBuilder = ({
   };
 
   const insurance = {
-    description: context.insurance.name,
+    description: regularProviders.insurance.name,
     date: randomDate(5, 3),
     amount: monthlySalary * budget.insurance,
     type: "debit",
@@ -251,7 +251,7 @@ const monthlyTransactionBuilder = ({
 
   // Consider adding a seasonal variance
   const electricBill = {
-    description: context.electric.name,
+    description: regularProviders.electric.name,
     date: randomDate(5, 3),
     amount: monthlySalary * randomBudgetAmount(budget.electric),
     type: "debit",
@@ -259,7 +259,7 @@ const monthlyTransactionBuilder = ({
   };
 
   const phoneBill = {
-    description: context.phoneBill.name,
+    description: regularProviders.phoneBill.name,
     date: randomDate(21, 3),
     amount: monthlySalary * randomBudgetAmount(budget.phoneBill),
     type: "debit",
@@ -267,7 +267,7 @@ const monthlyTransactionBuilder = ({
   };
 
   const cableBill = {
-    description: context.cableBill.name,
+    description: regularProviders.cableBill.name,
     date: randomDate(7, 3),
     amount: monthlySalary * randomBudgetAmount(budget.cableBill),
     type: "debit",
@@ -275,7 +275,7 @@ const monthlyTransactionBuilder = ({
   };
 
   const gasBill = {
-    description: context.gas.name,
+    description: regularProviders.gas.name,
     date: randomDate(25, 3),
     amount: monthlySalary * randomBudgetAmount(budget.gas),
     type: "debit",
@@ -283,7 +283,7 @@ const monthlyTransactionBuilder = ({
   };
 
   const waterBill = {
-    description: context.water.name,
+    description: regularProviders.water.name,
     date: randomDate(20, 3),
     amount: monthlySalary * randomBudgetAmount(budget.water),
     type: "debit",
@@ -473,7 +473,7 @@ export default ({
   const annualSalary = randomAmount(40000, 100000);
   const monthlySalary = toFixed(annualSalary / 12, 2);
 
-  const context = {
+  const regularProviders = {
     mortgage: faker.random.arrayElement(merchants.mortgageCompanies),
     employer: faker.random.arrayElement(merchants.employers),
     creditCard: faker.random.arrayElement(merchants.creditCards),
@@ -512,7 +512,7 @@ export default ({
   const accountData = R.reduce(
     monthlyTransactionBuilder({
       budget,
-      context,
+      regularProviders,
       monthlySalary,
       targetCheckingBalance,
       minSavingsBalance,
@@ -540,11 +540,16 @@ export default ({
     R.range(1, months + 1)
   );
 
-  return R.evolve({
+  const user = R.evolve({
     accounts: R.map(account => ({
+      id: uuid.v4(),
       transactions: sortByDescendingDate(account.transactions),
       actualBalance: account.balance - getTotalPending(account.transactions),
       availableBalance: account.balance
     }))
   })(accountData);
+
+  return R.merge(user, {
+    id: uuid.v4()
+  });
 };
