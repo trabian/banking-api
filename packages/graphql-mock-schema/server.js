@@ -6,11 +6,9 @@ import path from "path";
 
 import { makeExecutableSchema } from "graphql-tools";
 
-import { typeDefs, resolvers } from "./src/index.js";
+import { typeDefs, resolvers, db } from "./src/index.js";
 
 const schema = makeExecutableSchema({ typeDefs, resolvers });
-
-// addMockFunctionsToSchema({ schema });
 
 const PORT = process.env.PORT || 3001;
 

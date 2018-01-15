@@ -3,9 +3,9 @@
     [
       "env",
       {
-        "modules": false
+        "modules": "commonjs"
       }
     ]
   ],
-  "plugins": ["ramda", "inline-import"]
+  "plugins": ["ramda", "inline-import", "transform-class-properties"]
 }

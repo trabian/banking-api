@@ -1,5 +1,5 @@
 {
-  "name": "@trabian-banking/graphql-mock-schema",
+  "name": "@trabian/banking-graphql-mock-schema",
   "version": "0.0.1",
   "description": "A mock schema for the banking-api-graphql-types",
   "main": "bundle.js",
@@ -9,9 +9,19 @@
     "@babel/node": "^7.0.0-beta.35",
     "@babel/preset-env": "^7.0.0-beta.35",
     "@std/esm": "^0.18.0",
+    "babel-core": "^6.26.0",
+    "babel-eslint": "^8.2.1",
+    "babel-jest": "^22.0.6",
     "babel-plugin-inline-json-import": "^0.2.1",
     "babel-plugin-ramda": "^1.4.3",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "eslint": "^4.15.0",
+    "eslint-config-prettier": "^2.9.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-jest": "^21.6.1",
+    "jest": "^22.0.6",
     "nodemon": "^1.14.3",
+    "regenerator-runtime": "^0.11.1",
     "rollup": "^0.53.1",
     "rollup-plugin-babel": "^3.0.3",
     "rollup-plugin-commonjs": "^8.2.6",
@@ -22,22 +32,33 @@
   "scripts": {
     "dev": "nodemon -r @std/esm src/index.js",
     "dev:server": "nodemon -r @std/esm server.js",
+    "eslint": "eslint .",
     "build": "rollup -c",
     "build:watch": "rollup -w -c",
     "build:server": "rollup -c rollup.config.server.js",
-    "start": "node bundle.server.js"
+    "start": "node bundle.server.js",
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "@std/esm": {
     "cjs": true,
     "esm": "js"
   },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "bundle.js"
+  ],
   "dependencies": {
+    "babel-preset-env": "^1.6.1",
     "body-parser": "^1.18.2",
     "cors": "^2.8.4",
+    "dataloader": "^1.3.0",
     "express": "^4.16.2",
     "faker": "^4.1.0",
     "graphql-server-express": "^1.3.2",
     "graphql-tools": "^2.14.1",
+    "lokijs": "^1.5.1",
     "match-sorter": "^2.2.0",
     "normalizr": "^3.2.4",
     "ramda": "^0.25.0",

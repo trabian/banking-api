@@ -1,8 +1,10 @@
-import typeDefs from "@trabian-banking/graphql-types";
+import typeDefs from "@trabian/banking-graphql-types";
 
 import R from "ramda";
 
 import uuid from "uuid";
+
+import DataLoader from "dataloader";
 
 import { GraphQLScalarType } from "graphql";
 import { Kind } from "graphql/language";
@@ -11,15 +13,42 @@ import matchSorter from "match-sorter";
 
 import { getAccountForUser, getCategoryForUser } from "./accounts";
 
-import { store, createMockUsers } from "./state";
+import { store } from "./state";
 
-import { getAccountsForUser } from "./state/accounts";
+import { createMockUsers } from "./mock";
 
-createMockUsers(store, { count: 5 });
+import loki from "lokijs";
 
-console.warn("state", store.getState());
+export const db = new loki("data.db");
+
+// TODO: Make sure these are coming back in order by the `ids` parameter
+const accountLoader = new DataLoader(ids =>
+  Promise.resolve(db.getCollection("accounts").find({ id: { $in: ids } }))
+);
+
+R.forEach(collection => db.addCollection(collection), [
+  "accounts",
+  "categories",
+  "transactions",
+  "users"
+]);
+
+createMockUsers(db, { count: 5 });
+
+const getUserId = ctx =>
+  R.path(["user", "id"], ctx) || db.getCollection("users").findOne().id;
 
 const resolvers = {
+  User: {
+    accounts: (_root, _params, { sdk }) => sdk.getAccounts()
+  },
+  RootQuery: {
+    account: (_root, { id }, { sdk }) => sdk.getAccount(id),
+    me: (_root, _params, { sdk }) => sdk.getCurrentUser()
+  }
+};
+
+const oldResolvers = {
   Date: new GraphQLScalarType({
     name: "Date",
     description: "Date custom scalar type",
@@ -37,8 +66,13 @@ const resolvers = {
     }
   }),
   Account: {
-    transactions: ({ transactions }, { limit, categoryId, query }) =>
-      R.pipe(
+    transactions: ({ id }, { limit, categoryId, query }) => {
+      const transactions = db
+        .getCollection("transactions")
+        .find({ accountId: id });
+
+      // TODO: Can/should we use the loki queries instead?
+      return R.pipe(
         R.unless(
           () => R.isNil(categoryId),
           R.filter(R.pathEq(["category", "id"], categoryId))
@@ -51,20 +85,24 @@ const resolvers = {
             })
         ),
         R.take(limit)
-      )(transactions || [])
+      )(transactions || []);
+    }
   },
   Transaction: {
     type: R.pipe(R.prop("type"), R.toUpper),
-    status: ({ pending }) => (pending ? "PENDING" : "POSTED")
+    status: ({ pending }) => (pending ? "PENDING" : "POSTED"),
+    account: ({ accountId }) => accountLoader.load(accountId)
+  },
+  User: {
+    accounts: ({ id }) => db.getCollection("accounts").find({ userId: id })
   },
   RootQuery: {
-    account: (obj, { id: accountId }, { user: { id: userId } }) =>
-      getAccountForUser(userId, accountId),
-    category: (obj, { id: categoryId }, { user: { id: userId } }) =>
-      categoryId && getCategoryForUser(userId, categoryId),
-    me: (obj, args, { user: { id } }) => ({
-      accounts: getAccountsForUser(id, store.getState())
-    })
+    account: (obj, { id: accountId }) => accountLoader.load(accountId),
+    category: (obj, { id: categoryId }, ctx) =>
+      categoryId && getCategoryForUser(getUserId(ctx), categoryId),
+    me: (obj, args, ctx) =>
+      db.getCollection("users").findOne({ id: getUserId(ctx) }),
+    users: () => db.getCollection("users").find()
   }
 };
 

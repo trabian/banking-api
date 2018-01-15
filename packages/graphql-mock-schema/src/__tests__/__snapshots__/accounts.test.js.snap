@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`The accounts schema using the InMemorySDK should allow access to an account based on ID 1`] = `
+Object {
+  "data": Object {
+    "account": Object {
+      "actualBalance": 2345.67,
+      "id": "1234",
+    },
+  },
+}
+`;
+
+exports[`The accounts schema using the InMemorySDK should prevent access to other users' accounts based on ID 1`] = `
+Object {
+  "data": Object {
+    "account": null,
+  },
+  "errors": Array [
+    [GraphQLError: This is not your account.],
+  ],
+}
+`;
+
+exports[`The accounts schema using the InMemorySDK should show all of a user's accounts 1`] = `
+Object {
+  "data": Object {
+    "me": Object {
+      "accounts": Array [
+        Object {
+          "id": "1234",
+        },
+        Object {
+          "id": "2345",
+        },
+      ],
+    },
+  },
+}
+`;

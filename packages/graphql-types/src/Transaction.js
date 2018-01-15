@@ -2,6 +2,8 @@ import { gql } from "./utils";
 
 import DateScalar from "./Date";
 
+import Account from "./Account";
+
 export const Category = gql`
   type Category {
     id: ID!
@@ -78,6 +80,8 @@ export const Transaction = gql`
     merchant: Merchant
 
     message: Message
+
+    account: Account
   }
 `;
 
