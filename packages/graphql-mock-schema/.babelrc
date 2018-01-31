@@ -3,9 +3,26 @@
     [
       "env",
       {
-        "modules": "commonjs"
+        "modules": false
       }
     ]
   ],
-  "plugins": ["ramda", "inline-import", "transform-class-properties"]
+  "plugins": [
+    "ramda",
+    "inline-import",
+    "transform-class-properties",
+    "transform-object-rest-spread",
+    "transform-runtime"
+  ],
+  "env": {
+    "test": {
+      "presets": [["env"]],
+      "plugins": [
+        "ramda",
+        "inline-import",
+        "transform-class-properties",
+        "transform-object-rest-spread"
+      ]
+    }
+  }
 }

@@ -12,6 +12,10 @@ export default {
     format: "cjs"
   },
   plugins: [
+    babel({
+      exclude: ["../../node_modules/**", "node_modules/**"], // only transpile our source code
+      runtimeHelpers: true
+    }),
     resolve({
       jsnext: false,
       main: true,
@@ -21,9 +25,6 @@ export default {
       namedExports: {
         "graphql-tools": ["makeExecutableSchema"]
       }
-    }),
-    babel({
-      exclude: "node_modules/**" // only transpile our source code
     }),
     filesize()
   ],

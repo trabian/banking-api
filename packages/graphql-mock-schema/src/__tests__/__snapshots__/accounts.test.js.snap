@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`The accounts schema using the InMemorySDK should allow access to an account based on ID 1`] = `
+exports[`The accounts schema using the LowSDK should allow access to an account based on ID 1`] = `
 Object {
   "data": Object {
     "account": Object {
@@ -11,7 +11,7 @@ Object {
 }
 `;
 
-exports[`The accounts schema using the InMemorySDK should prevent access to other users' accounts based on ID 1`] = `
+exports[`The accounts schema using the LowSDK should prevent access to other users' accounts based on ID 1`] = `
 Object {
   "data": Object {
     "account": null,
@@ -22,7 +22,7 @@ Object {
 }
 `;
 
-exports[`The accounts schema using the InMemorySDK should show all of a user's accounts 1`] = `
+exports[`The accounts schema using the LowSDK should show all of a user's accounts 1`] = `
 Object {
   "data": Object {
     "me": Object {

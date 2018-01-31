@@ -7,14 +7,19 @@ import { gql } from "../utils.js";
 
 const schema = makeExecutableSchema({ typeDefs, resolvers });
 
-import { InMemorySDK } from "../sdk";
+import { LowSDK } from "../sdk";
 
-describe("The accounts schema using the InMemorySDK", () => {
+describe("The accounts schema using the LowSDK", () => {
   let execute;
 
-  beforeEach(() => {
-    const sdk = new InMemorySDK(
-      {
+  beforeEach(async () => {
+    const sdk = new LowSDK({
+      defaultValue: {
+        users: [
+          {
+            id: "1"
+          }
+        ],
         accounts: [
           {
             id: "1234",
@@ -31,14 +36,19 @@ describe("The accounts schema using the InMemorySDK", () => {
             actualBalance: 100,
             userId: "2"
           }
+        ],
+        transactions: [
+          {
+            accountId: "1234",
+            id: "191919"
+          }
         ]
-      },
-      {
-        userId: "1"
       }
-    );
+    });
 
-    execute = query => graphql(schema, query, {}, { sdk });
+    await sdk.db;
+
+    execute = query => graphql(schema, query, {}, { sdk, userId: "1" });
   });
 
   it("should allow access to an account based on ID", async () => {
@@ -93,5 +103,24 @@ describe("The accounts schema using the InMemorySDK", () => {
     ).toEqual(["1234", "2345"]);
 
     expect(result).toMatchSnapshot();
+  });
+
+  it("should fetch transactions", async () => {
+    const result = await execute(
+      gql`
+        {
+          account(id: "1234") {
+            id
+            transactions {
+              id
+            }
+          }
+        }
+      `
+    );
+
+    const transactions = R.path(["data", "account", "transactions"], result);
+
+    expect(transactions.length).toBeTruthy();
   });
 });

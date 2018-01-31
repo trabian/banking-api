@@ -1,1 +1,1 @@
-export { default as InMemorySDK } from "./inmemory";
+export { default as LowSDK } from "./lowdb";

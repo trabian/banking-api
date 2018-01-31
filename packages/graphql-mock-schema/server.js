@@ -6,9 +6,21 @@ import path from "path";
 
 import { makeExecutableSchema } from "graphql-tools";
 
-import { typeDefs, resolvers, db } from "./src/index.js";
+import FileAsync from "lowdb/adapters/FileAsync";
+
+import { LowSDK } from "./src/sdk";
+
+import { typeDefs, resolvers } from "./src/index";
 
 const schema = makeExecutableSchema({ typeDefs, resolvers });
+
+const sdk = new LowSDK({
+  adapter: new FileAsync("db.json", {
+    defaultValue: {
+      accounts: []
+    }
+  })
+});
 
 const PORT = process.env.PORT || 3001;
 
@@ -24,9 +36,10 @@ app.use(cors());
 app.use(
   "/graphql",
   bodyParser.json(),
-  graphqlExpress((req, res) => ({
+  graphqlExpress(req => ({
     schema,
     context: {
+      sdk,
       user: {
         id: req.headers.authorization
       }
