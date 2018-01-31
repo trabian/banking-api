@@ -7,16 +7,13 @@ import { gql } from "../utils.js";
 
 const schema = makeExecutableSchema({ typeDefs, resolvers });
 
-import { LowSDK } from "../sdk";
+import { createLowSdk } from "../sdk";
 
 describe("Users", () => {
   let execute;
 
   beforeEach(async () => {
-    const sdk = new LowSDK();
-
-    await sdk.db;
-
+    const sdk = await createLowSdk();
     execute = (query, userId) => graphql(schema, query, {}, { sdk, userId });
   });
 

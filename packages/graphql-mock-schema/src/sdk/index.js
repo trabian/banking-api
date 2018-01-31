@@ -1,1 +1,1 @@
-export { default as LowSDK } from "./lowdb";
+export { createSdk as createLowSdk } from "./lowdb";

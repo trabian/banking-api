@@ -7,13 +7,13 @@ import { gql } from "../utils.js";
 
 const schema = makeExecutableSchema({ typeDefs, resolvers });
 
-import { LowSDK } from "../sdk";
+import { createLowSdk as createSdk } from "../sdk";
 
 describe("The accounts schema using the LowSDK", () => {
   let execute;
 
   beforeEach(async () => {
-    const sdk = new LowSDK({
+    const sdk = await createSdk({
       defaultValue: {
         users: [
           {

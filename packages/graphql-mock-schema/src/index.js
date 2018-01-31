@@ -5,7 +5,7 @@ import FileAsync from "lowdb/adapters/FileAsync";
 import typeDefs from "./types";
 import resolvers from "./resolvers";
 
-import { LowSDK } from "./sdk";
+import { createLowSdk } from "./sdk";
 
 export const createLoaders = ({ sdk, userId }) => ({
   accounts: new DataLoader(ids =>
@@ -23,7 +23,7 @@ export const createMockSdk = ({
     transactions: []
   }
 }) => {
-  return new LowSDK({
+  return createLowSdk({
     adapter: new FileAsync(dbFile, {
       defaultValue
     })
@@ -54,20 +54,7 @@ export const createMockSdk = ({
 //         .find({ accountId: id });
 
 //       // TODO: Can/should we use the loki queries instead?
-//       return R.pipe(
-//         R.unless(
-//           () => R.isNil(categoryId),
-//           R.filter(R.pathEq(["category", "id"], categoryId))
-//         ),
-//         R.unless(
-//           () => R.isNil(query),
-//           transactions =>
-//             matchSorter(transactions, query, {
-//               keys: ["description"]
-//             })
-//         ),
-//         R.take(limit)
-//       )(transactions || []);
+
 //     }
 //   },
 //   Transaction: {
