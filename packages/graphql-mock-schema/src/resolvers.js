@@ -5,6 +5,15 @@ import parse from "date-fns/parse";
 import { GraphQLScalarType } from "graphql";
 import { Kind } from "graphql/language";
 
+const accountResolvers = {
+  transactions: async ({ id }, { limit, categoryId, query }, { sdk }) =>
+    sdk.getTransactionsForAccount(id, {
+      limit,
+      categoryId,
+      query
+    })
+};
+
 const resolvers = {
   Date: new GraphQLScalarType({
     name: "Date",
@@ -23,13 +32,13 @@ const resolvers = {
     }
   }),
   Account: {
-    transactions: async ({ id }, { limit, categoryId, query }, { sdk }) =>
-      sdk.getTransactionsForAccount(id, {
-        limit,
-        categoryId,
-        query
+    __resolveType: (obj, context, info) =>
+      R.prop(obj.type && obj.type.toLowerCase(), {
+        checking: "CheckingAccount",
+        savings: "SavingsAccount"
       })
   },
+  CheckingAccount: accountResolvers,
   Transaction: {
     type: R.pipe(R.prop("type"), R.toUpper),
     status: ({ pending }) => (pending ? "PENDING" : "POSTED"),
@@ -37,8 +46,7 @@ const resolvers = {
       loaders.accounts.load(accountId)
   },
   User: {
-    accounts: (_root, _params, { sdk, ...context }) =>
-      sdk.getAccountsForUser(context.userId)
+    accounts: ({ id }, _params, { sdk }) => sdk.getAccountsForUser(id)
   },
   RootQuery: {
     account: (_root, { id }, { sdk, ...context }) =>
@@ -47,7 +55,7 @@ const resolvers = {
     users: (_root, _params, { sdk }) => sdk.getUsers()
   },
   RootMutation: {
-    createUser: (_root, _params, { sdk }) => sdk.createUser()
+    createUser: (_root, params, { sdk }) => sdk.createUser(params)
   }
 };
 

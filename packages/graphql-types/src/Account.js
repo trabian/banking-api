@@ -16,7 +16,7 @@ const AccountType = gql`
 `;
 
 const Account = gql`
-  type Account {
+  interface Account {
     # The account ID is a persistent and unique identifier for the account.
     # It must be unique for all users across the institution and remain the
     # same over the life of the account.
@@ -55,4 +55,54 @@ const Account = gql`
   }
 `;
 
-export default () => [Account, AccountType, Transaction];
+const InterestBearingAccount = gql`
+  interface InterestBearingAccount {
+    apy: Float
+  }
+`;
+
+const CheckingAccount = gql`
+  type CheckingAccount implements Account, InterestBearingAccount {
+    id: ID!
+    accountNumber: String
+    name: String
+    type: AccountType
+    actualBalance: Float
+    availableBalance: Float
+    transactions(
+      limit: Int = 10
+      categoryId: ID
+      query: String
+    ): [Transaction!]!
+    apy: Float
+  }
+`;
+
+const SavingsAccount = gql`
+  type SavingsAccount implements Account, InterestBearingAccount {
+    id: ID!
+    accountNumber: String
+    name: String
+    type: AccountType
+    actualBalance: Float
+    availableBalance: Float
+    transactions(
+      limit: Int = 10
+      categoryId: ID
+      query: String
+    ): [Transaction!]!
+
+    # Number of remaining
+    regDRemaining: Int
+    apy: Float
+  }
+`;
+
+export default () => [
+  Account,
+  InterestBearingAccount,
+  AccountType,
+  CheckingAccount,
+  SavingsAccount,
+  Transaction
+];

@@ -4,7 +4,7 @@ import { gql } from "./utils";
 
 const mutations = gql`
   extend type RootMutation {
-    createUser: User!
+    createUser(months: Int): User!
   }
 `;
 

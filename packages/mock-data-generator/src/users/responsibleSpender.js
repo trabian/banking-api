@@ -545,7 +545,8 @@ export default ({
       id: uuid.v4(),
       transactions: sortByDescendingDate(account.transactions),
       actualBalance: account.balance - getTotalPending(account.transactions),
-      availableBalance: account.balance
+      availableBalance: account.balance,
+      apy: account.apy
     }))
   })(accountData);
 

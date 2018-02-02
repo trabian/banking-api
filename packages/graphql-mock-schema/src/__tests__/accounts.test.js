@@ -24,17 +24,21 @@ describe("The accounts schema using the LowSDK", () => {
           {
             id: "1234",
             actualBalance: 2345.67,
-            userId: "1"
+            userId: "1",
+            type: "CHECKING",
+            apy: 0.3
           },
           {
             id: "2345",
             userId: "1",
-            actualBalance: 2345.67
+            actualBalance: 2345.67,
+            type: "SAVINGS"
           },
           {
             id: "not-mine",
             actualBalance: 100,
-            userId: "2"
+            userId: "2",
+            type: "CHECKING"
           }
         ],
         transactions: [
@@ -58,6 +62,9 @@ describe("The accounts schema using the LowSDK", () => {
           account(id: "1234") {
             id
             actualBalance
+            ... on InterestBearingAccount {
+              apy
+            }
           }
         }
       `

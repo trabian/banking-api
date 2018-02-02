@@ -5,6 +5,7 @@ Object {
   "data": Object {
     "account": Object {
       "actualBalance": 2345.67,
+      "apy": 0.3,
       "id": "1234",
     },
   },
