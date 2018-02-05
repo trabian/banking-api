@@ -7,7 +7,7 @@ import * as transactions from "./transactions";
 import * as users from "./users";
 
 export const createSdk = async ({
-  defaultValue = { accounts: [], transactions: [], users: [] },
+  defaultValue = { accounts: [], categories: [], transactions: [], users: [] },
   adapter
 } = {}) => {
   const db = await Promise.resolve(

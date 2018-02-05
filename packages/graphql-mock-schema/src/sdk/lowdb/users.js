@@ -11,8 +11,8 @@ export const getCurrentUser = find("users", ({ userId }) =>
   R.find(R.propEq("id", userId))
 );
 
-export const createUser = ({ db }) => async ({ months }) => {
-  const user = createMockUser({ months });
+export const createUser = ({ db }) => async params => {
+  const user = createMockUser(params);
 
   const normalized = normalize(user, userSchema);
 

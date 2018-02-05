@@ -395,7 +395,7 @@ const monthlyTransactionBuilder = ({
     checkingTransactions = R.append(
       R.merge(
         {
-          description: "Transfer to savings",
+          description: "Transfer to Savings",
           type: "debit"
         },
         transfer

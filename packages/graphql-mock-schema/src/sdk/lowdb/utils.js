@@ -1,5 +1,5 @@
 import R from "ramda";
 
 export const find = (tableName, filterFn = R.identity) => {
-  return ({ db }) => (...args) => db(tableName)(filterFn(...args));
+  return ({ db }) => async (...args) => db(tableName)(filterFn(...args));
 };

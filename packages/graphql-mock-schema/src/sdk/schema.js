@@ -1,11 +1,19 @@
 import { schema } from "normalizr";
 
-export const transactionSchema = new schema.Entity("transactions", undefined, {
-  processStrategy: (value, parent) => ({
-    accountId: parent.id,
-    ...value
-  })
-});
+const categorySchema = new schema.Entity("categories");
+
+export const transactionSchema = new schema.Entity(
+  "transactions",
+  {
+    category: categorySchema
+  },
+  {
+    processStrategy: (value, parent) => ({
+      accountId: parent.id,
+      ...value
+    })
+  }
+);
 
 export const accountSchema = new schema.Entity(
   "accounts",

@@ -10,7 +10,7 @@ export const getTransactionsForAccount = find(
       R.filter(R.propEq("accountId", accountId)),
       R.unless(
         () => R.isNil(categoryId),
-        R.filter(R.pathEq(["category", "id"], categoryId))
+        R.filter(R.propEq("category", categoryId))
       ),
       R.unless(
         () => R.isNil(query),
@@ -21,4 +21,8 @@ export const getTransactionsForAccount = find(
       ),
       R.take(limit)
     )
+);
+
+export const getCategories = find("categories", ids => categories =>
+  R.map(id => R.find(R.propEq("id", id), categories), ids)
 );

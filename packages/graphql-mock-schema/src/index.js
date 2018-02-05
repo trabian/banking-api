@@ -12,12 +12,14 @@ export const createLoaders = ({ sdk, userId }) => ({
     sdk.getAccounts(ids, {
       userId
     })
-  )
+  ),
+  categories: new DataLoader(ids => sdk.getCategories(ids))
 });
 
 export const createMockSdk = ({
   dbFile,
   defaultValue = {
+    categories: [],
     accounts: [],
     users: [],
     transactions: []
@@ -29,48 +31,5 @@ export const createMockSdk = ({
     })
   });
 };
-
-// const oldResolvers = {
-//   Date: new GraphQLScalarType({
-//     name: "Date",
-//     description: "Date custom scalar type",
-//     parseValue(value) {
-//       return new Date(value); // value from the client
-//     },
-//     serialize(value) {
-//       return value.getTime(); // value sent to the client
-//     },
-//     parseLiteral(ast) {
-//       if (ast.kind === Kind.INT) {
-//         return parseInt(ast.value, 10); // ast value is always in string format
-//       }
-//       return null;
-//     }
-//   }),
-//   Account: {
-//     transactions: ({ id }, { limit, categoryId, query }) => {
-//       const transactions = db
-//         .getCollection("transactions")
-//         .find({ accountId: id });
-
-//       // TODO: Can/should we use the loki queries instead?
-
-//     }
-//   },
-//   Transaction: {
-//     account: ({ accountId }) => accountLoader.load(accountId)
-//   },
-//   User: {
-//     accounts: ({ id }) => db.getCollection("accounts").find({ userId: id })
-//   },
-//   RootQuery: {
-//     account: (obj, { id: accountId }) => accountLoader.load(accountId),
-//     category: (obj, { id: categoryId }, ctx) =>
-//       categoryId && getCategoryForUser(getUserId(ctx), categoryId),
-//     me: (obj, args, ctx) =>
-//       db.getCollection("users").findOne({ id: getUserId(ctx) }),
-//     users: () => db.getCollection("users").find()
-//   }
-// };
 
 export { resolvers, typeDefs };

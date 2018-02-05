@@ -13,7 +13,7 @@ export default {
   },
   plugins: [
     babel({
-      exclude: ["../../node_modules/**", "node_modules/**"], // only transpile our source code
+      exclude: "../../node_modules/**", // only transpile our source code
       runtimeHelpers: true
     }),
     resolve({
@@ -30,6 +30,10 @@ export default {
   ],
   external: ["graphql", "graphql-tools"],
   watch: {
-    include: "src/**"
+    include: [
+      "src/**",
+      require.resolve("@trabian/banking-graphql-types"),
+      require.resolve("@trabian/banking-mock-data-generator")
+    ]
   }
 };

@@ -69,6 +69,7 @@ const CheckingAccount = gql`
     type: AccountType
     actualBalance: Float
     availableBalance: Float
+    routingNumber: String
     transactions(
       limit: Int = 10
       categoryId: ID
@@ -86,13 +87,14 @@ const SavingsAccount = gql`
     type: AccountType
     actualBalance: Float
     availableBalance: Float
+    routingNumber: String
     transactions(
       limit: Int = 10
       categoryId: ID
       query: String
     ): [Transaction!]!
 
-    # Number of remaining
+    # Number of remaining transactions according to Reg D
     regDRemaining: Int
     apy: Float
   }

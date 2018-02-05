@@ -28,7 +28,7 @@ const resolvers = {
       if (ast.kind === Kind.INT) {
         return parseInt(ast.value, 10); // ast value is always in string format
       }
-      return null;
+      return undefined;
     }
   }),
   Account: {
@@ -39,11 +39,14 @@ const resolvers = {
       })
   },
   CheckingAccount: accountResolvers,
+  SavingsAccount: accountResolvers,
   Transaction: {
     type: R.pipe(R.prop("type"), R.toUpper),
     status: ({ pending }) => (pending ? "PENDING" : "POSTED"),
     account: ({ accountId }, _params, { loaders }) =>
-      loaders.accounts.load(accountId)
+      accountId && loaders.accounts.load(accountId),
+    category: ({ category }, _params, { loaders }) =>
+      category && loaders.categories.load(category)
   },
   User: {
     accounts: ({ id }, _params, { sdk }) => sdk.getAccountsForUser(id)
@@ -51,6 +54,7 @@ const resolvers = {
   RootQuery: {
     account: (_root, { id }, { sdk, ...context }) =>
       sdk.getAccount(id, context),
+    category: (_root, { id }, { loaders }) => id && loaders.categories.load(id),
     me: (_root, _params, { sdk, ...context }) => sdk.getCurrentUser(context),
     users: (_root, _params, { sdk }) => sdk.getUsers()
   },
