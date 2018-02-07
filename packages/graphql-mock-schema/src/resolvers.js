@@ -36,12 +36,14 @@ const resolvers = {
       R.prop(obj.type && obj.type.toLowerCase(), {
         checking: "CheckingAccount",
         savings: "SavingsAccount",
-        loan: "LoanAccount"
+        loan: "LoanAccount",
+        line_of_credit: "LineOfCreditAccount"
       })
   },
   CheckingAccount: accountResolvers,
   LoanAccount: accountResolvers,
   SavingsAccount: accountResolvers,
+  LineOfCreditAccount: accountResolvers,
   Transaction: {
     type: R.pipe(R.prop("type"), R.toUpper),
     status: ({ pending }) => (pending ? "PENDING" : "POSTED"),

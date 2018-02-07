@@ -125,6 +125,29 @@ const LoanAccount = gql`
     # Number of remaining transactions according to Reg D
     apr: Float
     nextPayment: LoanPayment
+    originationDate: Date
+  }
+`;
+
+const LineOfCreditAccount = gql`
+  type LineOfCreditAccount implements Account {
+    id: ID!
+    accountNumber: String
+    name: String
+    type: AccountType
+    actualBalance: Float
+    availableBalance: Float
+    routingNumber: String
+    transactions(
+      limit: Int = 10
+      categoryId: ID
+      query: String
+    ): [Transaction!]!
+
+    # Number of remaining transactions according to Reg D
+    apr: Float
+    nextPayment: LoanPayment
+    limit: Float
   }
 `;
 
@@ -135,6 +158,7 @@ export default () => [
   CheckingAccount,
   SavingsAccount,
   LoanAccount,
+  LineOfCreditAccount,
   LoanPayment,
   Transaction
 ];
