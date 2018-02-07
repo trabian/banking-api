@@ -1,5 +1,5 @@
 {
-  "name": "@trabian-banking/root",
+  "name": "@trabian/banking",
   "private": true,
   "workspaces": ["packages/*"],
   "author": "Matt Dean <matt@trabian.com>",

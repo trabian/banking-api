@@ -4,7 +4,7 @@ import uuid from "uuid";
 import {
   responsibleSpender,
   categories
-} from "@trabian-banking/mock-data-generator";
+} from "@trabian/banking-mock-data-generator";
 
 const responsibleSpenderAccounts = responsibleSpender({
   months: 60,

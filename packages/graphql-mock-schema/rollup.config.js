@@ -12,6 +12,10 @@ export default {
     format: "cjs"
   },
   plugins: [
+    babel({
+      exclude: "../../node_modules/**", // only transpile our source code
+      runtimeHelpers: true
+    }),
     resolve({
       jsnext: false,
       main: true,
@@ -22,13 +26,14 @@ export default {
         "graphql-tools": ["makeExecutableSchema"]
       }
     }),
-    babel({
-      exclude: "node_modules/**" // only transpile our source code
-    }),
     filesize()
   ],
   external: ["graphql", "graphql-tools"],
   watch: {
-    include: "src/**"
+    include: [
+      "src/**",
+      require.resolve("@trabian/banking-graphql-types"),
+      require.resolve("@trabian/banking-mock-data-generator")
+    ]
   }
 };

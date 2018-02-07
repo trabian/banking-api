@@ -10,13 +10,33 @@ const RootQuery = gql`
     me: User
     category(id: ID): Category
     account(id: ID!): Account
+
+    # This is helpful during development and would not be resolved
+    # in a production environment.
+    users: [User]
+  }
+`;
+
+const RootMutation = gql`
+  type RootMutation {
+    # Placeholder for now
+    transfer(amount: Float): String
   }
 `;
 
 const Schema = gql`
   schema {
     query: RootQuery
+    mutation: RootMutation
   }
 `;
 
-export default [Schema, RootQuery, Account, DateScalar, Transaction, User];
+export default [
+  Schema,
+  RootQuery,
+  RootMutation,
+  Account,
+  DateScalar,
+  Transaction,
+  User
+];

@@ -16,7 +16,7 @@ const AccountType = gql`
 `;
 
 const Account = gql`
-  type Account {
+  interface Account {
     # The account ID is a persistent and unique identifier for the account.
     # It must be unique for all users across the institution and remain the
     # same over the life of the account.
@@ -55,4 +55,86 @@ const Account = gql`
   }
 `;
 
-export default () => [Account, AccountType, Transaction];
+const InterestBearingAccount = gql`
+  interface InterestBearingAccount {
+    apy: Float
+  }
+`;
+
+const CheckingAccount = gql`
+  type CheckingAccount implements Account, InterestBearingAccount {
+    id: ID!
+    accountNumber: String
+    name: String
+    type: AccountType
+    actualBalance: Float
+    availableBalance: Float
+    routingNumber: String
+    transactions(
+      limit: Int = 10
+      categoryId: ID
+      query: String
+    ): [Transaction!]!
+    apy: Float
+  }
+`;
+
+const SavingsAccount = gql`
+  type SavingsAccount implements Account, InterestBearingAccount {
+    id: ID!
+    accountNumber: String
+    name: String
+    type: AccountType
+    actualBalance: Float
+    availableBalance: Float
+    routingNumber: String
+    transactions(
+      limit: Int = 10
+      categoryId: ID
+      query: String
+    ): [Transaction!]!
+
+    # Number of remaining transactions according to Reg D
+    regDRemaining: Int
+    apy: Float
+  }
+`;
+
+const LoanPayment = gql`
+  type LoanPayment {
+    nextDueDate: Date
+    amount: Float
+  }
+`;
+
+const LoanAccount = gql`
+  type LoanAccount implements Account {
+    id: ID!
+    accountNumber: String
+    name: String
+    type: AccountType
+    actualBalance: Float
+    availableBalance: Float
+    routingNumber: String
+    transactions(
+      limit: Int = 10
+      categoryId: ID
+      query: String
+    ): [Transaction!]!
+
+    # Number of remaining transactions according to Reg D
+    apr: Float
+    nextPayment: LoanPayment
+  }
+`;
+
+export default () => [
+  Account,
+  InterestBearingAccount,
+  AccountType,
+  CheckingAccount,
+  SavingsAccount,
+  LoanAccount,
+  LoanPayment,
+  Transaction
+];

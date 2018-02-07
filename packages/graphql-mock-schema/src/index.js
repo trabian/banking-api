@@ -1,67 +1,35 @@
-import typeDefs from "@trabian-banking/graphql-types";
+import DataLoader from "dataloader";
 
-import R from "ramda";
+import FileAsync from "lowdb/adapters/FileAsync";
 
-import { GraphQLScalarType } from "graphql";
-import { Kind } from "graphql/language";
+import typeDefs from "./types";
+import resolvers from "./resolvers";
 
-import matchSorter from "match-sorter";
+import { createLowSdk } from "./sdk";
 
-import {
-  getAccountForUser,
-  getAccountsForUser,
-  getCategoryForUser
-} from "./accounts";
-
-const resolvers = {
-  Date: new GraphQLScalarType({
-    name: "Date",
-    description: "Date custom scalar type",
-    parseValue(value) {
-      return new Date(value); // value from the client
-    },
-    serialize(value) {
-      return value.getTime(); // value sent to the client
-    },
-    parseLiteral(ast) {
-      if (ast.kind === Kind.INT) {
-        return parseInt(ast.value, 10); // ast value is always in string format
-      }
-      return null;
-    }
-  }),
-  Account: {
-    transactions: ({ transactions }, { limit, categoryId, query }) =>
-      R.pipe(
-        R.unless(
-          () => R.isNil(categoryId),
-          R.filter(R.pathEq(["category", "id"], categoryId))
-        ),
-        R.unless(
-          () => R.isNil(query),
-          transactions =>
-            matchSorter(transactions, query, {
-              keys: ["description"]
-            })
-        ),
-        R.take(limit)
-      )(transactions || [])
-  },
-  Transaction: {
-    type: R.pipe(R.prop("type"), R.toUpper),
-    status: ({ pending }) => (pending ? "PENDING" : "POSTED")
-  },
-  RootQuery: {
-    account: (obj, { id: accountId }, { user: { id: userId } }) =>
-      getAccountForUser(userId, accountId),
-    category: (obj, { id: categoryId }, { user: { id: userId } }) =>
-      categoryId && getCategoryForUser(userId, categoryId),
-    me: (obj, args, { user: { id } }) => ({
-      accounts: getAccountsForUser(id)
+export const createLoaders = ({ sdk, userId }) => ({
+  accounts: new DataLoader(ids =>
+    sdk.getAccounts(ids, {
+      userId
     })
-  }
-};
+  ),
+  categories: new DataLoader(ids => sdk.getCategories(ids))
+});
 
-const accounts = getAccountsForUser("responsible-spender");
+export const createMockSdk = ({
+  dbFile,
+  defaultValue = {
+    categories: [],
+    accounts: [],
+    users: [],
+    transactions: []
+  }
+}) => {
+  return createLowSdk({
+    adapter: new FileAsync(dbFile, {
+      defaultValue
+    })
+  });
+};
 
 export { resolvers, typeDefs };
