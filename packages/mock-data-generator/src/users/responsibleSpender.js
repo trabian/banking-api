@@ -677,7 +677,8 @@ const createLoan = ({ accounts, months }, key, defaults) =>
   R.merge(
     {
       transactions: [],
-      type: "LOAN"
+      type: "LOAN",
+      secured: defaults.secured
     },
     createRandomLoanTerm({
       balance: R.pathOr(defaults.balance, [key, "initialBalance"], accounts),
@@ -693,7 +694,8 @@ const createOpenLoan = ({ accounts, months }, key, defaults) => ({
   balance: R.pathOr(defaults.balance, [key, "initialBalance"], accounts),
   limit: R.pathOr(defaults.limit, [key, "limit"], accounts),
   apr: R.pathOr(defaults.apr, [key, "apr"], accounts),
-  type: defaults.type
+  type: defaults.type,
+  secured: defaults.secured
 });
 
 export default ({
@@ -771,24 +773,28 @@ export default ({
         autoLoan: createLoan({ accounts, months }, "autoLoan", {
           balance: randomAmount(10000, 40000),
           apr: 0.0575,
-          terms: [36, 48, 60]
+          terms: [36, 48, 60],
+          secured: true
         }),
         mortgage: createLoan({ accounts, months }, "mortgage", {
           balance: randomAmount(150000, 400000),
           apr: 0.0375,
-          terms: [180, 360]
+          terms: [180, 360],
+          secured: true
         }),
         lineOfCredit: createOpenLoan({ accounts, months }, "lineOfCredit", {
           limit: 10000,
           balance: randomAmount(3000, 10000),
           apr: 0.0875,
-          type: "LINE_OF_CREDIT"
+          type: "LINE_OF_CREDIT",
+          secured: false
         }),
         creditCard: createOpenLoan({ accounts, months }, "creditCard", {
           limit: 15000,
           balance: randomAmount(1000, 15000),
           apr: 0.1975,
-          type: "CREDIT_CARD"
+          type: "CREDIT_CARD",
+          secured: false
         })
       }
     },

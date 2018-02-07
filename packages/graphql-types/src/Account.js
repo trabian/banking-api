@@ -107,8 +107,16 @@ const LoanPayment = gql`
   }
 `;
 
+const AbstractLoanAccount = gql`
+  interface AbstractLoanAccount {
+    apr: Float
+    nextPayment: LoanPayment
+    secured: Boolean
+  }
+`;
+
 const LoanAccount = gql`
-  type LoanAccount implements Account {
+  type LoanAccount implements Account, AbstractLoanAccount {
     id: ID!
     accountNumber: String
     name: String
@@ -126,6 +134,7 @@ const LoanAccount = gql`
     apr: Float
     nextPayment: LoanPayment
     originationDate: Date
+    secured: Boolean
   }
 `;
 
@@ -136,7 +145,7 @@ const OpenLoanAccount = gql`
 `;
 
 const LineOfCreditAccount = gql`
-  type LineOfCreditAccount implements Account, OpenLoanAccount {
+  type LineOfCreditAccount implements Account, AbstractLoanAccount, OpenLoanAccount {
     id: ID!
     accountNumber: String
     name: String
@@ -154,11 +163,12 @@ const LineOfCreditAccount = gql`
     apr: Float
     nextPayment: LoanPayment
     limit: Float
+    secured: Boolean
   }
 `;
 
 const CreditCardAccount = gql`
-  type CreditCardAccount implements Account, OpenLoanAccount {
+  type CreditCardAccount implements Account, AbstractLoanAccount, OpenLoanAccount {
     id: ID!
     accountNumber: String
     name: String
@@ -176,6 +186,7 @@ const CreditCardAccount = gql`
     apr: Float
     nextPayment: LoanPayment
     limit: Float
+    secured: Boolean
   }
 `;
 
@@ -186,6 +197,7 @@ export default () => [
   CheckingAccount,
   CreditCardAccount,
   SavingsAccount,
+  AbstractLoanAccount,
   LoanAccount,
   LineOfCreditAccount,
   LoanPayment,
