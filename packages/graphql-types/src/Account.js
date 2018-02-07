@@ -100,11 +100,41 @@ const SavingsAccount = gql`
   }
 `;
 
+const LoanPayment = gql`
+  type LoanPayment {
+    nextDueDate: Date
+    amount: Float
+  }
+`;
+
+const LoanAccount = gql`
+  type LoanAccount implements Account {
+    id: ID!
+    accountNumber: String
+    name: String
+    type: AccountType
+    actualBalance: Float
+    availableBalance: Float
+    routingNumber: String
+    transactions(
+      limit: Int = 10
+      categoryId: ID
+      query: String
+    ): [Transaction!]!
+
+    # Number of remaining transactions according to Reg D
+    apr: Float
+    nextPayment: LoanPayment
+  }
+`;
+
 export default () => [
   Account,
   InterestBearingAccount,
   AccountType,
   CheckingAccount,
   SavingsAccount,
+  LoanAccount,
+  LoanPayment,
   Transaction
 ];

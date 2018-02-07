@@ -35,10 +35,12 @@ const resolvers = {
     __resolveType: (obj, context, info) =>
       R.prop(obj.type && obj.type.toLowerCase(), {
         checking: "CheckingAccount",
-        savings: "SavingsAccount"
+        savings: "SavingsAccount",
+        loan: "LoanAccount"
       })
   },
   CheckingAccount: accountResolvers,
+  LoanAccount: accountResolvers,
   SavingsAccount: accountResolvers,
   Transaction: {
     type: R.pipe(R.prop("type"), R.toUpper),
