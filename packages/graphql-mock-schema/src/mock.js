@@ -30,6 +30,11 @@ export const createMockUser = ({
           type: "SAVINGS",
           routingNumber,
           accountNumber: faker.finance.account(7)
+        }),
+        autoLoan: R.merge({
+          name: "Auto Loan",
+          type: "LOAN",
+          accountNumber: faker.finance.account(7)
         })
       }
     })

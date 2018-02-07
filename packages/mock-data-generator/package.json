@@ -21,12 +21,17 @@
     "build:watch": "rollup -w -c"
   },
   "dependencies": {
+    "amortize": "^0.4.0",
     "date-fns": "^1.29.0",
     "faker": "^4.1.0",
     "ramda": "^0.25.0",
     "uuid": "^3.1.0"
   },
-  "files": ["LICENSE", "README.md", "bundle.js"],
+  "files": [
+    "LICENSE",
+    "README.md",
+    "bundle.js"
+  ],
   "@std/esm": {
     "cjs": true,
     "esm": "js"

@@ -31,7 +31,8 @@ export default {
           "isThisMonth",
           "parse",
           "startOfMonth",
-          "subMonths"
+          "subMonths",
+          "differenceInCalendarMonths"
         ]
       }
     }),

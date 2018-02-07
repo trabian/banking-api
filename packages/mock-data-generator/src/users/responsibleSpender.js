@@ -46,8 +46,11 @@ import {
   isThisMonth,
   parse,
   startOfMonth,
-  subMonths
+  subMonths,
+  differenceInCalendarMonths
 } from "date-fns";
+
+import amortize from "amortize";
 
 import R from "ramda";
 import uuid from "uuid";
@@ -81,8 +84,8 @@ const randomBudgetAmount = (budget, maxVariance = 0.5) =>
     precision: 0.0001
   });
 
-const getSignedTransactionAmount = transaction =>
-  transaction.type === "credit" ? transaction.amount : -1 * transaction.amount;
+const getSignedTransactionAmount = ({ amount, type }) =>
+  type === "credit" ? amount : -1 * amount;
 
 // Hackish way to set the time based on a string like 23:00 or 10:00
 const setTime = (date, time) => {
@@ -114,9 +117,23 @@ const addTransactionDate = initialDate => transaction => {
 };
 
 const transactionReducer = (acc, transaction) => {
-  const transAmount = toFixed(getSignedTransactionAmount(transaction), 2);
+  const transAmount = toFixed(
+    getSignedTransactionAmount({
+      amount: transaction.amount,
+      type: transaction.type
+    }),
+    2
+  );
 
-  const balance = toFixed(acc.balance + transAmount, 2);
+  const principalAmount = toFixed(
+    getSignedTransactionAmount({
+      amount: transaction.principal || transaction.amount,
+      type: transaction.type
+    }),
+    2
+  );
+
+  const balance = toFixed(acc.balance + principalAmount, 2);
 
   const updatedTransaction = R.merge(transaction, {
     id: uuid.v4(),
@@ -190,6 +207,21 @@ const addNewTransactions = (transactions, initialDate) => account => {
     },
     account
   );
+};
+
+const buildLoanPayment = (account, transaction) => {
+  const paymentDetails = amortize({
+    amount: account.balance,
+    rate: account.apr * 100,
+    totalTerm: account.paymentsRemaining,
+    amortizeTerm: 1
+  });
+
+  return R.merge(transaction, {
+    amount: paymentDetails.payment,
+    principal: paymentDetails.principal,
+    interest: paymentDetails.interest
+  });
 };
 
 const monthlyTransactionBuilder = ({
@@ -381,6 +413,19 @@ const monthlyTransactionBuilder = ({
     }
   ];
 
+  let autoLoanTransactions =
+    acc.accounts.autoLoan.balance > 0
+      ? [
+          buildLoanPayment(acc.accounts.autoLoan, {
+            description: "Auto Loan Payment",
+            date: 15,
+            time: "23:59",
+            category: categories.debt,
+            type: "debit"
+          })
+        ]
+      : [];
+
   if (totalCheckingAccountBalance > targetCheckingBalance) {
     const maxTransfer = totalCheckingAccountBalance - targetCheckingBalance;
 
@@ -456,11 +501,49 @@ const monthlyTransactionBuilder = ({
       accounts: {
         checking: addNewTransactions(checkingTransactions, currentMonth),
         savings: addNewTransactions(savingsTransactions, currentMonth),
-        moneyMarket: addNewTransactions(moneyMarketTransactions, currentMonth)
+        moneyMarket: addNewTransactions(moneyMarketTransactions, currentMonth),
+        autoLoan: R.pipe(
+          addNewTransactions(autoLoanTransactions, currentMonth),
+          R.evolve({
+            paymentsRemaining: R.add(-1)
+          })
+        )
       }
     },
     acc
   );
+};
+
+// TODO: Adjust initial balance based on origination date (whether provided or calculated)
+const createRandomLoanTerm = ({ account, apr, balance, months }) => {
+  const term = account.term || faker.random.arrayElement([36, 48, 60]);
+
+  let originationDate = account.originationDate;
+  let paymentsRemaining;
+  let paymentsCompleted;
+
+  if (originationDate) {
+    paymentsCompleted = differenceInCalendarMonths(new Date(), originationDate);
+    paymentsRemaining = term - paymentsCompleted;
+  } else {
+    paymentsRemaining = randomAmount(0, term, 1);
+    paymentsCompleted = term - paymentsRemaining;
+    originationDate = subMonths(new Date(), term - paymentsRemaining);
+  }
+
+  const amortizedPaymentsCompleted = amortize({
+    amount: balance,
+    rate: apr * 100,
+    totalTerm: term,
+    amortizeTerm: paymentsCompleted
+  });
+
+  return {
+    balance: amortizedPaymentsCompleted.balance,
+    apr,
+    originationDate,
+    paymentsRemaining
+  };
 };
 
 export default ({
@@ -534,20 +617,43 @@ export default ({
           balance: R.pathOr(10, ["moneyMarket", "initialBalance"], accounts),
           apy: R.pathOr(0.011, ["moneyMarket", "apy"], accounts),
           transactions: []
-        }
+        },
+        autoLoan: R.merge(
+          {
+            transactions: []
+          },
+          createRandomLoanTerm({
+            balance: R.pathOr(25000, ["autoLoan", "initialBalance"], accounts),
+            apr: R.pathOr(0.0375, ["autoLoan", "apr"], accounts),
+            account: R.propOr({}, "autoLoan", accounts),
+            months
+          })
+        )
       }
     },
     R.range(1, months + 1)
   );
 
   const user = R.evolve({
-    accounts: R.map(account => ({
-      id: uuid.v4(),
-      transactions: sortByDescendingDate(account.transactions),
-      actualBalance: account.balance - getTotalPending(account.transactions),
-      availableBalance: account.balance,
-      apy: account.apy
-    }))
+    accounts: R.map(account => {
+      const transactions = sortByDescendingDate(account.transactions);
+
+      const nextPayment =
+        account.apr && account.balance > 0
+          ? {
+              nextDueDate: addMonths(transactions[0].date, 1),
+              amount: Math.min(transactions[0].amount, account.balance)
+            }
+          : undefined;
+
+      return R.merge(account, {
+        id: uuid.v4(),
+        actualBalance: account.balance - getTotalPending(account.transactions),
+        availableBalance: account.balance,
+        nextPayment,
+        transactions
+      });
+    })
   })(accountData);
 
   return R.merge(user, {
