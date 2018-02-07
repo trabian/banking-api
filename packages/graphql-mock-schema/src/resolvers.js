@@ -32,7 +32,7 @@ const resolvers = {
     }
   }),
   Account: {
-    __resolveType: (obj, context, info) =>
+    __resolveType: obj =>
       R.prop(obj.type && obj.type.toLowerCase(), {
         checking: "CheckingAccount",
         savings: "SavingsAccount",
