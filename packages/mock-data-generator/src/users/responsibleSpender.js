@@ -225,6 +225,12 @@ const buildLoanPayment = (account, transaction) => {
   });
 };
 
+const buildOpenLoanInterestTransaction = (account, transaction) =>
+  R.merge(transaction, {
+    amount: account.balance * account.apr / 12,
+    type: "credit"
+  });
+
 const monthlyTransactionBuilder = ({
   budget,
   regularProviders,
@@ -458,6 +464,40 @@ const monthlyTransactionBuilder = ({
     mortgageTransactions = [payment];
   }
 
+  let lineOfCreditTransactions = [];
+
+  if (acc.accounts.lineOfCredit.balance > 0) {
+    const interestTransaction = buildOpenLoanInterestTransaction(
+      acc.accounts.lineOfCredit,
+      {
+        description: "Interest",
+        date: getDaysInMonth(currentMonth),
+        time: "23:59",
+        category: categories.interest
+      }
+    );
+
+    const payment = {
+      amount: acc.accounts.lineOfCredit.balance * 0.03,
+      description: "Line of Credit Payment",
+      date: getDaysInMonth(currentMonth),
+      time: "23:59",
+      category: categories.debt,
+      type: "debit"
+    };
+
+    checkingTransactions = R.append(
+      R.merge(
+        {
+          type: "debit"
+        },
+        payment
+      )
+    )(checkingTransactions);
+
+    lineOfCreditTransactions = [interestTransaction, payment];
+  }
+
   if (totalCheckingAccountBalance > targetCheckingBalance) {
     const maxTransfer = totalCheckingAccountBalance - targetCheckingBalance;
 
@@ -545,7 +585,8 @@ const monthlyTransactionBuilder = ({
           R.evolve({
             paymentsRemaining: R.add(-1)
           })
-        )
+        ),
+        lineOfCredit: addNewTransactions(lineOfCreditTransactions, currentMonth)
       }
     },
     acc
@@ -587,7 +628,8 @@ const createRandomLoanTerm = ({ account, apr, balance, months, terms }) => {
 const createLoan = ({ accounts, months }, key, defaults) =>
   R.merge(
     {
-      transactions: []
+      transactions: [],
+      type: "LOAN"
     },
     createRandomLoanTerm({
       balance: R.pathOr(defaults.balance, [key, "initialBalance"], accounts),
@@ -598,7 +640,13 @@ const createLoan = ({ accounts, months }, key, defaults) =>
     })
   );
 
-const isLoan = R.propEq("type", "LOAN");
+const createOpenLoan = ({ accounts, months }, key, defaults) => ({
+  transactions: [],
+  type: "LINE_OF_CREDIT",
+  balance: R.pathOr(defaults.balance, [key, "initialBalance"], accounts),
+  limit: R.pathOr(defaults.limit, [key, "limit"], accounts),
+  apr: R.pathOr(defaults.apr, [key, "apr"], accounts)
+});
 
 export default ({
   accounts,
@@ -681,6 +729,11 @@ export default ({
           balance: randomAmount(150000, 400000),
           apr: 0.0375,
           terms: [180, 360]
+        }),
+        lineOfCredit: createOpenLoan({ accounts, months }, "lineOfCredit", {
+          limit: 10000,
+          balance: randomAmount(3000, 10000),
+          apr: 0.0875
         })
       }
     },
@@ -699,14 +752,25 @@ export default ({
             }
           : undefined;
 
+      let actualBalance = account.balance;
+      let availableBalance = account.balance;
+
+      switch (account.type) {
+        case "LOAN":
+          availableBalance = 0;
+          break;
+        case "LINE_OF_CREDIT":
+          availableBalance = account.limit - account.balance;
+          break;
+        default:
+          actualBalance =
+            account.balance - getTotalPending(account.transactions);
+      }
+
       return R.merge(account, {
         id: uuid.v4(),
-        actualBalance: isLoan(account)
-          ? account.balance
-          : account.balance - getTotalPending(account.transactions),
-        availableBalance: isLoan(account)
-          ? account.availableBalance
-          : account.balance,
+        actualBalance,
+        availableBalance,
         nextPayment,
         transactions
       });

@@ -6,8 +6,12 @@ import R from "ramda";
 
 export { responsibleSpender, categories };
 
-// const user = responsibleSpender({
-//   months: 4
-// });
+const user = responsibleSpender({
+  months: 4
+});
 
-// console.warn("mortgage", user.accounts.mortgage);
+console.warn(
+  "checking available balance",
+  user.accounts.checking.availableBalance,
+  user.accounts.checking.actualBalance
+);
