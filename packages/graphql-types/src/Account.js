@@ -129,8 +129,36 @@ const LoanAccount = gql`
   }
 `;
 
+const OpenLoanAccount = gql`
+  interface OpenLoanAccount {
+    limit: Float
+  }
+`;
+
 const LineOfCreditAccount = gql`
-  type LineOfCreditAccount implements Account {
+  type LineOfCreditAccount implements Account, OpenLoanAccount {
+    id: ID!
+    accountNumber: String
+    name: String
+    type: AccountType
+    actualBalance: Float
+    availableBalance: Float
+    routingNumber: String
+    transactions(
+      limit: Int = 10
+      categoryId: ID
+      query: String
+    ): [Transaction!]!
+
+    # Number of remaining transactions according to Reg D
+    apr: Float
+    nextPayment: LoanPayment
+    limit: Float
+  }
+`;
+
+const CreditCardAccount = gql`
+  type CreditCardAccount implements Account, OpenLoanAccount {
     id: ID!
     accountNumber: String
     name: String
@@ -156,9 +184,11 @@ export default () => [
   InterestBearingAccount,
   AccountType,
   CheckingAccount,
+  CreditCardAccount,
   SavingsAccount,
   LoanAccount,
   LineOfCreditAccount,
   LoanPayment,
+  OpenLoanAccount,
   Transaction
 ];
