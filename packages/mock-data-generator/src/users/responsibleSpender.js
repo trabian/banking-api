@@ -84,8 +84,8 @@ const randomBudgetAmount = (budget, maxVariance = 0.5) =>
     precision: 0.0001
   });
 
-const getSignedTransactionAmount = ({ amount, type }) =>
-  type === "credit" ? amount : -1 * amount;
+const getSignedTransactionAmount = ({ amount, type, isLoan }) =>
+  type === (isLoan ? "debit" : "credit") ? amount : -1 * amount;
 
 // Hackish way to set the time based on a string like 23:00 or 10:00
 const setTime = (date, time) => {
@@ -93,6 +93,11 @@ const setTime = (date, time) => {
   const newDate = formatted.replace(/T(.*)-/, `T${time}-`);
   return parse(newDate);
 };
+
+const isLoanAccount = R.pipe(
+  R.prop("type"),
+  R.contains(R.__, ["CREDIT_CARD", "LINE_OF_CREDIT", "LOAN"])
+);
 
 // Remove additional precision. These are not audited financial statements.
 // Give us a break.
@@ -117,10 +122,13 @@ const addTransactionDate = initialDate => transaction => {
 };
 
 const transactionReducer = (acc, transaction) => {
+  const { isLoan } = acc;
+
   const transAmount = toFixed(
     getSignedTransactionAmount({
       amount: transaction.amount,
-      type: transaction.type
+      type: transaction.type,
+      isLoan
     }),
     2
   );
@@ -128,7 +136,8 @@ const transactionReducer = (acc, transaction) => {
   const principalAmount = toFixed(
     getSignedTransactionAmount({
       amount: transaction.principal || transaction.amount,
-      type: transaction.type
+      type: transaction.type,
+      isLoan
     }),
     2
   );
@@ -194,6 +203,7 @@ const addNewTransactions = (transactions, initialDate) => account => {
     transactionReducer,
     {
       balance: account.balance,
+      isLoan: isLoanAccount(account),
       initialDate,
       transactions: []
     },
@@ -221,14 +231,14 @@ const buildLoanPayment = (account, transaction) => {
     amount: paymentDetails.payment,
     principal: paymentDetails.principal,
     interest: paymentDetails.interest,
-    type: "debit"
+    type: "credit"
   });
 };
 
 const buildOpenLoanInterestTransaction = (account, transaction) =>
   R.merge(transaction, {
     amount: account.balance * account.apr / 12,
-    type: "credit"
+    type: "debit"
   });
 
 const monthlyTransactionBuilder = ({
@@ -481,9 +491,9 @@ const monthlyTransactionBuilder = ({
       amount: acc.accounts.lineOfCredit.balance * 0.03,
       description: "Line of Credit Payment",
       date: getDaysInMonth(currentMonth),
-      time: "23:59",
+      time: "23:00",
       category: categories.debt,
-      type: "debit"
+      type: "credit"
     };
 
     checkingTransactions = R.append(
@@ -496,6 +506,40 @@ const monthlyTransactionBuilder = ({
     )(checkingTransactions);
 
     lineOfCreditTransactions = [interestTransaction, payment];
+  }
+
+  let creditCardTransactions = [];
+
+  if (acc.accounts.creditCard.balance > 0) {
+    const interestTransaction = buildOpenLoanInterestTransaction(
+      acc.accounts.creditCard,
+      {
+        description: "Interest",
+        date: getDaysInMonth(currentMonth),
+        time: "23:59",
+        category: categories.interest
+      }
+    );
+
+    const payment = {
+      amount: acc.accounts.creditCard.balance * 0.03,
+      description: "Credit Card Payment",
+      date: getDaysInMonth(currentMonth),
+      time: "23:00",
+      category: categories.debt,
+      type: "credit"
+    };
+
+    checkingTransactions = R.append(
+      R.merge(
+        {
+          type: "debit"
+        },
+        payment
+      )
+    )(checkingTransactions);
+
+    creditCardTransactions = [interestTransaction, payment];
   }
 
   if (totalCheckingAccountBalance > targetCheckingBalance) {
@@ -586,7 +630,11 @@ const monthlyTransactionBuilder = ({
             paymentsRemaining: R.add(-1)
           })
         ),
-        lineOfCredit: addNewTransactions(lineOfCreditTransactions, currentMonth)
+        lineOfCredit: addNewTransactions(
+          lineOfCreditTransactions,
+          currentMonth
+        ),
+        creditCard: addNewTransactions(creditCardTransactions, currentMonth)
       }
     },
     acc
@@ -629,7 +677,8 @@ const createLoan = ({ accounts, months }, key, defaults) =>
   R.merge(
     {
       transactions: [],
-      type: "LOAN"
+      type: "LOAN",
+      secured: defaults.secured
     },
     createRandomLoanTerm({
       balance: R.pathOr(defaults.balance, [key, "initialBalance"], accounts),
@@ -642,10 +691,11 @@ const createLoan = ({ accounts, months }, key, defaults) =>
 
 const createOpenLoan = ({ accounts, months }, key, defaults) => ({
   transactions: [],
-  type: "LINE_OF_CREDIT",
   balance: R.pathOr(defaults.balance, [key, "initialBalance"], accounts),
   limit: R.pathOr(defaults.limit, [key, "limit"], accounts),
-  apr: R.pathOr(defaults.apr, [key, "apr"], accounts)
+  apr: R.pathOr(defaults.apr, [key, "apr"], accounts),
+  type: defaults.type,
+  secured: defaults.secured
 });
 
 export default ({
@@ -723,17 +773,28 @@ export default ({
         autoLoan: createLoan({ accounts, months }, "autoLoan", {
           balance: randomAmount(10000, 40000),
           apr: 0.0575,
-          terms: [36, 48, 60]
+          terms: [36, 48, 60],
+          secured: true
         }),
         mortgage: createLoan({ accounts, months }, "mortgage", {
           balance: randomAmount(150000, 400000),
           apr: 0.0375,
-          terms: [180, 360]
+          terms: [180, 360],
+          secured: true
         }),
         lineOfCredit: createOpenLoan({ accounts, months }, "lineOfCredit", {
           limit: 10000,
           balance: randomAmount(3000, 10000),
-          apr: 0.0875
+          apr: 0.0875,
+          type: "LINE_OF_CREDIT",
+          secured: false
+        }),
+        creditCard: createOpenLoan({ accounts, months }, "creditCard", {
+          limit: 15000,
+          balance: randomAmount(1000, 15000),
+          apr: 0.1975,
+          type: "CREDIT_CARD",
+          secured: false
         })
       }
     },
@@ -760,6 +821,7 @@ export default ({
           availableBalance = 0;
           break;
         case "LINE_OF_CREDIT":
+        case "CREDIT_CARD":
           availableBalance = account.limit - account.balance;
           break;
         default:

@@ -42,6 +42,10 @@ export const createMockUser = ({
         lineOfCredit: R.merge({
           name: "Line of Credit",
           accountNumber: faker.finance.account(7)
+        }),
+        creditCard: R.merge({
+          name: "Visa",
+          accountNumber: faker.finance.account(7)
         })
       }
     })
