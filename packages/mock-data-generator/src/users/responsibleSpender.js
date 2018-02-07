@@ -9,7 +9,7 @@
  *
  * First paycheck:
  * - Deposit paycheck
- * - Pay the mortgage (external FI)
+ * - Pay the mortgage (at FI)
  * - Pay electric bill
  * - Pay cable bill
  * - Buy groceries
@@ -220,9 +220,16 @@ const buildLoanPayment = (account, transaction) => {
   return R.merge(transaction, {
     amount: paymentDetails.payment,
     principal: paymentDetails.principal,
-    interest: paymentDetails.interest
+    interest: paymentDetails.interest,
+    type: "debit"
   });
 };
+
+const buildOpenLoanInterestTransaction = (account, transaction) =>
+  R.merge(transaction, {
+    amount: account.balance * account.apr / 12,
+    type: "credit"
+  });
 
 const monthlyTransactionBuilder = ({
   budget,
@@ -370,7 +377,7 @@ const monthlyTransactionBuilder = ({
 
   let checkingTransactions = R.flatten([
     paychecks,
-    mortgage,
+    // mortgage,
     creditCard,
     autoLoan,
     cableBill,
@@ -413,18 +420,83 @@ const monthlyTransactionBuilder = ({
     }
   ];
 
-  let autoLoanTransactions =
-    acc.accounts.autoLoan.balance > 0
-      ? [
-          buildLoanPayment(acc.accounts.autoLoan, {
-            description: "Auto Loan Payment",
-            date: 15,
-            time: "23:59",
-            category: categories.debt,
-            type: "debit"
-          })
-        ]
-      : [];
+  let autoLoanTransactions = [];
+
+  if (acc.accounts.autoLoan.balance > 0) {
+    const payment = buildLoanPayment(acc.accounts.autoLoan, {
+      description: "Auto Loan Payment",
+      date: 15,
+      time: "23:59",
+      category: categories.debt
+    });
+
+    checkingTransactions = R.append(
+      R.merge(
+        {
+          type: "debit"
+        },
+        payment
+      )
+    )(checkingTransactions);
+
+    autoLoanTransactions = [payment];
+  }
+
+  let mortgageTransactions = [];
+
+  if (acc.accounts.mortgage.balance > 0) {
+    const payment = buildLoanPayment(acc.accounts.mortgage, {
+      description: "Mortgage Payment",
+      date: 1,
+      time: "23:59",
+      category: categories.debt
+    });
+
+    checkingTransactions = R.append(
+      R.merge(
+        {
+          type: "debit"
+        },
+        payment
+      )
+    )(checkingTransactions);
+
+    mortgageTransactions = [payment];
+  }
+
+  let lineOfCreditTransactions = [];
+
+  if (acc.accounts.lineOfCredit.balance > 0) {
+    const interestTransaction = buildOpenLoanInterestTransaction(
+      acc.accounts.lineOfCredit,
+      {
+        description: "Interest",
+        date: getDaysInMonth(currentMonth),
+        time: "23:59",
+        category: categories.interest
+      }
+    );
+
+    const payment = {
+      amount: acc.accounts.lineOfCredit.balance * 0.03,
+      description: "Line of Credit Payment",
+      date: getDaysInMonth(currentMonth),
+      time: "23:59",
+      category: categories.debt,
+      type: "debit"
+    };
+
+    checkingTransactions = R.append(
+      R.merge(
+        {
+          type: "debit"
+        },
+        payment
+      )
+    )(checkingTransactions);
+
+    lineOfCreditTransactions = [interestTransaction, payment];
+  }
 
   if (totalCheckingAccountBalance > targetCheckingBalance) {
     const maxTransfer = totalCheckingAccountBalance - targetCheckingBalance;
@@ -507,7 +579,14 @@ const monthlyTransactionBuilder = ({
           R.evolve({
             paymentsRemaining: R.add(-1)
           })
-        )
+        ),
+        mortgage: R.pipe(
+          addNewTransactions(mortgageTransactions, currentMonth),
+          R.evolve({
+            paymentsRemaining: R.add(-1)
+          })
+        ),
+        lineOfCredit: addNewTransactions(lineOfCreditTransactions, currentMonth)
       }
     },
     acc
@@ -515,8 +594,8 @@ const monthlyTransactionBuilder = ({
 };
 
 // TODO: Adjust initial balance based on origination date (whether provided or calculated)
-const createRandomLoanTerm = ({ account, apr, balance, months }) => {
-  const term = account.term || faker.random.arrayElement([36, 48, 60]);
+const createRandomLoanTerm = ({ account, apr, balance, months, terms }) => {
+  const term = account.term || faker.random.arrayElement(terms);
 
   let originationDate = account.originationDate;
   let paymentsRemaining;
@@ -545,6 +624,29 @@ const createRandomLoanTerm = ({ account, apr, balance, months }) => {
     paymentsRemaining
   };
 };
+
+const createLoan = ({ accounts, months }, key, defaults) =>
+  R.merge(
+    {
+      transactions: [],
+      type: "LOAN"
+    },
+    createRandomLoanTerm({
+      balance: R.pathOr(defaults.balance, [key, "initialBalance"], accounts),
+      apr: R.pathOr(defaults.apr, [key, "apr"], accounts),
+      account: R.propOr({}, key, accounts),
+      months,
+      terms: defaults.terms
+    })
+  );
+
+const createOpenLoan = ({ accounts, months }, key, defaults) => ({
+  transactions: [],
+  type: "LINE_OF_CREDIT",
+  balance: R.pathOr(defaults.balance, [key, "initialBalance"], accounts),
+  limit: R.pathOr(defaults.limit, [key, "limit"], accounts),
+  apr: R.pathOr(defaults.apr, [key, "apr"], accounts)
+});
 
 export default ({
   accounts,
@@ -618,17 +720,21 @@ export default ({
           apy: R.pathOr(0.011, ["moneyMarket", "apy"], accounts),
           transactions: []
         },
-        autoLoan: R.merge(
-          {
-            transactions: []
-          },
-          createRandomLoanTerm({
-            balance: R.pathOr(25000, ["autoLoan", "initialBalance"], accounts),
-            apr: R.pathOr(0.0375, ["autoLoan", "apr"], accounts),
-            account: R.propOr({}, "autoLoan", accounts),
-            months
-          })
-        )
+        autoLoan: createLoan({ accounts, months }, "autoLoan", {
+          balance: randomAmount(10000, 40000),
+          apr: 0.0575,
+          terms: [36, 48, 60]
+        }),
+        mortgage: createLoan({ accounts, months }, "mortgage", {
+          balance: randomAmount(150000, 400000),
+          apr: 0.0375,
+          terms: [180, 360]
+        }),
+        lineOfCredit: createOpenLoan({ accounts, months }, "lineOfCredit", {
+          limit: 10000,
+          balance: randomAmount(3000, 10000),
+          apr: 0.0875
+        })
       }
     },
     R.range(1, months + 1)
@@ -639,17 +745,32 @@ export default ({
       const transactions = sortByDescendingDate(account.transactions);
 
       const nextPayment =
-        account.apr && account.balance > 0
+        transactions.length && account.apr && account.balance > 0
           ? {
               nextDueDate: addMonths(transactions[0].date, 1),
               amount: Math.min(transactions[0].amount, account.balance)
             }
           : undefined;
 
+      let actualBalance = account.balance;
+      let availableBalance = account.balance;
+
+      switch (account.type) {
+        case "LOAN":
+          availableBalance = 0;
+          break;
+        case "LINE_OF_CREDIT":
+          availableBalance = account.limit - account.balance;
+          break;
+        default:
+          actualBalance =
+            account.balance - getTotalPending(account.transactions);
+      }
+
       return R.merge(account, {
         id: uuid.v4(),
-        actualBalance: account.balance - getTotalPending(account.transactions),
-        availableBalance: account.balance,
+        actualBalance,
+        availableBalance,
         nextPayment,
         transactions
       });

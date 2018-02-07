@@ -10,4 +10,8 @@ const user = responsibleSpender({
   months: 4
 });
 
-console.warn("auto loan account", R.last(user.accounts.autoLoan.transactions));
+console.warn(
+  "checking available balance",
+  user.accounts.checking.availableBalance,
+  user.accounts.checking.actualBalance
+);
