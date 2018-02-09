@@ -46,6 +46,14 @@ export const createMockUser = ({
         creditCard: R.merge({
           name: "Visa",
           accountNumber: faker.finance.account(7)
+        }),
+        shareCertificate: R.merge({
+          name: "Share Certificate",
+          accountNumber: faker.finance.account(7)
+        }),
+        investment: R.merge({
+          name: "Roth IRA",
+          accountNumber: faker.finance.account(7)
         })
       }
     })

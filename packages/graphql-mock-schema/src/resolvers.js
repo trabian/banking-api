@@ -36,13 +36,17 @@ const resolvers = {
       R.prop(obj.type && obj.type.toLowerCase(), {
         checking: "CheckingAccount",
         credit_card: "CreditCardAccount",
+        investment: "InvestmentAccount",
         savings: "SavingsAccount",
         loan: "LoanAccount",
-        line_of_credit: "LineOfCreditAccount"
+        line_of_credit: "LineOfCreditAccount",
+        certificate: "CertificateAccount"
       })
   },
+  CertificateAccount: accountResolvers,
   CheckingAccount: accountResolvers,
   CreditCardAccount: accountResolvers,
+  InvestmentAccount: accountResolvers,
   LoanAccount: accountResolvers,
   SavingsAccount: accountResolvers,
   LineOfCreditAccount: accountResolvers,

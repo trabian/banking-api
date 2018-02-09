@@ -6,8 +6,8 @@ import R from "ramda";
 
 export { responsibleSpender, categories };
 
-// const user = responsibleSpender({
-//   months: 4
-// });
+const user = responsibleSpender({
+  months: 4
+});
 
-// console.warn("credit card", user.accounts.creditCard);
+console.warn("investment", user.accounts.investment);

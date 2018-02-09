@@ -12,6 +12,7 @@ const AccountType = gql`
     MORTGAGE
     INVESTMENT
     PRE_PAID_CARD
+    CERTIFICATE
   }
 `;
 
@@ -96,7 +97,44 @@ const SavingsAccount = gql`
 
     # Number of remaining transactions according to Reg D
     regDRemaining: Int
+
     apy: Float
+  }
+`;
+
+const CertificateAccount = gql`
+  type CertificateAccount implements Account, InterestBearingAccount {
+    id: ID!
+    accountNumber: String
+    name: String
+    type: AccountType
+    actualBalance: Float
+    availableBalance: Float
+    routingNumber: String
+    transactions(
+      limit: Int = 10
+      categoryId: ID
+      query: String
+    ): [Transaction!]!
+
+    apy: Float
+  }
+`;
+
+const InvestmentAccount = gql`
+  type InvestmentAccount implements Account {
+    id: ID!
+    accountNumber: String
+    name: String
+    type: AccountType
+    actualBalance: Float
+    availableBalance: Float
+    routingNumber: String
+    transactions(
+      limit: Int = 10
+      categoryId: ID
+      query: String
+    ): [Transaction!]!
   }
 `;
 
@@ -130,7 +168,6 @@ const LoanAccount = gql`
       query: String
     ): [Transaction!]!
 
-    # Number of remaining transactions according to Reg D
     apr: Float
     nextPayment: LoanPayment
     originationDate: Date
@@ -159,7 +196,6 @@ const LineOfCreditAccount = gql`
       query: String
     ): [Transaction!]!
 
-    # Number of remaining transactions according to Reg D
     apr: Float
     nextPayment: LoanPayment
     limit: Float
@@ -182,7 +218,6 @@ const CreditCardAccount = gql`
       query: String
     ): [Transaction!]!
 
-    # Number of remaining transactions according to Reg D
     apr: Float
     nextPayment: LoanPayment
     limit: Float
@@ -194,6 +229,8 @@ export default () => [
   Account,
   InterestBearingAccount,
   AccountType,
+  CertificateAccount,
+  InvestmentAccount,
   CheckingAccount,
   CreditCardAccount,
   SavingsAccount,
