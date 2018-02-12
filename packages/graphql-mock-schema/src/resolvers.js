@@ -36,13 +36,17 @@ const resolvers = {
       R.prop(obj.type && obj.type.toLowerCase(), {
         checking: "CheckingAccount",
         credit_card: "CreditCardAccount",
+        investment: "InvestmentAccount",
         savings: "SavingsAccount",
         loan: "LoanAccount",
-        line_of_credit: "LineOfCreditAccount"
+        line_of_credit: "LineOfCreditAccount",
+        certificate: "CertificateAccount"
       })
   },
+  CertificateAccount: accountResolvers,
   CheckingAccount: accountResolvers,
   CreditCardAccount: accountResolvers,
+  InvestmentAccount: accountResolvers,
   LoanAccount: accountResolvers,
   SavingsAccount: accountResolvers,
   LineOfCreditAccount: accountResolvers,
@@ -62,7 +66,9 @@ const resolvers = {
       sdk.getAccount(id, context),
     category: (_root, { id }, { loaders }) => id && loaders.categories.load(id),
     me: (_root, _params, { sdk, ...context }) => sdk.getCurrentUser(context),
-    users: (_root, _params, { sdk }) => sdk.getUsers()
+    users: (_root, _params, { sdk }) => sdk.getUsers(),
+    transaction: (_root, { id }, { sdk, ...context }) =>
+      sdk.getTransaction(id, context)
   },
   RootMutation: {
     createUser: (_root, params, { sdk }) => sdk.createUser(params)

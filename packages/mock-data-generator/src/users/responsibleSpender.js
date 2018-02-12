@@ -641,7 +641,6 @@ const monthlyTransactionBuilder = ({
   );
 };
 
-// TODO: Adjust initial balance based on origination date (whether provided or calculated)
 const createRandomLoanTerm = ({ account, apr, balance, months, terms }) => {
   const term = account.term || faker.random.arrayElement(terms);
 
@@ -696,6 +695,71 @@ const createOpenLoan = ({ accounts, months }, key, defaults) => ({
   apr: R.pathOr(defaults.apr, [key, "apr"], accounts),
   type: defaults.type,
   secured: defaults.secured
+});
+
+const calculateInterest = (total, months, ratePercent) => {
+  const interestRate = ratePercent / 100 + 1;
+  return total * Math.pow(interestRate, months / 12);
+};
+
+const createRandomCertificateTerm = ({
+  account,
+  apy,
+  balance,
+  months,
+  terms
+}) => {
+  const term = account.term || faker.random.arrayElement(terms);
+
+  let originationDate = account.originationDate;
+  let monthsRemaining;
+  let monthsCompleted;
+
+  if (originationDate) {
+    monthsCompleted = differenceInCalendarMonths(new Date(), originationDate);
+    monthsRemaining = term - monthsCompleted;
+  } else {
+    monthsRemaining = randomAmount(0, term, 1);
+    monthsCompleted = term - monthsRemaining;
+    originationDate = subMonths(new Date(), term - monthsRemaining);
+  }
+
+  const interestPaid = calculateInterest(balance, monthsCompleted, apy);
+
+  return {
+    balance: balance + interestPaid,
+    apy,
+    originationDate,
+    monthsRemaining
+  };
+};
+
+const createCertificate = ({ accounts, months }, key, defaults) =>
+  R.merge(
+    {
+      transactions: [],
+      type: "CERTIFICATE"
+    },
+    createRandomCertificateTerm({
+      balance: R.pathOr(defaults.balance, [key, "initialBalance"], accounts),
+      apy: R.pathOr(defaults.apy, [key, "apy"], accounts),
+      account: R.propOr({}, key, accounts),
+      months,
+      terms: defaults.terms
+    })
+  );
+
+const createInvestment = ({ accounts, months }, key, defaults) => ({
+  transactions: [],
+  type: "INVESTMENT",
+  balance: R.pathOr(defaults.balance, [key, "initialBalance"], accounts),
+  averageReturn: R.pathOr(
+    defaults.averageReturn,
+    [key, "averageReturn"],
+    accounts
+  ),
+  account: R.propOr({}, key, accounts),
+  months
 });
 
 export default ({
@@ -795,6 +859,19 @@ export default ({
           apr: 0.1975,
           type: "CREDIT_CARD",
           secured: false
+        }),
+        shareCertificate: createCertificate(
+          { accounts, months },
+          "shareCertificate",
+          {
+            balance: 25000,
+            apy: 0.0125,
+            terms: [30, 36, 48, 60]
+          }
+        ),
+        investment: createInvestment({ accounts, months }, "investment", {
+          balance: randomAmount(25000, 150000),
+          averageReturn: 0.1
         })
       }
     },
