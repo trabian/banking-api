@@ -1,6 +1,6 @@
 {
   "name": "@trabian/banking-graphql-mock-schema",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A mock schema for the banking-api-graphql-types",
   "main": "bundle.js",
   "devDependencies": {

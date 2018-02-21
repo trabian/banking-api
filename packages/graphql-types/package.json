@@ -1,6 +1,6 @@
 {
   "name": "@trabian/banking-graphql-types",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "GraphQL types for banking/financial APIs",
   "main": "bundle.js",
   "devDependencies": {

@@ -1,6 +1,6 @@
 {
   "name": "@trabian/banking-mock-data-generator",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Tool for generating fake banking data",
   "main": "bundle.js",
   "devDependencies": {
@@ -27,11 +27,7 @@
     "ramda": "^0.25.0",
     "uuid": "^3.1.0"
   },
-  "files": [
-    "LICENSE",
-    "README.md",
-    "bundle.js"
-  ],
+  "files": ["LICENSE", "README.md", "bundle.js"],
   "@std/esm": {
     "cjs": true,
     "esm": "js"
