@@ -149,6 +149,8 @@ const AbstractLoanAccount = gql`
   interface AbstractLoanAccount {
     apr: Float
     nextPayment: LoanPayment
+    originationDate: Date
+    payoff: Float
     secured: Boolean
   }
 `;
@@ -172,6 +174,7 @@ const LoanAccount = gql`
     nextPayment: LoanPayment
     originationDate: Date
     secured: Boolean
+    payoff: Float
   }
 `;
 
@@ -200,6 +203,8 @@ const LineOfCreditAccount = gql`
     nextPayment: LoanPayment
     limit: Float
     secured: Boolean
+    originationDate: Date
+    payoff: Float
   }
 `;
 
@@ -222,6 +227,8 @@ const CreditCardAccount = gql`
     nextPayment: LoanPayment
     limit: Float
     secured: Boolean
+    originationDate: Date
+    payoff: Float
   }
 `;
 
