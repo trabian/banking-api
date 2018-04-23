@@ -1,0 +1,49 @@
+{
+  "name": "@trabian/banking-graphql-mock-server",
+  "version": "0.0.2",
+  "description": "A server for the mock GraphQL API",
+  "main": "bundle.js",
+  "devDependencies": {
+    "@std/esm": "^0.18.0",
+    "babel-cli": "^6.26.0",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-core": "^6.26.0",
+    "babel-eslint": "^8.2.1",
+    "babel-jest": "^22.0.6",
+    "babel-plugin-inline-json-import": "^0.2.1",
+    "babel-plugin-ramda": "^1.4.3",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "eslint": "^4.15.0",
+    "eslint-config-prettier": "^2.9.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-jest": "^21.6.1",
+    "jest": "^22.0.6",
+    "nodemon": "^1.14.3",
+    "regenerator-runtime": "^0.11.1"
+  },
+  "scripts": {
+    "dev": "NODE_ENV=server nodemon -r @std/esm src/index.js",
+    "eslint": "eslint .",
+    "start": "node -r @std/esm src/index.js",
+    "test": "jest",
+    "test:watch": "jest --watch"
+  },
+  "@std/esm": {
+    "cjs": true,
+    "esm": "js"
+  },
+  "files": ["LICENSE", "README.md", "bundle.js"],
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "cors": "^2.8.4",
+    "express": "^4.16.2",
+    "graphql-server-express": "^1.3.2",
+    "graphql-tools": "^2.14.1"
+  },
+  "peerDependencies": {
+    "graphql": "^0.12.3"
+  }
+}
