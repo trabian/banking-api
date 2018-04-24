@@ -29,7 +29,8 @@
     "eslint": "eslint .",
     "start": "node -r @std/esm src/index.js",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "watch": "yarn dev"
   },
   "@std/esm": {
     "cjs": true,
@@ -45,5 +46,12 @@
   },
   "peerDependencies": {
     "graphql": "^0.12.3"
+  },
+  "nodemonConfig": {
+    "watch": [
+      "src/**/*.*",
+      "../graphql-mock-schema/bundle.js",
+      "../banking-graphql-types/bundle.js"
+    ]
   }
 }

@@ -18,7 +18,8 @@
   "scripts": {
     "dev": "nodemon -r @std/esm src/index.js",
     "build": "rollup -c",
-    "build:watch": "rollup -w -c"
+    "build:watch": "rollup -w -c",
+    "watch": "yarn build:watch"
   },
   "dependencies": {
     "amortize": "^0.4.0",

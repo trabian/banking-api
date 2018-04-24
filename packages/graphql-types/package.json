@@ -12,6 +12,7 @@
     "babel-plugin-inline-import": "^2.0.6",
     "babel-preset-env": "^1.6.1",
     "graphql-tag": "^2.6.1",
+    "jest": "^22.4.3",
     "rollup": "^0.53.1",
     "rollup-plugin-babel": "^3.0.3",
     "rollup-plugin-commonjs": "^8.2.6",
@@ -20,6 +21,9 @@
   "files": ["LICENSE", "README.md", "bundle.js"],
   "scripts": {
     "build": "rollup -c",
-    "build:watch": "rollup -w -c"
+    "build:watch": "rollup -w -c",
+    "watch": "yarn build:watch",
+    "test": "jest",
+    "test:watch": "jest --watch"
   }
 }
