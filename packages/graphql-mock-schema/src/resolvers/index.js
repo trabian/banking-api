@@ -5,13 +5,16 @@ import parse from "date-fns/parse";
 import { GraphQLScalarType } from "graphql";
 import { Kind } from "graphql/language";
 
+import { resolvers as partyResolvers } from "./parties";
+import { resolvers as userResolvers } from "./users";
+
 const accountResolvers = {
   transactions: async ({ id }, { limit, categoryId, query }, { sdk }) =>
     sdk.getTransactionsForAccount(id, {
       limit,
       categoryId,
-      query
-    })
+      query,
+    }),
 };
 
 const resolvers = {
@@ -29,7 +32,7 @@ const resolvers = {
         return parseInt(ast.value, 10); // ast value is always in string format
       }
       return undefined;
-    }
+    },
   }),
   Account: {
     __resolveType: obj =>
@@ -40,8 +43,8 @@ const resolvers = {
         savings: "SavingsAccount",
         loan: "LoanAccount",
         line_of_credit: "LineOfCreditAccount",
-        certificate: "CertificateAccount"
-      })
+        certificate: "CertificateAccount",
+      }),
   },
   CertificateAccount: accountResolvers,
   CheckingAccount: accountResolvers,
@@ -56,23 +59,20 @@ const resolvers = {
     account: ({ accountId }, _params, { loaders }) =>
       accountId && loaders.accounts.load(accountId),
     category: ({ category }, _params, { loaders }) =>
-      category && loaders.categories.load(category)
+      category && loaders.categories.load(category),
   },
-  User: {
-    accounts: ({ id }, _params, { sdk }) => sdk.getAccountsForUser(id)
-  },
+
   RootQuery: {
     account: (_root, { id }, { sdk, ...context }) =>
       sdk.getAccount(id, context),
     category: (_root, { id }, { loaders }) => id && loaders.categories.load(id),
-    me: (_root, _params, { sdk, ...context }) => sdk.getCurrentUser(context),
-    users: (_root, _params, { sdk }) => sdk.getUsers(),
     transaction: (_root, { id }, { sdk, ...context }) =>
-      sdk.getTransaction(id, context)
+      sdk.getTransaction(id, context),
   },
-  RootMutation: {
-    createUser: (_root, params, { sdk }) => sdk.createUser(params)
-  }
+  RootMutation: {},
 };
 
-export default resolvers;
+export default R.pipe(
+  R.mergeDeepLeft(partyResolvers),
+  R.mergeDeepLeft(userResolvers)
+)(resolvers);

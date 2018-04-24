@@ -58,5 +58,8 @@
   },
   "peerDependencies": {
     "graphql": "^0.12.3"
+  },
+  "prettier": {
+    "trailingComma": "es5"
   }
 }

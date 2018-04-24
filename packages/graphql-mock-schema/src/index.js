@@ -10,10 +10,10 @@ import { createLowSdk } from "./sdk";
 export const createLoaders = ({ sdk, userId }) => ({
   accounts: new DataLoader(ids =>
     sdk.getAccounts(ids, {
-      userId
+      userId,
     })
   ),
-  categories: new DataLoader(ids => sdk.getCategories(ids))
+  categories: new DataLoader(ids => sdk.getCategories(ids)),
 });
 
 export const createMockSdk = ({
@@ -22,13 +22,13 @@ export const createMockSdk = ({
     categories: [],
     accounts: [],
     users: [],
-    transactions: []
-  }
+    transactions: [],
+  },
 }) => {
   return createLowSdk({
     adapter: new FileAsync(dbFile, {
-      defaultValue
-    })
+      defaultValue,
+    }),
   });
 };
 

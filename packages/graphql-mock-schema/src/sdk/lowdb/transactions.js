@@ -1,9 +1,9 @@
 import R from "ramda";
 import matchSorter from "match-sorter";
 
-import { find } from "./utils";
+import { createFinder } from "./utils";
 
-export const getTransactionsForAccount = find(
+export const getTransactionsForAccount = createFinder(
   "transactions",
   (accountId, { categoryId, limit, query }) =>
     R.pipe(
@@ -16,13 +16,13 @@ export const getTransactionsForAccount = find(
         () => R.isNil(query),
         transactions =>
           matchSorter(transactions, query, {
-            keys: ["description"]
+            keys: ["description"],
           })
       ),
       R.take(limit)
     )
 );
 
-export const getCategories = find("categories", ids => categories =>
+export const getCategories = createFinder("categories", ids => categories =>
   R.map(id => R.find(R.propEq("id", id), categories), ids)
 );
