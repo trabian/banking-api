@@ -7,5 +7,16 @@
       }
     ]
   ],
-  "plugins": ["inline-import"]
+  "plugins": ["inline-import"],
+  "env": {
+    "test": {
+      "presets": [["env"]],
+      "plugins": [
+        "ramda",
+        "inline-import",
+        "transform-class-properties",
+        "transform-object-rest-spread"
+      ]
+    }
+  }
 }

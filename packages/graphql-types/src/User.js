@@ -1,6 +1,7 @@
-import Account from "./Account";
-
 import { gql } from "./utils";
+
+import Account from "./Account";
+import Party from "./Party";
 
 const User = gql`
   type User {
@@ -9,7 +10,9 @@ const User = gql`
     id: ID!
 
     accounts: [Account]
+
+    party: Party
   }
 `;
 
-export default () => [Account, User];
+export default () => [Party, Account, User];
