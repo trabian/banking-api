@@ -1,6 +1,14 @@
 import { gql } from "./utils";
 
 const Address = gql`
+  enum AddressType {
+    HOME
+    MAILING
+    WORK
+    TEMPORARY
+    PREVIOUS
+  }
+
   input AddressInput {
     street1: String!
     street2: String
@@ -10,6 +18,7 @@ const Address = gql`
   }
 
   type Address {
+    type: AddressType
     street1: String!
     street2: String
     city: String!

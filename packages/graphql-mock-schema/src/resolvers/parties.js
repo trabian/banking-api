@@ -19,6 +19,9 @@ export const resolvers = {
       }
     },
   },
+  Person: {
+    contacts: ({ id }, _params, { sdk }) => sdk.getContactsForUser(id),
+  },
   RootMutation: {
     updateAddress: async (_root, params, { sdk, userId }) =>
       updateAddress(sdk, userId, params),

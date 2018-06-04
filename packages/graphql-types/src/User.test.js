@@ -24,6 +24,25 @@ describe("User schema", () => {
         }
       }
     },
+    Address: {
+      type: ({ type }) => type.toUpperCase()
+    },
+    Contact: {
+      contactPoint: ({ contactPoint, type }) => ({
+        ...contactPoint,
+        type
+      })
+    },
+    ContactAddress: {
+      type: ({ type }) => type.toUpperCase()
+    },
+    ContactPoint: {
+      __resolveType: (obj, context, info) => {
+        return {
+          address: "ContactAddress"
+        }[obj.type];
+      }
+    },
     Party: {
       __resolveType: (obj, context, info) => {
         if (obj.firstName) {
@@ -119,7 +138,7 @@ describe("User schema", () => {
     });
   });
 
-  it("should provide an address for a party", async () => {
+  it("should provide contacts for a party", async () => {
     const result = await graphql(
       schema,
       gql`
@@ -127,8 +146,17 @@ describe("User schema", () => {
           me {
             id
             party {
-              address {
-                street1
+              contacts {
+                id
+                contactPoint {
+                  type
+                  ... on ContactAddress {
+                    address {
+                      type
+                      street1
+                    }
+                  }
+                }
               }
             }
           }
@@ -138,9 +166,18 @@ describe("User schema", () => {
         id: "1",
         party: {
           firstName: "Matt",
-          address: {
-            street1: "555 Test Street"
-          }
+          contacts: [
+            {
+              id: "contact--1",
+              type: "address",
+              contactPoint: {
+                address: {
+                  type: "mailing",
+                  street1: "555 Test Street"
+                }
+              }
+            }
+          ]
         }
       }
     );
@@ -150,9 +187,18 @@ describe("User schema", () => {
     expect(result.data.me).toEqual({
       id: "1",
       party: {
-        address: {
-          street1: "555 Test Street"
-        }
+        contacts: [
+          {
+            id: "contact--1",
+            contactPoint: {
+              type: "ADDRESS",
+              address: {
+                type: "MAILING",
+                street1: "555 Test Street"
+              }
+            }
+          }
+        ]
       }
     });
   });

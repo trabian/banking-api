@@ -2,18 +2,39 @@ import R from "ramda";
 
 import faker from "faker";
 
+import uuid from "uuid";
+
 import { responsibleSpender } from "@trabian/banking-mock-data-generator";
 
 const createPerson = () => ({
   firstName: faker.name.firstName(),
   lastName: faker.name.lastName(),
-  address: {
-    street1: faker.address.streetAddress(),
-    street2: faker.address.secondaryAddress(),
-    city: faker.address.city(),
-    state: faker.address.stateAbbr(),
-    zipCode: faker.address.zipCode(),
-  },
+  contacts: [
+    {
+      id: uuid.v4(),
+      type: "address",
+      address: {
+        type: "home",
+        street1: faker.address.streetAddress(),
+        street2: faker.address.secondaryAddress(),
+        city: faker.address.city(),
+        state: faker.address.stateAbbr(),
+        zipCode: faker.address.zipCode(),
+      },
+    },
+    {
+      id: uuid.v4(),
+      type: "address",
+      address: {
+        type: "mailing",
+        street1: faker.address.streetAddress(),
+        street2: faker.address.secondaryAddress(),
+        city: faker.address.city(),
+        state: faker.address.stateAbbr(),
+        zipCode: faker.address.zipCode(),
+      },
+    },
+  ],
 });
 
 export const createMockUser = ({

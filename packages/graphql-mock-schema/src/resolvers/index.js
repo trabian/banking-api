@@ -5,6 +5,7 @@ import parse from "date-fns/parse";
 import { GraphQLScalarType } from "graphql";
 import { Kind } from "graphql/language";
 
+import { resolvers as contactResolvers } from "./contacts";
 import { resolvers as partyResolvers } from "./parties";
 import { resolvers as userResolvers } from "./users";
 
@@ -73,6 +74,7 @@ const resolvers = {
 };
 
 export default R.pipe(
+  R.mergeDeepLeft(contactResolvers),
   R.mergeDeepLeft(partyResolvers),
   R.mergeDeepLeft(userResolvers)
 )(resolvers);

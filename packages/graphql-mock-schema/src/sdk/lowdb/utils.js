@@ -7,9 +7,14 @@ export const createFinder = (tableName, filterFn = R.identity) => {
 
 export const createUpdater = (tableName, updateFn = R.identity) => {
   return ({ db }) => async (id, ...args) => {
-    const updateMatchingRecord = R.map(
-      R.when(R.propEq("id", id), updateFn(...args))
-    );
-    return db(tableName).write(updateMatchingRecord);
+    const matcher = R.propEq("id", id);
+
+    const updateMatchingRecord = R.map(R.when(matcher, updateFn(...args)));
+
+    const _db = db(tableName);
+
+    await _db.write(updateMatchingRecord);
+
+    return _db(R.find(matcher));
   };
 };

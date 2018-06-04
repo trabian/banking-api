@@ -4,7 +4,7 @@
   "workspaces": ["packages/*"],
   "author": "Matt Dean <matt@trabian.com>",
   "scripts": {
-    "start": "cd packages/graphql-mock-schema && yarn start",
+    "start": "cd packages/graphql-mock-server && yarn start",
     "build": "wsrun build --stages",
     "watch": "wsrun watch --parallel",
     "dev": "dev:server",

@@ -2,6 +2,7 @@ import { gql } from "./utils";
 
 import Account from "./Account";
 import DateScalar from "./Date";
+import Node from "./Node";
 import RootMutation from "./Mutation";
 import RootQuery from "./Query";
 import Transaction, { Category } from "./Transaction";
@@ -14,4 +15,4 @@ const Schema = gql`
   }
 `;
 
-export default [Schema, RootQuery, Account, DateScalar, Transaction, User];
+export default [Schema, Account, DateScalar, Node, Transaction, User];

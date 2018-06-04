@@ -1,7 +1,7 @@
 import { gql } from "./utils";
 
 import Account from "./Account";
-import Address from "./Address";
+import Contact from "./Contact";
 import RootMutation from "./Mutation";
 
 const Party = gql`
@@ -9,15 +9,14 @@ const Party = gql`
   interface Party {
     id: ID!
     accounts: [Account]
-    address: Address
-    mailingAddress: Address
+    contacts: [Contact]
   }
 
   type Person implements Party {
     id: ID!
     accounts: [Account]
-    address: Address
-    mailingAddress: Address
+    # List of how the person can be contacted
+    contacts: [Contact]
     firstName: String!
     lastName: String!
   }
@@ -25,8 +24,8 @@ const Party = gql`
   type Organization implements Party {
     id: ID!
     accounts: [Account]
-    address: Address
-    mailingAddress: Address
+    # List of how the organization can be contacted
+    contacts: [Contact]
     name: String!
   }
 
@@ -43,4 +42,4 @@ const Party = gql`
   }
 `;
 
-export default () => [Account, Address, Party, RootMutation];
+export default () => [Account, Contact, Party, RootMutation];

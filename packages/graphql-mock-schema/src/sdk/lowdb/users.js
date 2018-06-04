@@ -14,11 +14,19 @@ export const createUser = ({ db }) => async ({ reset = false, ...params }) => {
 
   const normalized = normalize(user, userSchema);
 
-  const resetOrAddValue = R.ifElse(R.always(reset), R.identity, R.concat);
+  // const resetOrAddValue = R.ifElse(R.always(reset), R.identity, R.concat);
 
   const promises = R.pipe(
     R.mapObjIndexed(async (vals, key) => {
-      return await db(key).write(R.pipe(R.values, resetOrAddValue)(vals));
+      const newVals = Object.values(vals);
+
+      return await db(key).write(existingVals => {
+        if (reset || !existingVals) {
+          return newVals;
+        }
+
+        return R.concat(existingVals, newVals);
+      });
     }),
     R.values()
   )(normalized.entities);
