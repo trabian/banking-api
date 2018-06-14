@@ -1,5 +1,5 @@
 import { gql } from "./utils";
-import Contact from "./Contact";
+// import Contact from "./Contact";
 
 import typeDefs from "./index.js";
 
@@ -64,7 +64,13 @@ describe("Contact schema", () => {
     }
   };
 
-  const schema = makeExecutableSchema({ typeDefs, resolvers });
+  const schema = makeExecutableSchema({
+    typeDefs,
+    resolvers,
+    resolverValidationOptions: {
+      requireResolversForResolveType: false
+    }
+  });
 
   it("should be available via the `node` query", async () => {
     const result = await graphql(

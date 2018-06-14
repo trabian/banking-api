@@ -1,7 +1,5 @@
 import { gql } from "./utils";
 
-import Transaction from "./Transaction";
-
 const AccountType = gql`
   enum AccountType {
     CHECKING
@@ -63,7 +61,7 @@ const InterestBearingAccount = gql`
 `;
 
 const CheckingAccount = gql`
-  type CheckingAccount implements Account, InterestBearingAccount {
+  type CheckingAccount implements Account & InterestBearingAccount {
     id: ID!
     accountNumber: String
     name: String
@@ -81,7 +79,7 @@ const CheckingAccount = gql`
 `;
 
 const SavingsAccount = gql`
-  type SavingsAccount implements Account, InterestBearingAccount {
+  type SavingsAccount implements Account & InterestBearingAccount {
     id: ID!
     accountNumber: String
     name: String
@@ -103,7 +101,7 @@ const SavingsAccount = gql`
 `;
 
 const CertificateAccount = gql`
-  type CertificateAccount implements Account, InterestBearingAccount {
+  type CertificateAccount implements Account & InterestBearingAccount {
     id: ID!
     accountNumber: String
     name: String
@@ -156,7 +154,7 @@ const AbstractLoanAccount = gql`
 `;
 
 const LoanAccount = gql`
-  type LoanAccount implements Account, AbstractLoanAccount {
+  type LoanAccount implements Account & AbstractLoanAccount {
     id: ID!
     accountNumber: String
     name: String
@@ -185,7 +183,7 @@ const OpenLoanAccount = gql`
 `;
 
 const LineOfCreditAccount = gql`
-  type LineOfCreditAccount implements Account, AbstractLoanAccount, OpenLoanAccount {
+  type LineOfCreditAccount implements Account & AbstractLoanAccount & OpenLoanAccount {
     id: ID!
     accountNumber: String
     name: String
@@ -209,7 +207,7 @@ const LineOfCreditAccount = gql`
 `;
 
 const CreditCardAccount = gql`
-  type CreditCardAccount implements Account, AbstractLoanAccount, OpenLoanAccount {
+  type CreditCardAccount implements Account & AbstractLoanAccount & OpenLoanAccount {
     id: ID!
     accountNumber: String
     name: String
@@ -245,6 +243,5 @@ export default () => [
   LoanAccount,
   LineOfCreditAccount,
   LoanPayment,
-  OpenLoanAccount,
-  Transaction
+  OpenLoanAccount
 ];

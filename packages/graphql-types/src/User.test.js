@@ -1,17 +1,18 @@
 import { gql } from "./utils";
-import User from "./User";
+
+import typeDefs from "./index.js";
 
 import { graphql } from "graphql";
 import { makeExecutableSchema } from "graphql-tools";
 
 describe("User schema", () => {
-  const Query = gql`
-    type Query {
-      me: User
-    }
-  `;
+  // const Query = gql`
+  //   type Query {
+  //     me: User
+  //   }
+  // `;
 
-  const typeDefs = [User, Query];
+  // const typeDefs = [User, Query];
 
   const resolvers = {
     Account: {
@@ -54,12 +55,18 @@ describe("User schema", () => {
         }
       }
     },
-    Query: {
+    RootQuery: {
       me: root => root
     }
   };
 
-  const schema = makeExecutableSchema({ typeDefs, resolvers });
+  const schema = makeExecutableSchema({
+    typeDefs,
+    resolvers,
+    resolverValidationOptions: {
+      requireResolversForResolveType: false
+    }
+  });
   it("should provide party information for a person", async () => {
     const result = await graphql(
       schema,

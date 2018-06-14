@@ -1,7 +1,5 @@
 import { gql } from "./utils";
 
-import RootQuery from "./Query";
-
 const Node = gql`
   interface Node {
     id: ID!
@@ -12,4 +10,4 @@ const Node = gql`
   }
 `;
 
-export default () => [Node, RootQuery];
+export default Node;

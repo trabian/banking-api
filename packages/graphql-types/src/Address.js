@@ -27,4 +27,4 @@ const Address = gql`
   }
 `;
 
-export default () => [Address];
+export default Address;

@@ -4,4 +4,4 @@ const DateScalar = gql`
   scalar Date
 `;
 
-export default () => [DateScalar];
+export default DateScalar;

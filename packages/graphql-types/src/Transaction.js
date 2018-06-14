@@ -1,10 +1,6 @@
 import { gql } from "./utils";
 
-import DateScalar from "./Date";
-
-import Account from "./Account";
-
-export const Category = gql`
+const Category = gql`
   type Category {
     id: ID!
     name: String!
@@ -86,7 +82,6 @@ export const Transaction = gql`
 `;
 
 export default () => [
-  DateScalar,
   Transaction,
   TransactionStatus,
   TransactionType,

@@ -1,8 +1,5 @@
 import { gql } from "./utils";
 
-import Address from "./Address";
-import Node from "./Node";
-
 const Contact = gql`
   enum ContactType {
     ADDRESS
@@ -69,4 +66,4 @@ const Contact = gql`
   }
 `;
 
-export default () => [Address, Contact, Node];
+export default Contact;

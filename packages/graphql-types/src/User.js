@@ -1,8 +1,5 @@
 import { gql } from "./utils";
 
-import Account from "./Account";
-import Party from "./Party";
-
 const User = gql`
   type User {
     # The user ID is persistent and unique across the institution and remains the
@@ -15,4 +12,4 @@ const User = gql`
   }
 `;
 
-export default () => [Party, Account, User];
+export default User;

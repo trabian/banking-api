@@ -42,4 +42,4 @@ const Party = gql`
   }
 `;
 
-export default () => [Account, Contact, Party, RootMutation];
+export default Party;
