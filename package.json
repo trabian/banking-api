@@ -1,16 +1,17 @@
 {
   "name": "@trabian/banking",
   "private": true,
-  "workspaces": ["packages/*"],
+  "workspaces": [
+    "packages/*"
+  ],
   "author": "Matt Dean <matt@trabian.com>",
   "scripts": {
     "start": "cd packages/graphql-mock-server && yarn start",
     "build": "wsrun build --stages",
     "watch": "wsrun watch --parallel",
-    "dev": "dev:server",
+    "dev": "yarn dev:server",
     "dev:server": "cd packages/graphql-mock-schema && yarn dev:server",
-    "build:server":
-      "cd packages/mock-data-generator && yarn build && cd ../graphql-types && yarn build && cd ../graphql-mock-schema && yarn build:server && cd client && yarn install && yarn build"
+    "build:server": "cd packages/mock-data-generator && yarn build && cd ../graphql-types && yarn build && cd ../graphql-mock-schema && yarn build:server && cd client && yarn install && yarn build"
   },
   "devDependencies": {
     "wsrun": "^2.0.0"

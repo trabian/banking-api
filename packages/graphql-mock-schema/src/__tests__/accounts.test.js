@@ -17,8 +17,8 @@ describe("The accounts schema using the LowSDK", () => {
       defaultValue: {
         users: [
           {
-            id: "1"
-          }
+            id: "1",
+          },
         ],
         accounts: [
           {
@@ -26,28 +26,28 @@ describe("The accounts schema using the LowSDK", () => {
             actualBalance: 2345.67,
             userId: "1",
             type: "CHECKING",
-            apy: 0.3
+            apy: 0.3,
           },
           {
             id: "2345",
             userId: "1",
             actualBalance: 2345.67,
-            type: "SAVINGS"
+            type: "SAVINGS",
           },
           {
             id: "not-mine",
             actualBalance: 100,
             userId: "2",
-            type: "CHECKING"
-          }
+            type: "CHECKING",
+          },
         ],
         transactions: [
           {
             accountId: "1234",
-            id: "191919"
-          }
-        ]
-      }
+            id: "191919",
+          },
+        ],
+      },
     });
 
     await sdk.db;
@@ -106,7 +106,10 @@ describe("The accounts schema using the LowSDK", () => {
     );
 
     expect(
-      R.pipe(R.pathOr([], ["data", "me", "accounts"]), R.pluck("id"))(result)
+      R.pipe(
+        R.pathOr([], ["data", "me", "accounts"]),
+        R.pluck("id")
+      )(result)
     ).toEqual(["1234", "2345"]);
 
     expect(result).toMatchSnapshot();

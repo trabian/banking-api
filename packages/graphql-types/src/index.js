@@ -7,7 +7,7 @@ import Node from "./Node";
 import Party from "./Party";
 import RootMutation from "./Mutation";
 import RootQuery from "./Query";
-import Transaction, { Category } from "./Transaction";
+import Transaction from "./Transaction";
 import User from "./User";
 import Contact from "./Contact";
 

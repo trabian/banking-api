@@ -1,11 +1,4 @@
-import express from "express";
-import bodyParser from "body-parser";
-
-import { graphqlExpress, graphiqlExpress } from "graphql-server-express";
-import cors from "cors";
-import path from "path";
-
-import { makeExecutableSchema } from "graphql-tools";
+import { ApolloServer } from "apollo-server";
 
 import {
   typeDefs,
@@ -13,46 +6,25 @@ import {
   createMockSdk
 } from "@trabian/banking-graphql-mock-schema";
 
-const schema = makeExecutableSchema({ typeDefs, resolvers });
-
-const PORT = process.env.PORT || 3002;
+import path from "path";
 
 const run = async () => {
   const sdk = await createMockSdk({
     dbFile: path.join(__dirname, "..", "db.json")
   });
 
-  const app = express();
-
-  const paths = {
-    public: path.join(__dirname, "client", "build")
-  };
-
-  app.use(cors());
-
-  // bodyParser is needed just for POST.
-  app.use(
-    "/graphql",
-    bodyParser.json(),
-    graphqlExpress(req => ({
-      schema,
-      context: {
-        sdk,
-        userId: req.headers.authorization
-      }
-    }))
-  );
-
-  app.use(
-    "/graphiql",
-    graphiqlExpress({
-      endpointURL: "/graphql"
+  const server = new ApolloServer({
+    typeDefs,
+    resolvers,
+    context: ({ req }) => ({
+      sdk,
+      userId: req.headers.authorization
     })
-  );
+  });
 
-  app.use("/", express.static(paths.public));
-
-  app.listen(PORT, () => console.warn(`listening on port: ${PORT}`));
+  server.listen().then(({ url }) => {
+    console.log(`🚀  Server ready at ${url}`);
+  });
 };
 
 run();
