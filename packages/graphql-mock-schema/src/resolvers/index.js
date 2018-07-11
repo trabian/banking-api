@@ -55,7 +55,10 @@ const resolvers = {
   SavingsAccount: accountResolvers,
   LineOfCreditAccount: accountResolvers,
   Transaction: {
-    type: R.pipe(R.prop("type"), R.toUpper),
+    type: R.pipe(
+      R.prop("type"),
+      R.toUpper
+    ),
     status: ({ pending }) => (pending ? "PENDING" : "POSTED"),
     account: ({ accountId }, _params, { loaders }) =>
       accountId && loaders.accounts.load(accountId),
@@ -63,14 +66,14 @@ const resolvers = {
       category && loaders.categories.load(category),
   },
 
-  RootQuery: {
+  Query: {
     account: (_root, { id }, { sdk, ...context }) =>
       sdk.getAccount(id, context),
     category: (_root, { id }, { loaders }) => id && loaders.categories.load(id),
     transaction: (_root, { id }, { sdk, ...context }) =>
       sdk.getTransaction(id, context),
   },
-  RootMutation: {},
+  Mutation: {},
 };
 
 export default R.pipe(

@@ -1,0 +1,17 @@
+#import "./types/Account.graphql"
+#import "./types/Address.graphql"
+#import "./types/Contact.graphql"
+#import "./types/Node.graphql"
+#import "./types/Party.graphql"
+#import "./types/Scalars.graphql"
+#import "./types/Transaction.graphql"
+#import "./types/User.graphql"
+
+type Query
+
+type Mutation
+
+schema {
+  query: Query
+  mutation: Mutation
+}

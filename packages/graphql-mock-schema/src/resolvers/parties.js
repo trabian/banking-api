@@ -22,7 +22,7 @@ export const resolvers = {
   Person: {
     contacts: ({ id }, _params, { sdk }) => sdk.getContactsForUser(id),
   },
-  RootMutation: {
+  Mutation: {
     updateAddress: async (_root, params, { sdk, userId }) =>
       updateAddress(sdk, userId, params),
     updatePartyAddress: async (_root, { partyId, ...params }, { sdk }) =>

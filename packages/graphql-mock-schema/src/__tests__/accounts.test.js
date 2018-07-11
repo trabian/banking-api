@@ -5,9 +5,9 @@ import R from "ramda";
 
 import { gql } from "../utils.js";
 
-const schema = makeExecutableSchema({ typeDefs, resolvers });
-
 import { createLowSdk as createSdk } from "../sdk";
+
+const schema = makeExecutableSchema({ typeDefs, resolvers });
 
 describe("The accounts schema using the LowSDK", () => {
   let execute;

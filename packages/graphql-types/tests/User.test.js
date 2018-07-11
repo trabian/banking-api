@@ -1,19 +1,11 @@
-import { gql } from "./utils";
+const { graphql } = require("graphql");
+const { makeExecutableSchema } = require("graphql-tools");
 
-import typeDefs from "./index";
+const { gql } = require("./utils");
 
-import { graphql } from "graphql";
-import { makeExecutableSchema } from "graphql-tools";
+const typeDefs = require("../build").default;
 
 describe("User schema", () => {
-  // const Query = gql`
-  //   type Query {
-  //     me: User
-  //   }
-  // `;
-
-  // const typeDefs = [User, Query];
-
   const resolvers = {
     Account: {
       __resolveType: (obj, context, info) => {
@@ -23,26 +15,26 @@ describe("User schema", () => {
           default:
             return "CheckingAccount";
         }
-      }
+      },
     },
     Address: {
-      type: ({ type }) => type.toUpperCase()
+      type: ({ type }) => type.toUpperCase(),
     },
     Contact: {
       contactPoint: ({ contactPoint, type }) => ({
         ...contactPoint,
-        type
-      })
+        type,
+      }),
     },
     ContactAddress: {
-      type: ({ type }) => type.toUpperCase()
+      type: ({ type }) => type.toUpperCase(),
     },
     ContactPoint: {
       __resolveType: (obj, context, info) => {
         return {
-          address: "ContactAddress"
+          address: "ContactAddress",
         }[obj.type];
-      }
+      },
     },
     Party: {
       __resolveType: (obj, context, info) => {
@@ -53,19 +45,19 @@ describe("User schema", () => {
         if (obj.name) {
           return "Organization";
         }
-      }
+      },
     },
-    RootQuery: {
-      me: root => root
-    }
+    Query: {
+      me: root => root,
+    },
   };
 
   const schema = makeExecutableSchema({
     typeDefs,
     resolvers,
     resolverValidationOptions: {
-      requireResolversForResolveType: false
-    }
+      requireResolversForResolveType: false,
+    },
   });
   it("should provide party information for a person", async () => {
     const result = await graphql(
@@ -93,10 +85,10 @@ describe("User schema", () => {
           firstName: "Jane",
           accounts: [
             {
-              id: "account-1"
-            }
-          ]
-        }
+              id: "account-1",
+            },
+          ],
+        },
       }
     );
 
@@ -107,8 +99,8 @@ describe("User schema", () => {
       party: {
         id: "person-1",
         firstName: "Jane",
-        accounts: [{ id: "account-1" }]
-      }
+        accounts: [{ id: "account-1" }],
+      },
     });
   });
 
@@ -130,8 +122,8 @@ describe("User schema", () => {
       {
         id: "1",
         party: {
-          name: "Trabian"
-        }
+          name: "Trabian",
+        },
       }
     );
 
@@ -140,8 +132,8 @@ describe("User schema", () => {
     expect(result.data.me).toEqual({
       id: "1",
       party: {
-        name: "Trabian"
-      }
+        name: "Trabian",
+      },
     });
   });
 
@@ -180,12 +172,12 @@ describe("User schema", () => {
               contactPoint: {
                 address: {
                   type: "mailing",
-                  street1: "555 Test Street"
-                }
-              }
-            }
-          ]
-        }
+                  street1: "555 Test Street",
+                },
+              },
+            },
+          ],
+        },
       }
     );
 
@@ -201,12 +193,12 @@ describe("User schema", () => {
               type: "ADDRESS",
               address: {
                 type: "MAILING",
-                street1: "555 Test Street"
-              }
-            }
-          }
-        ]
-      }
+                street1: "555 Test Street",
+              },
+            },
+          },
+        ],
+      },
     });
   });
 });

@@ -15,7 +15,7 @@ export const resolvers = {
         address: "ContactAddress",
       }),
   },
-  RootMutation: {
+  Mutation: {
     updateContact: (root, { id, address }, { sdk }) => {
       return sdk.updateContact(id, { address });
     },

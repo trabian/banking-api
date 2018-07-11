@@ -1,10 +1,9 @@
-import { gql } from "./utils";
-// import Contact from "./Contact";
+const { graphql, GraphQLScalarType } = require("graphql");
+const { makeExecutableSchema } = require("graphql-tools");
 
-import typeDefs from "./index";
+const { gql } = require("./utils");
 
-import { graphql, GraphQLScalarType } from "graphql";
-import { makeExecutableSchema } from "graphql-tools";
+const typeDefs = require("../build").default;
 
 const toEnum = (obj, _params, _root, { fieldName }) =>
   obj[fieldName].toUpperCase();
@@ -13,7 +12,7 @@ const resolveContactType = ({ type }, _params, _root) =>
   ({
     address: "ContactAddress",
     phone: "ContactPhone",
-    email: "ContactEmail"
+    email: "ContactEmail",
   }[type]);
 
 describe("Contact schema", () => {
@@ -29,46 +28,46 @@ describe("Contact schema", () => {
       },
       parseLiteral(ast) {
         return ast.value;
-      }
+      },
     }),
     Node: {
-      __resolveType: () => "Contact"
+      __resolveType: () => "Contact",
     },
     Address: {
-      type: toEnum
+      type: toEnum,
     },
     Contact: {
       type: toEnum,
       contactPoint: ({ contactPoint, type }) => ({
         ...contactPoint,
-        type
-      })
+        type,
+      }),
     },
     ContactAddress: {
-      type: toEnum
+      type: toEnum,
     },
     ContactEmail: {
       type: toEnum,
-      emailType: toEnum
+      emailType: toEnum,
     },
     ContactPhone: {
       type: toEnum,
-      phoneType: toEnum
+      phoneType: toEnum,
     },
     ContactPoint: {
-      __resolveType: resolveContactType
+      __resolveType: resolveContactType,
     },
-    RootQuery: {
-      node: root => root
-    }
+    Query: {
+      node: root => root,
+    },
   };
 
   const schema = makeExecutableSchema({
     typeDefs,
     resolvers,
     resolverValidationOptions: {
-      requireResolversForResolveType: false
-    }
+      requireResolversForResolveType: false,
+    },
   });
 
   it("should be available via the `node` query", async () => {
@@ -85,14 +84,14 @@ describe("Contact schema", () => {
       `,
       {
         id: "1",
-        type: "address"
+        type: "address",
       }
     );
 
     expect(result.errors).toBeFalsy();
 
     expect(result.data.node).toEqual({
-      id: "1"
+      id: "1",
     });
   });
 
@@ -124,9 +123,9 @@ describe("Contact schema", () => {
         contactPoint: {
           address: {
             type: "mailing",
-            street1: "555 Test Street"
-          }
-        }
+            street1: "555 Test Street",
+          },
+        },
       }
     );
 
@@ -139,9 +138,9 @@ describe("Contact schema", () => {
         type: "ADDRESS",
         address: {
           type: "MAILING",
-          street1: "555 Test Street"
-        }
-      }
+          street1: "555 Test Street",
+        },
+      },
     });
   });
 
@@ -169,8 +168,8 @@ describe("Contact schema", () => {
         type: "phone",
         contactPoint: {
           phoneType: "mobile",
-          number: "2145550001"
-        }
+          number: "2145550001",
+        },
       }
     );
 
@@ -181,8 +180,8 @@ describe("Contact schema", () => {
       contactPoint: {
         type: "PHONE",
         phoneType: "MOBILE",
-        number: "2145550001"
-      }
+        number: "2145550001",
+      },
     });
   });
 
@@ -210,8 +209,8 @@ describe("Contact schema", () => {
         type: "email",
         contactPoint: {
           emailType: "home",
-          emailAddress: "test@example.com"
-        }
+          emailAddress: "test@example.com",
+        },
       }
     );
 
@@ -222,8 +221,8 @@ describe("Contact schema", () => {
       contactPoint: {
         type: "EMAIL",
         emailType: "HOME",
-        emailAddress: "test@example.com"
-      }
+        emailAddress: "test@example.com",
+      },
     });
   });
 
@@ -248,8 +247,8 @@ describe("Contact schema", () => {
         type: "email",
         demonstratedAccess: {
           userId: "2",
-          dateTime: "20180101"
-        }
+          dateTime: "20180101",
+        },
       }
     );
 
@@ -259,8 +258,8 @@ describe("Contact schema", () => {
       id: "contact-1",
       demonstratedAccess: {
         userId: "2",
-        dateTime: "20180101"
-      }
+        dateTime: "20180101",
+      },
     });
   });
 });
