@@ -1,6 +1,6 @@
 import { gql } from "./utils";
 
-import typeDefs from "./index.js";
+import typeDefs from "./index";
 
 import { graphql } from "graphql";
 import { makeExecutableSchema } from "graphql-tools";

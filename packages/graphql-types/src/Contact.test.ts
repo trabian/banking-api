@@ -1,10 +1,9 @@
 import { gql } from "./utils";
 // import Contact from "./Contact";
 
-import typeDefs from "./index.js";
+import typeDefs from "./index";
 
 import { graphql, GraphQLScalarType } from "graphql";
-import { Kind } from "graphql/language";
 import { makeExecutableSchema } from "graphql-tools";
 
 const toEnum = (obj, _params, _root, { fieldName }) =>
