@@ -28,7 +28,10 @@ type ContactPhone implements ContactPoint {
   number: String!
   extension: String
   description: String
-  # Phone number is registered to receive SMS messages.
+
+  """
+  Phone number is registered to receive SMS messages.
+  """
   smsRegistered: Boolean
 }
 
@@ -44,8 +47,10 @@ type ContactEmail implements ContactPoint {
   emailAddress: String!
 }
 
-# This identifies that appropriate access has been demonstrated to receive information
-# electronically for the associated contact point.
+"""
+This identifies that appropriate access has been demonstrated to receive information
+electronically for the associated contact point.
+"""
 type DemonstratedAccess {
   dateTime: Date!
   userId: ID!
