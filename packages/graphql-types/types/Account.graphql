@@ -32,6 +32,8 @@ interface Account {
   """
   name: String
 
+  nickname: String
+
   type: AccountType
 
   """
@@ -64,6 +66,7 @@ type CheckingAccount implements Account & InterestBearingAccount {
   id: ID!
   accountNumber: String
   name: String
+  nickname: String
   type: AccountType
   actualBalance: Float
   availableBalance: Float
@@ -76,6 +79,7 @@ type SavingsAccount implements Account & InterestBearingAccount {
   id: ID!
   accountNumber: String
   name: String
+  nickname: String
   type: AccountType
   actualBalance: Float
   availableBalance: Float
@@ -94,6 +98,7 @@ type CertificateAccount implements Account & InterestBearingAccount {
   id: ID!
   accountNumber: String
   name: String
+  nickname: String
   type: AccountType
   actualBalance: Float
   availableBalance: Float
@@ -107,6 +112,7 @@ type InvestmentAccount implements Account {
   id: ID!
   accountNumber: String
   name: String
+  nickname: String
   type: AccountType
   actualBalance: Float
   availableBalance: Float
@@ -131,6 +137,7 @@ type LoanAccount implements Account & AbstractLoanAccount {
   id: ID!
   accountNumber: String
   name: String
+  nickname: String
   type: AccountType
   actualBalance: Float
   availableBalance: Float
@@ -152,6 +159,7 @@ type LineOfCreditAccount implements Account & AbstractLoanAccount & OpenLoanAcco
   id: ID!
   accountNumber: String
   name: String
+  nickname: String
   type: AccountType
   actualBalance: Float
   availableBalance: Float
@@ -170,6 +178,7 @@ type CreditCardAccount implements Account & AbstractLoanAccount & OpenLoanAccoun
   id: ID!
   accountNumber: String
   name: String
+  nickname: String
   type: AccountType
   actualBalance: Float
   availableBalance: Float
