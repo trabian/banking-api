@@ -1,8 +1,8 @@
 import R from "ramda";
 
-import { find } from "./utils";
+import { createFinder } from "./utils";
 
-export const getAccount = find("accounts", (id, context) =>
+export const getAccount = createFinder("accounts", (id, context) =>
   R.pipe(
     R.find(R.propEq("id", id)),
     R.unless(R.propEq("userId", context.userId), () => {
@@ -11,10 +11,10 @@ export const getAccount = find("accounts", (id, context) =>
   )
 );
 
-export const getAccounts = find("accounts", ids => accounts =>
+export const getAccounts = createFinder("accounts", ids => accounts =>
   R.map(id => R.find(R.propEq("id", id), accounts), ids)
 );
 
-export const getAccountsForUser = find("accounts", userId =>
+export const getAccountsForUser = createFinder("accounts", userId =>
   R.filter(R.propEq("userId", userId))
 );

@@ -5,22 +5,28 @@ import { normalize } from "normalizr";
 import { createMockUser } from "../../mock";
 import { userSchema } from "../schema";
 
-import { find } from "./utils";
+import { createFinder, createUpdater } from "./utils";
 
-export const getCurrentUser = find("users", ({ userId }) =>
-  R.find(R.propEq("id", userId))
-);
+export const getUser = createFinder("users", id => R.find(R.propEq("id", id)));
 
 export const createUser = ({ db }) => async ({ reset = false, ...params }) => {
   const user = createMockUser(params);
 
   const normalized = normalize(user, userSchema);
 
+  // const resetOrAddValue = R.ifElse(R.always(reset), R.identity, R.concat);
+
   const promises = R.pipe(
     R.mapObjIndexed(async (vals, key) => {
-      return await db(key).write(
-        R.pipe(R.values, R.ifElse(R.always(reset), R.identity, R.concat))(vals)
-      );
+      const newVals = Object.values(vals);
+
+      return await db(key).write(existingVals => {
+        if (reset || !existingVals) {
+          return newVals;
+        }
+
+        return R.concat(existingVals, newVals);
+      });
     }),
     R.values()
   )(normalized.entities);
@@ -30,4 +36,12 @@ export const createUser = ({ db }) => async ({ reset = false, ...params }) => {
   return user;
 };
 
-export const getUsers = find("users");
+const addressTypeProperty = type =>
+  type === "primary" ? "address" : `${type}Address`;
+
+export const updatePartyAddress = createUpdater(
+  "users",
+  ({ address, type = "primary" }) => R.assoc(addressTypeProperty(type), address)
+);
+
+export const getUsers = createFinder("users");

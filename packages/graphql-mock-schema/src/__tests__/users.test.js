@@ -5,12 +5,12 @@ import R from "ramda";
 
 import { gql } from "../utils.js";
 
-const schema = makeExecutableSchema({ typeDefs, resolvers });
-
 import { createLowSdk } from "../sdk";
 
 describe("Users", () => {
   let execute;
+
+  const schema = makeExecutableSchema({ typeDefs, resolvers });
 
   beforeEach(async () => {
     const sdk = await createLowSdk();

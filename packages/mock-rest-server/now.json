@@ -1,0 +1,13 @@
+{
+  "name": "trabian-mock-rest-server",
+  "alias": "trabian-mock-rest-server",
+  "type": "docker",
+  "features": {
+    "cloud": "v2"
+  },
+  "build": {
+    "env": {
+      "NPM_TOKEN": "@npm-token"
+    }
+  }
+}

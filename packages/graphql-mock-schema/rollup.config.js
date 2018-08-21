@@ -9,31 +9,32 @@ export default {
   input: "src/index.js",
   output: {
     file: pkg.main,
-    format: "cjs"
+    format: "cjs",
   },
   plugins: [
     babel({
       exclude: "../../node_modules/**", // only transpile our source code
-      runtimeHelpers: true
+      runtimeHelpers: true,
     }),
     resolve({
       jsnext: false,
       main: true,
-      module: false
+      module: false,
     }),
     commonjs({
       namedExports: {
-        "graphql-tools": ["makeExecutableSchema"]
-      }
+        "graphql-tools": ["makeExecutableSchema"],
+        "graphql/language": ["Kind"],
+      },
     }),
-    filesize()
+    filesize(),
   ],
   external: ["graphql", "graphql-tools"],
   watch: {
     include: [
       "src/**",
       require.resolve("@trabian/banking-graphql-types"),
-      require.resolve("@trabian/banking-mock-data-generator")
-    ]
-  }
+      require.resolve("@trabian/banking-mock-data-generator"),
+    ],
+  },
 };
