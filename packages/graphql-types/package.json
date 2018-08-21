@@ -1,6 +1,6 @@
 {
   "name": "@trabian/banking-graphql-types",
-  "version": "0.0.4",
+  "version": "0.0.8",
   "description": "GraphQL types for banking/financial APIs",
   "main": "build.js",
   "dependencies": {},
@@ -18,7 +18,8 @@
   "files": [
     "LICENSE",
     "README.md",
-    "bundle.js"
+    "build.js",
+    "index.d.ts"
   ],
   "scripts": {
     "build": "webpack",
@@ -30,5 +31,8 @@
   },
   "prettier": {
     "trailingComma": "es5"
+  },
+  "typescript": {
+    "definition": "index.d.ts"
   }
 }

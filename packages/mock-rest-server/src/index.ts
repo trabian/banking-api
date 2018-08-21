@@ -6,7 +6,7 @@ const server = jsonServer.create();
 const router = jsonServer.router("db.json");
 const middlewares = jsonServer.defaults();
 
-server.get("/create-user", (req, res) => {
+server.get("/create-user", (_req: any, res: any) => {
   const user = createUser(router.db);
   res.json({ user });
 });
