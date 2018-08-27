@@ -113,6 +113,13 @@ type SavingsAccount implements Account & InterestBearingAccount {
     cursor: String
   ): TransactionConnection
 
+  transactionConnection(
+    limit: Int = 10
+    categoryId: ID
+    query: String
+    cursor: String
+  ): TransactionConnection
+
   """
   Number of remaining transactions according to [Reg D](https://en.wikipedia.org/wiki/Regulation_D_(FRB)).
   """
@@ -140,6 +147,13 @@ type CertificateAccount implements Account & InterestBearingAccount {
     cursor: String
   ): TransactionConnection
 
+  transactionConnection(
+    limit: Int = 10
+    categoryId: ID
+    query: String
+    cursor: String
+  ): TransactionConnection
+
   apy: Float
 }
 
@@ -153,12 +167,14 @@ type InvestmentAccount implements Account {
   availableBalance: Float
   routingNumber: String
   transactions(limit: Int = 10, categoryId: ID, query: String): [Transaction!]!
+
   transactionConnection(
     limit: Int = 10
     categoryId: ID
     query: String
     cursor: String
   ): TransactionConnection
+
   message: Message
 }
 
@@ -186,6 +202,13 @@ type LoanAccount implements Account & AbstractLoanAccount {
   routingNumber: String
   transactions(limit: Int = 10, categoryId: ID, query: String): [Transaction!]!
   message: Message
+
+  transactionConnection(
+    limit: Int = 10
+    categoryId: ID
+    query: String
+    cursor: String
+  ): TransactionConnection
 
   transactionConnection(
     limit: Int = 10
@@ -224,6 +247,13 @@ type LineOfCreditAccount implements Account & AbstractLoanAccount & OpenLoanAcco
     cursor: String
   ): TransactionConnection
 
+  transactionConnection(
+    limit: Int = 10
+    categoryId: ID
+    query: String
+    cursor: String
+  ): TransactionConnection
+
   apr: Float
   nextPayment: LoanPayment
   limit: Float
@@ -243,6 +273,13 @@ type CreditCardAccount implements Account & AbstractLoanAccount & OpenLoanAccoun
   routingNumber: String
   transactions(limit: Int = 10, categoryId: ID, query: String): [Transaction!]!
   message: Message
+
+  transactionConnection(
+    limit: Int = 10
+    categoryId: ID
+    query: String
+    cursor: String
+  ): TransactionConnection
 
   transactionConnection(
     limit: Int = 10
