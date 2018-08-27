@@ -110,6 +110,16 @@ type Transaction {
   source: TransactionSource
 }
 
+type TransactionEdge {
+  cursor: String
+  node: Transaction!
+}
+
+type TransactionConnection {
+  edges: [TransactionEdge]
+  pageInfo: PageInfo
+}
+
 extend type Query {
   category(id: ID): Category
   transaction(id: ID!): Transaction
