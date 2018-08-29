@@ -1,13 +1,11 @@
-import { normalize } from "normalizr";
-
 import { createMockUser } from "@trabian/banking-mock-data-generator";
 
-import { userSchema } from "./schema";
+import { normalizeUser } from "./schema";
 
 const createUser = async (db: any) => {
   const user = createMockUser({});
 
-  const normalized = normalize(user, userSchema);
+  const normalized = normalizeUser(user);
 
   Object.keys(normalized.entities).forEach(key => {
     const idMap = normalized.entities[key];

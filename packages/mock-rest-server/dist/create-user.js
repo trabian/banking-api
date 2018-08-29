@@ -8,12 +8,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const normalizr_1 = require("normalizr");
 const banking_mock_data_generator_1 = require("@trabian/banking-mock-data-generator");
 const schema_1 = require("./schema");
 const createUser = (db) => __awaiter(this, void 0, void 0, function* () {
     const user = banking_mock_data_generator_1.createMockUser({});
-    const normalized = normalizr_1.normalize(user, schema_1.userSchema);
+    const normalized = schema_1.normalizeUser(user);
     Object.keys(normalized.entities).forEach(key => {
         const idMap = normalized.entities[key];
         const values = Object.keys(idMap).map(id => idMap[id]);

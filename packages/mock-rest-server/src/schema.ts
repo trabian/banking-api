@@ -1,4 +1,4 @@
-import { schema } from "normalizr";
+import { normalize, schema } from "normalizr";
 
 const categorySchema = new schema.Entity("categories");
 
@@ -43,3 +43,5 @@ export const userSchema = new schema.Entity("users", {
   accounts: [accountSchema],
   contacts: [contactSchema]
 });
+
+export const normalizeUser = (user: any) => normalize(user, userSchema);
