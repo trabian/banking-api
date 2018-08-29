@@ -19,4 +19,5 @@ exports.userSchema = new normalizr_1.schema.Entity("users", {
     accounts: [exports.accountSchema],
     contacts: [exports.contactSchema]
 });
+exports.normalizeUser = (user) => normalizr_1.normalize(user, exports.userSchema);
 //# sourceMappingURL=schema.js.map

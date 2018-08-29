@@ -5,9 +5,9 @@ declare module "json-server" {
     db: any;
   }
 
-  interface JSONServer {
+  export interface JSONServer {
     create: () => Application;
-    router: (name: string) => JSONRouter;
+    router: (db: string | object) => JSONRouter;
     defaults: () => RequestHandler[];
   }
 
