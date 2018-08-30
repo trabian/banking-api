@@ -1,0 +1,30 @@
+type Transfer {
+  id: ID!
+
+  # The source account ID
+  source: ID!
+
+  # The destination account ID
+  destination: ID!
+
+  amount: Float!
+
+  frequency: String
+
+  startDate: Date
+}
+
+input TransferInput {
+  source: ID!
+  destination: ID!
+  amount: Float!
+  frequency: String
+  startDate: Date!
+}
+
+extend type Mutation {
+  """
+  Create a transfer
+  """
+  createTransfer(transfer: TransferInput!): Transfer
+}

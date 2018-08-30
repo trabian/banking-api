@@ -6,6 +6,7 @@
 #import "./types/Party.graphql"
 #import "./types/Scalars.graphql"
 #import "./types/Transaction.graphql"
+#import "./types/Transfer.graphql"
 #import "./types/User.graphql"
 
 type Query
