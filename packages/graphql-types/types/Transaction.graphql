@@ -6,6 +6,7 @@ type Category {
 type Merchant {
   id: ID!
   name: String!
+  address: Address
 }
 
 enum TransactionStatus {
@@ -13,6 +14,32 @@ enum TransactionStatus {
   PENDING
   DENIED
   VOID
+}
+
+enum TransactionSource {
+  ACH
+  ATM
+  BILL_PAY
+  BULK_DEPOSIT
+  CARD_NOT_PRESENT
+  CASH
+  CHECK
+  FEE
+  HOME_BANKING
+  INSURANCE
+  INTEREST_EARNED
+  INTEREST_PAID
+  INTEREST_REFUND
+  IVR
+  KIOSK
+  MOBILE_BANKING
+  OTHER
+  PAYROLL
+  PIN_PURCHASE
+  SHARED_BRANCH
+  SIGNATURE
+  WIRE
+  WITHHOLDING
 }
 
 enum TransactionType {
@@ -79,6 +106,8 @@ type Transaction {
   message: Message
 
   account: Account
+
+  source: TransactionSource
 }
 
 extend type Query {
