@@ -21,4 +21,6 @@ type Address {
   city: String!
   state: String!
   zipCode: String!
+  latitude: Float
+  longitude: Float
 }
