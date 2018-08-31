@@ -56,6 +56,8 @@ interface Account {
   The transactions for this account
   """
   transactions(limit: Int = 10, categoryId: ID, query: String): [Transaction!]!
+
+  message: Message
 }
 
 interface InterestBearingAccount {
@@ -72,6 +74,7 @@ type CheckingAccount implements Account & InterestBearingAccount {
   availableBalance: Float
   routingNumber: String
   transactions(limit: Int = 10, categoryId: ID, query: String): [Transaction!]!
+  message: Message
   apy: Float
 }
 
@@ -85,6 +88,7 @@ type SavingsAccount implements Account & InterestBearingAccount {
   availableBalance: Float
   routingNumber: String
   transactions(limit: Int = 10, categoryId: ID, query: String): [Transaction!]!
+  message: Message
 
   """
   Number of remaining transactions according to [Reg D](https://en.wikipedia.org/wiki/Regulation_D_(FRB)).
@@ -104,6 +108,7 @@ type CertificateAccount implements Account & InterestBearingAccount {
   availableBalance: Float
   routingNumber: String
   transactions(limit: Int = 10, categoryId: ID, query: String): [Transaction!]!
+  message: Message
 
   apy: Float
 }
@@ -118,6 +123,7 @@ type InvestmentAccount implements Account {
   availableBalance: Float
   routingNumber: String
   transactions(limit: Int = 10, categoryId: ID, query: String): [Transaction!]!
+  message: Message
 }
 
 type LoanPayment {
@@ -143,6 +149,7 @@ type LoanAccount implements Account & AbstractLoanAccount {
   availableBalance: Float
   routingNumber: String
   transactions(limit: Int = 10, categoryId: ID, query: String): [Transaction!]!
+  message: Message
 
   apr: Float
   nextPayment: LoanPayment
@@ -165,6 +172,7 @@ type LineOfCreditAccount implements Account & AbstractLoanAccount & OpenLoanAcco
   availableBalance: Float
   routingNumber: String
   transactions(limit: Int = 10, categoryId: ID, query: String): [Transaction!]!
+  message: Message
 
   apr: Float
   nextPayment: LoanPayment
@@ -184,6 +192,7 @@ type CreditCardAccount implements Account & AbstractLoanAccount & OpenLoanAccoun
   availableBalance: Float
   routingNumber: String
   transactions(limit: Int = 10, categoryId: ID, query: String): [Transaction!]!
+  message: Message
 
   apr: Float
   nextPayment: LoanPayment
