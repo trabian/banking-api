@@ -6,25 +6,23 @@ import {
   createMockSdk
 } from "@trabian/banking-graphql-mock-schema";
 
-import path from "path";
+export interface ServerOptions {
+  dbFile: string;
+}
 
-const run = async () => {
+export const createServer = async ({ dbFile }: ServerOptions): Promise<any> => {
   const sdk = await createMockSdk({
-    dbFile: path.join(__dirname, "..", "db.json")
+    dbFile
   });
 
   const server = new ApolloServer({
     typeDefs,
     resolvers,
-    context: ({ req }) => ({
+    context: ({ req }: { req: any }) => ({
       sdk,
       userId: req.headers.authorization
     })
   });
 
-  server.listen().then(({ url }) => {
-    console.log(`🚀  Server ready at ${url}`);
-  });
+  return server;
 };
-
-run();
