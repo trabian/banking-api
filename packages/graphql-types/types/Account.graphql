@@ -64,6 +64,16 @@ interface Account {
     cursor: String
   ): TransactionConnection
 
+  """
+  Whether transfers are allowed from this account.
+  """
+  transferFrom: Boolean
+
+  """
+  Whether transfers are allowed to this account.
+  """
+  transferTo: Boolean
+
   message: Message
 }
 
@@ -89,6 +99,16 @@ type CheckingAccount implements Account & InterestBearingAccount {
     cursor: String
   ): TransactionConnection
 
+  """
+  Whether transfers are allowed from this account.
+  """
+  transferFrom: Boolean
+
+  """
+  Whether transfers are allowed to this account.
+  """
+  transferTo: Boolean
+
   message: Message
 
   apy: Float
@@ -113,12 +133,15 @@ type SavingsAccount implements Account & InterestBearingAccount {
     cursor: String
   ): TransactionConnection
 
-  transactionConnection(
-    limit: Int = 10
-    categoryId: ID
-    query: String
-    cursor: String
-  ): TransactionConnection
+  """
+  Whether transfers are allowed from this account.
+  """
+  transferFrom: Boolean
+
+  """
+  Whether transfers are allowed to this account.
+  """
+  transferTo: Boolean
 
   """
   Number of remaining transactions according to [Reg D](https://en.wikipedia.org/wiki/Regulation_D_(FRB)).
@@ -140,12 +163,15 @@ type CertificateAccount implements Account & InterestBearingAccount {
   transactions(limit: Int = 10, categoryId: ID, query: String): [Transaction!]!
   message: Message
 
-  transactionConnection(
-    limit: Int = 10
-    categoryId: ID
-    query: String
-    cursor: String
-  ): TransactionConnection
+  """
+  Whether transfers are allowed from this account.
+  """
+  transferFrom: Boolean
+
+  """
+  Whether transfers are allowed to this account.
+  """
+  transferTo: Boolean
 
   transactionConnection(
     limit: Int = 10
@@ -174,6 +200,16 @@ type InvestmentAccount implements Account {
     query: String
     cursor: String
   ): TransactionConnection
+
+  """
+  Whether transfers are allowed from this account.
+  """
+  transferFrom: Boolean
+
+  """
+  Whether transfers are allowed to this account.
+  """
+  transferTo: Boolean
 
   message: Message
 }
@@ -210,12 +246,15 @@ type LoanAccount implements Account & AbstractLoanAccount {
     cursor: String
   ): TransactionConnection
 
-  transactionConnection(
-    limit: Int = 10
-    categoryId: ID
-    query: String
-    cursor: String
-  ): TransactionConnection
+  """
+  Whether transfers are allowed from this account.
+  """
+  transferFrom: Boolean
+
+  """
+  Whether transfers are allowed to this account.
+  """
+  transferTo: Boolean
 
   apr: Float
   nextPayment: LoanPayment
@@ -247,12 +286,15 @@ type LineOfCreditAccount implements Account & AbstractLoanAccount & OpenLoanAcco
     cursor: String
   ): TransactionConnection
 
-  transactionConnection(
-    limit: Int = 10
-    categoryId: ID
-    query: String
-    cursor: String
-  ): TransactionConnection
+  """
+  Whether transfers are allowed from this account.
+  """
+  transferFrom: Boolean
+
+  """
+  Whether transfers are allowed to this account.
+  """
+  transferTo: Boolean
 
   apr: Float
   nextPayment: LoanPayment
@@ -281,12 +323,15 @@ type CreditCardAccount implements Account & AbstractLoanAccount & OpenLoanAccoun
     cursor: String
   ): TransactionConnection
 
-  transactionConnection(
-    limit: Int = 10
-    categoryId: ID
-    query: String
-    cursor: String
-  ): TransactionConnection
+  """
+  Whether transfers are allowed from this account.
+  """
+  transferFrom: Boolean
+
+  """
+  Whether transfers are allowed to this account.
+  """
+  transferTo: Boolean
 
   apr: Float
   nextPayment: LoanPayment
