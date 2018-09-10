@@ -19,7 +19,7 @@ input TransferInput {
   destination: ID!
   amount: Float!
   frequency: String
-  startDate: Date!
+  startDate: Date
 }
 
 extend type Mutation {
