@@ -2,7 +2,7 @@ import DataLoader from "dataloader";
 
 import FileAsync from "lowdb/adapters/FileAsync";
 
-import typeDefs from "./types";
+import typeDefs, { devTypeDefs } from "./types";
 import resolvers from "./resolvers";
 
 import { createLowSdk } from "./sdk";
@@ -32,4 +32,4 @@ export const createMockSdk = ({
   });
 };
 
-export { resolvers, typeDefs };
+export { resolvers, typeDefs, devTypeDefs };

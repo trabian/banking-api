@@ -1,8 +1,10 @@
 import bankingTypes from "@trabian/banking-graphql-types";
 
-import { gql } from "./utils";
+// import { gql } from "./utils";
 
-const devExtensions = gql`
+import gql from "graphql-tag";
+
+export const devTypeDefs = gql`
   extend type Query {
     users: [User]
   }
@@ -12,4 +14,4 @@ const devExtensions = gql`
   }
 `;
 
-export default [devExtensions, bankingTypes];
+export default [devTypeDefs, bankingTypes];
