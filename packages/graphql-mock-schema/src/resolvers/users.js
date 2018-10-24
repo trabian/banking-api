@@ -10,6 +10,6 @@ export const resolvers = {
     me: (_root, _params, { sdk, userId }) => sdk.getUser(userId),
   },
   Mutation: {
-    createUser: (_root, params, { sdk }) => sdk.createUser(params),
+    userCreate: (_root, params, { sdk }) => sdk.createUser(params),
   },
 };

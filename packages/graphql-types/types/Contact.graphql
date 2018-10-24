@@ -70,9 +70,9 @@ input ContactPointInput {
 }
 
 extend type Mutation {
-  contactAddEmail(emailAddress: String): Contact
-  contactAddPhone(number: String): Contact
-  contactAddAddress(address: AddressInput): Contact
+  contactEmailAdd(emailAddress: String): Contact
+  contactPhoneAdd(number: String): Contact
+  contactAddressAdd(address: AddressInput): Contact
 
-  updateContact(id: ID!, contactPoint: ContactPointInput!): Contact
+  contactUpdate(id: ID!, contactPoint: ContactPointInput!): Contact
 }

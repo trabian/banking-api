@@ -1,4 +1,4 @@
-const updateAddress = async (sdk, userId, { address, type = "primary" }) => {
+const addressUpdate = async (sdk, userId, { address, type = "primary" }) => {
   await sdk.updatePartyAddress(userId, { address, type });
   const user = await sdk.getUser(userId);
 
@@ -23,9 +23,9 @@ export const resolvers = {
     contacts: ({ id }, _params, { sdk }) => sdk.getContactsForUser(id),
   },
   Mutation: {
-    updateAddress: async (_root, params, { sdk, userId }) =>
-      updateAddress(sdk, userId, params),
-    updatePartyAddress: async (_root, { partyId, ...params }, { sdk }) =>
-      updateAddress(sdk, partyId, params),
+    addressUpdate: async (_root, params, { sdk, userId }) =>
+      addressUpdate(sdk, userId, params),
+    partyAddressUpdate: async (_root, { partyId, ...params }, { sdk }) =>
+      addressUpdate(sdk, partyId, params),
   },
 };
