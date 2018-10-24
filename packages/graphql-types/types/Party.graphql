@@ -32,12 +32,12 @@ extend type Mutation {
   """
   Update the address associated with the current user
   """
-  updateAddress(type: String, address: AddressInput!): Address
+  addressUpdate(type: String, address: AddressInput!): Address
 
   """
   Update the address for a specific party
   """
-  updatePartyAddress(
+  partyAddressUpdate(
     partyId: ID!
     type: String
     address: AddressInput!

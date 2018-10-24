@@ -48,10 +48,10 @@ extend type Mutation {
   """
   Create a transfer
   """
-  createTransfer(transfer: TransferInput!): Transfer
+  transferCreate(transfer: TransferInput!): Transfer
 
   """
   Update a transfer
   """
-  updateTransfer(id: ID!, transfer: TransferInput!): Transfer
+  transferUpdate(id: ID!, transfer: TransferInput!): Transfer
 }
