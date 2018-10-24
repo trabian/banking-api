@@ -63,6 +63,16 @@ type Contact implements Node {
   demonstratedAccess: DemonstratedAccess
 }
 
+input ContactPointInput {
+  type: ContactType
+  address: String
+  fullAddress: AddressInput
+}
+
 extend type Mutation {
-  updateContact(id: ID!, address: AddressInput): Contact
+  contactAddEmail(emailAddress: String): Contact
+  contactAddPhone(number: String): Contact
+  contactAddAddress(address: AddressInput): Contact
+
+  updateContact(id: ID!, contactPoint: ContactPointInput!): Contact
 }
