@@ -74,6 +74,8 @@ interface Account {
   """
   transferTo: Boolean
 
+  transferConnection(limit: Int = 10, cursor: String): TransferConnection
+
   message: Message
 }
 
@@ -109,6 +111,8 @@ type CheckingAccount implements Account & InterestBearingAccount {
   """
   transferTo: Boolean
 
+  transferConnection(limit: Int = 10, cursor: String): TransferConnection
+
   message: Message
 
   apy: Float
@@ -143,6 +147,8 @@ type SavingsAccount implements Account & InterestBearingAccount {
   """
   transferTo: Boolean
 
+  transferConnection(limit: Int = 10, cursor: String): TransferConnection
+
   """
   Number of remaining transactions according to [Reg D](https://en.wikipedia.org/wiki/Regulation_D_(FRB)).
   """
@@ -172,6 +178,8 @@ type CertificateAccount implements Account & InterestBearingAccount {
   Whether transfers are allowed to this account.
   """
   transferTo: Boolean
+
+  transferConnection(limit: Int = 10, cursor: String): TransferConnection
 
   transactionConnection(
     limit: Int = 10
@@ -210,6 +218,8 @@ type InvestmentAccount implements Account {
   Whether transfers are allowed to this account.
   """
   transferTo: Boolean
+
+  transferConnection(limit: Int = 10, cursor: String): TransferConnection
 
   message: Message
 }
@@ -256,6 +266,8 @@ type LoanAccount implements Account & AbstractLoanAccount {
   """
   transferTo: Boolean
 
+  transferConnection(limit: Int = 10, cursor: String): TransferConnection
+
   apr: Float
   nextPayment: LoanPayment
   originationDate: Date
@@ -296,6 +308,8 @@ type LineOfCreditAccount implements Account & AbstractLoanAccount & OpenLoanAcco
   """
   transferTo: Boolean
 
+  transferConnection(limit: Int = 10, cursor: String): TransferConnection
+
   apr: Float
   nextPayment: LoanPayment
   limit: Float
@@ -332,6 +346,8 @@ type CreditCardAccount implements Account & AbstractLoanAccount & OpenLoanAccoun
   Whether transfers are allowed to this account.
   """
   transferTo: Boolean
+
+  transferConnection(limit: Int = 10, cursor: String): TransferConnection
 
   apr: Float
   nextPayment: LoanPayment
