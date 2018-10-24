@@ -9,6 +9,7 @@
     "start": "cd packages/graphql-mock-server && yarn start",
     "build": "wsrun build --stages",
     "watch": "wsrun watch --parallel",
+    "test": "wsrun test --parallel",
     "dev": "yarn dev:server",
     "dev:server": "cd packages/graphql-mock-schema && yarn dev:server",
     "build:server": "cd packages/mock-data-generator && yarn build && cd ../graphql-types && yarn build && cd ../graphql-mock-schema && yarn build:server && cd client && yarn install && yarn build"

@@ -35,7 +35,7 @@ jobs:
 
       - run: yarn build
 
-      - run: yarn workspaces run test
+      - run: yarn test
       # - run: yarn build:server
 
       # - run:
