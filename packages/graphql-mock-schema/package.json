@@ -1,6 +1,6 @@
 {
   "name": "@trabian/banking-graphql-mock-schema",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A mock schema for the banking-api-graphql-types",
   "main": "bundle.js",
   "devDependencies": {
@@ -57,6 +57,7 @@
     "lowdb": "^1.0.0",
     "match-sorter": "^2.2.0",
     "normalizr": "^3.2.4",
+    "npm": "^6.4.1",
     "ramda": "^0.25.0",
     "redux": "^3.7.2",
     "uuid": "^3.1.0"

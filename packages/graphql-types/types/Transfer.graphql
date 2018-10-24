@@ -1,17 +1,20 @@
 type Transfer {
   id: ID!
 
-  # The source account ID
-  source: ID!
+  # The source account
+  source: Account
 
-  # The destination account ID
-  destination: ID!
+  # The destination account
+  destination: Account
 
   amount: Float!
 
   frequency: String
 
   startDate: Date
+  endDate: Date
+
+  nextScheduledTransferDate: Date
 }
 
 input TransferInput {
@@ -20,6 +23,25 @@ input TransferInput {
   amount: Float!
   frequency: String
   startDate: Date
+  endDate: Date
+}
+
+type TransferEdge {
+  cursor: String
+  node: Transfer!
+}
+
+type TransferConnection {
+  edges: [TransferEdge]
+  pageInfo: PageInfo
+}
+
+extend type User {
+  transferConnection(limit: Int = 10, cursor: String): TransferConnection!
+}
+
+extend type Query {
+  transfer(id: ID!): Transfer
 }
 
 extend type Mutation {
@@ -27,4 +49,9 @@ extend type Mutation {
   Create a transfer
   """
   createTransfer(transfer: TransferInput!): Transfer
+
+  """
+  Update a transfer
+  """
+  updateTransfer(id: ID!, transfer: TransferInput!): Transfer
 }
