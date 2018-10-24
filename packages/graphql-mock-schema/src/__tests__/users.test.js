@@ -10,7 +10,11 @@ import { createLowSdk } from "../sdk";
 describe("Users", () => {
   let execute;
 
-  const schema = makeExecutableSchema({ typeDefs, resolvers });
+  const schema = makeExecutableSchema({
+    typeDefs,
+    resolvers,
+    resolverValidationOptions: { requireResolversForResolveType: false },
+  });
 
   beforeEach(async () => {
     const sdk = await createLowSdk();

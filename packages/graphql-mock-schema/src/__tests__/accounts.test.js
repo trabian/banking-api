@@ -7,7 +7,11 @@ import { gql } from "../utils.js";
 
 import { createLowSdk as createSdk } from "../sdk";
 
-const schema = makeExecutableSchema({ typeDefs, resolvers });
+const schema = makeExecutableSchema({
+  typeDefs,
+  resolvers,
+  resolverValidationOptions: { requireResolversForResolveType: false },
+});
 
 describe("The accounts schema using the LowSDK", () => {
   let execute;
