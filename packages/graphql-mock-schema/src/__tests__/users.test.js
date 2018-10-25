@@ -25,14 +25,13 @@ describe("Users", () => {
     const result = await execute(
       gql`
         mutation {
-          createUser {
+          userCreate {
             id
           }
         }
       `
     );
-
-    const id = R.path(["data", "createUser", "id"], result);
+    const id = R.path(["data", "userCreate", "id"], result);
 
     expect(id).toBeTruthy();
 
