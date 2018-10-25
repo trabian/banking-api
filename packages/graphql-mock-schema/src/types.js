@@ -10,7 +10,7 @@ export const devTypeDefs = gql`
   }
 
   extend type Mutation {
-    createUser(months: Int, routingNumber: String, reset: Boolean): User!
+    userCreate(months: Int, routingNumber: String, reset: Boolean): User!
   }
 `;
 
