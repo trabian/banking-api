@@ -12,7 +12,8 @@
   "scripts": {
     "build": "tsc --p . --declaration",
     "start": "node dist/run.js",
-    "watch": "nodemon"
+    "watch": "nodemon",
+    "test": "echo 'no tests for now'"
   },
   "dependencies": {
     "@trabian/banking-mock-data-generator": "^0.0.3",
