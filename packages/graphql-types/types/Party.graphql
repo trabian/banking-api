@@ -4,12 +4,14 @@ The Party defines all the fields necessary to define a person or organization re
 interface Party {
   id: ID!
   accounts: [Account]
+  account(id: ID!): Account
   contacts: [Contact]
 }
 
 type Person implements Party {
   id: ID!
   accounts: [Account]
+  account(id: ID!): Account
   """
   List of how the person can be contacted
   """
@@ -21,6 +23,7 @@ type Person implements Party {
 type Organization implements Party {
   id: ID!
   accounts: [Account]
+  account(id: ID!): Account
   """
   List of how the organization can be contacted
   """
