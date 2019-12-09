@@ -5,15 +5,15 @@
   "main": "build.js",
   "dependencies": {},
   "devDependencies": {
-    "apollo-server": "^2.0.0-rc.5",
-    "graphql": "^0.13.2",
-    "graphql-tools": "^3.1.1",
-    "jest": "^23.4.0",
+    "apollo-server": "^2.9.12",
+    "graphql": "^14.5.8",
+    "graphql-tag": "^2.10.1",
+    "graphql-tools": "^4.0.6",
+    "jest": "^24.9.0",
     "lodash.sample": "^4.2.1",
-    "react-dev-utils": "^5.0.1",
-    "webpack": "^4.16.0",
-    "webpack-command": "^0.4.1",
-    "webpack-graphql-loader": "^1.0.0"
+    "react-dev-utils": "^9.1.0",
+    "webpack": "^4.41.2",
+    "webpack-command": "^0.5.0"
   },
   "files": [
     "LICENSE",
@@ -24,6 +24,7 @@
   "scripts": {
     "build": "webpack",
     "build:watch": "webpack --watch",
+    "prepublish": "yarn build",
     "explore": "node explorer/index.js",
     "test": "jest",
     "test:watch": "jest --watch",
@@ -34,5 +35,8 @@
   },
   "typescript": {
     "definition": "index.d.ts"
+  },
+  "resolutions": {
+    "graphql": "14.5.8"
   }
 }
