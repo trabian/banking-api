@@ -5,9 +5,29 @@ type User {
   """
   id: ID!
 
-  accounts: [Account]
+  """
+  When the `relationshipId` is absent or undefined, the user's `primary` relationship
+  is used.
+  """
+  relationship(relationshipId: ID): Relationship
 
-  party: Party
+  relationships: [Relationship!]!
+
+  party: Party!
+}
+
+"""
+A `Relationship` is a distinct set of accounts (and agreements) between a specific
+person or company and a financial institution. For example, a person may have a
+group of accounts that are shared with a spouse while also having independent
+accounts for a sole proprietorship. That same person may also have access to the
+accounts of a corporation which are associated via another relationship.
+"""
+type Relationship {
+  id: ID!
+  nickname: String
+  accounts: [Account!]!
+  primary: Boolean!
 }
 
 extend type Query {
