@@ -27,6 +27,7 @@ type Relationship {
   id: ID!
   nickname: String
   accounts: [Account!]!
+  account(id: ID!): Account
   primary: Boolean!
 }
 
