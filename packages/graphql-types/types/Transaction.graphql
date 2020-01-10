@@ -67,7 +67,7 @@ type Transaction {
   If this date is unavailable, it is acceptable to use the date that the
   transaction took place
   """
-  date: Date!
+  date: DateTime!
 
   """
   The description represents the memo of the transaction.
