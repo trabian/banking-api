@@ -6,6 +6,7 @@ interface Party {
   accounts: [Account]
   account(id: ID!): Account
   contacts: [Contact]
+  name: String
 }
 
 type Person implements Party {
@@ -18,6 +19,19 @@ type Person implements Party {
   contacts: [Contact]
   firstName: String!
   lastName: String!
+  """
+  The person's full name
+  """
+  name: String
+  """
+  The person's primary email address, which should also be represented in the `contacts`
+  """
+  email: String
+
+  """
+  The person's primary phone number, which should also be represented in the `contacts`.
+  """
+  phoneNumber: String
 }
 
 type Organization implements Party {

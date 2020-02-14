@@ -27,6 +27,11 @@ interface Account {
   accountNumber: String
 
   """
+  A masked version of the account number.
+  """
+  accountNumberMasked: String
+
+  """
   The account name is the textual representation of the account. This
   value is visible to the user and must be human-readable.
   """
@@ -35,6 +40,13 @@ interface Account {
   nickname: String
 
   type: AccountType
+
+  """
+  This is a human-friendly description of the account type. It also provides a way
+  to present provider-specific names that may not fit in a pre-defined list, such as
+  'Special Savings'.
+  """
+  typeDescription: String
 
   """
   Negative, zero or positive amount. If this is a loan, any balance owed to
@@ -86,9 +98,11 @@ interface InterestBearingAccount {
 type CheckingAccount implements Account & InterestBearingAccount {
   id: ID!
   accountNumber: String
+  accountNumberMasked: String
   name: String
   nickname: String
   type: AccountType
+  typeDescription: String
   actualBalance: Float
   availableBalance: Float
   routingNumber: String
@@ -121,9 +135,11 @@ type CheckingAccount implements Account & InterestBearingAccount {
 type SavingsAccount implements Account & InterestBearingAccount {
   id: ID!
   accountNumber: String
+  accountNumberMasked: String
   name: String
   nickname: String
   type: AccountType
+  typeDescription: String
   actualBalance: Float
   availableBalance: Float
   routingNumber: String
@@ -160,9 +176,11 @@ type SavingsAccount implements Account & InterestBearingAccount {
 type CertificateAccount implements Account & InterestBearingAccount {
   id: ID!
   accountNumber: String
+  accountNumberMasked: String
   name: String
   nickname: String
   type: AccountType
+  typeDescription: String
   actualBalance: Float
   availableBalance: Float
   routingNumber: String
@@ -194,9 +212,11 @@ type CertificateAccount implements Account & InterestBearingAccount {
 type InvestmentAccount implements Account {
   id: ID!
   accountNumber: String
+  accountNumberMasked: String
   name: String
   nickname: String
   type: AccountType
+  typeDescription: String
   actualBalance: Float
   availableBalance: Float
   routingNumber: String
@@ -240,9 +260,11 @@ interface AbstractLoanAccount {
 type LoanAccount implements Account & AbstractLoanAccount {
   id: ID!
   accountNumber: String
+  accountNumberMasked: String
   name: String
   nickname: String
   type: AccountType
+  typeDescription: String
   actualBalance: Float
   availableBalance: Float
   routingNumber: String
@@ -282,9 +304,11 @@ interface OpenLoanAccount {
 type LineOfCreditAccount implements Account & AbstractLoanAccount & OpenLoanAccount {
   id: ID!
   accountNumber: String
+  accountNumberMasked: String
   name: String
   nickname: String
   type: AccountType
+  typeDescription: String
   actualBalance: Float
   availableBalance: Float
   routingNumber: String
@@ -321,9 +345,11 @@ type LineOfCreditAccount implements Account & AbstractLoanAccount & OpenLoanAcco
 type CreditCardAccount implements Account & AbstractLoanAccount & OpenLoanAccount {
   id: ID!
   accountNumber: String
+  accountNumberMasked: String
   name: String
   nickname: String
   type: AccountType
+  typeDescription: String
   actualBalance: Float
   availableBalance: Float
   routingNumber: String
