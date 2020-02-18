@@ -15,6 +15,9 @@ type User {
 
   party: Party!
 
+  """
+  This is the date the user either joined or was created within the system.
+  """
   createdAt: DateTime!
 }
 
