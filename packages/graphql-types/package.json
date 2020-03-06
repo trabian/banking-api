@@ -11,9 +11,11 @@
     "graphql-tools": "^4.0.6",
     "jest": "^24.9.0",
     "lodash.sample": "^4.2.1",
+    "nodemon": "^2.0.2",
     "react-dev-utils": "^9.1.0",
     "webpack": "^4.41.2",
-    "webpack-command": "^0.5.0"
+    "webpack-command": "^0.5.0",
+    "yalc": "^1.0.0-pre.35"
   },
   "files": [
     "LICENSE",
@@ -28,7 +30,8 @@
     "explore": "node explorer/index.js",
     "test": "jest",
     "test:watch": "jest --watch",
-    "watch": "yarn build:watch"
+    "watch": "yarn build:watch",
+    "yalc:watch": "nodemon --watch src -e js,graphql -x 'yalc push --changed --no-force'"
   },
   "prettier": {
     "trailingComma": "es5"
