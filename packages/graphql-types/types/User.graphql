@@ -6,12 +6,29 @@ type User {
   id: ID!
 
   """
-  When the `relationshipId` is absent or undefined, the user's `primary` relationship
-  is used.
+  The `relationship` represents the user's relationship(s) to the FI. It exists as a separate type
+  from "User" and accepts an optional `relationshipId` because some banking systems allow users
+  to have access to multiple "accounts", which then have "subaccounts". We attempt to reduce
+  this confusion by referring to each of those "accounts" as separate "relationships" and referring
+  to the "subaccounts" as "accounts".
   """
   relationship(relationshipId: ID): Relationship
 
   relationships: [Relationship!]!
+
+  """
+  The `customer` represents the user's role as a customer of the FI. It exists as a separate type
+  from "User" and accepts an optional `customerId` because some banking systems allow users
+  to have access to multiple "accounts", which then have "subaccounts". We attempt to reduce
+  this confusion by referring to each of those "accounts" as separate "customers" and referring
+  to the "subaccounts" as "accounts".
+  """
+  customer(customerId: ID): Customer
+
+  """
+  Customers this user has access to.
+  """
+  customers: [Customer!]!
 
   party: Party!
 
@@ -34,6 +51,14 @@ type Relationship {
   accounts: [Account!]!
   account(id: ID!): Account
   primary: Boolean!
+}
+
+type Customer {
+  id: ID!
+  name: String!
+  accounts: [Account!]!
+  account(id: ID!): Account
+  representative: Party!
 }
 
 extend type Query {
