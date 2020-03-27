@@ -48,16 +48,16 @@ accounts of a corporation which are associated via another relationship.
 type Relationship {
   id: ID!
   nickname: String
-  accounts: [Account!]!
-  account(id: ID!): Account
+  accounts: [InternalAccount!]!
+  account(id: ID!): InternalAccount
   primary: Boolean!
 }
 
 type Customer {
   id: ID!
   name: String!
-  accounts: [Account!]!
-  account(id: ID!): Account
+  accounts: [InternalAccount!]!
+  account(id: ID!): InternalAccount
   representative: Party!
 }
 
