@@ -39,15 +39,6 @@ interface Account {
 
   nickname: String
 
-  type: AccountType
-
-  """
-  This is a human-friendly description of the account type. It also provides a way
-  to present provider-specific names that may not fit in a pre-defined list, such as
-  'Special Savings'.
-  """
-  typeDescription: String
-
   """
   Negative, zero or positive amount. If this is a loan, any balance owed to
   the financial institution will show as a positive amount. If this is a
@@ -67,8 +58,6 @@ interface Account {
   """
   The transactions for this account
   """
-  transactions(limit: Int = 10, categoryId: ID, query: String): [Transaction!]!
-
   transactionConnection(
     limit: Int = 10
     categoryId: ID
@@ -85,6 +74,33 @@ interface Account {
   Whether transfers are allowed to this account.
   """
   transferTo: Boolean
+}
+
+interface InternalAccount {
+  id: ID!
+  name: String
+  nickname: String
+  accountNumber: String
+  accountNumberMasked: String
+  actualBalance: Float
+  availableBalance: Float
+  transactionConnection(
+    limit: Int = 10
+    categoryId: ID
+    query: String
+    cursor: String
+  ): TransactionConnection
+  transferFrom: Boolean
+  transferTo: Boolean
+
+  type: AccountType
+
+  """
+  This is a human-friendly description of the account type. It also provides a way
+  to present provider-specific names that may not fit in a pre-defined list, such as
+  'Special Savings'.
+  """
+  typeDescription: String
 
   transferConnection(limit: Int = 10, cursor: String): TransferConnection
 
@@ -95,7 +111,7 @@ interface InterestBearingAccount {
   apy: Float
 }
 
-type CheckingAccount implements Account & InterestBearingAccount {
+type CheckingAccount implements Account & InternalAccount & InterestBearingAccount {
   id: ID!
   accountNumber: String
   accountNumberMasked: String
@@ -106,7 +122,6 @@ type CheckingAccount implements Account & InterestBearingAccount {
   actualBalance: Float
   availableBalance: Float
   routingNumber: String
-  transactions(limit: Int = 10, categoryId: ID, query: String): [Transaction!]!
 
   transactionConnection(
     limit: Int = 10
@@ -132,7 +147,7 @@ type CheckingAccount implements Account & InterestBearingAccount {
   apy: Float
 }
 
-type SavingsAccount implements Account & InterestBearingAccount {
+type SavingsAccount implements Account & InternalAccount & InterestBearingAccount {
   id: ID!
   accountNumber: String
   accountNumberMasked: String
@@ -143,7 +158,6 @@ type SavingsAccount implements Account & InterestBearingAccount {
   actualBalance: Float
   availableBalance: Float
   routingNumber: String
-  transactions(limit: Int = 10, categoryId: ID, query: String): [Transaction!]!
   message: Message
 
   transactionConnection(
@@ -173,7 +187,7 @@ type SavingsAccount implements Account & InterestBearingAccount {
   apy: Float
 }
 
-type CertificateAccount implements Account & InterestBearingAccount {
+type CertificateAccount implements Account & InternalAccount & InterestBearingAccount {
   id: ID!
   accountNumber: String
   accountNumberMasked: String
@@ -184,7 +198,6 @@ type CertificateAccount implements Account & InterestBearingAccount {
   actualBalance: Float
   availableBalance: Float
   routingNumber: String
-  transactions(limit: Int = 10, categoryId: ID, query: String): [Transaction!]!
   message: Message
 
   """
@@ -209,7 +222,7 @@ type CertificateAccount implements Account & InterestBearingAccount {
   apy: Float
 }
 
-type InvestmentAccount implements Account {
+type InvestmentAccount implements Account & InternalAccount {
   id: ID!
   accountNumber: String
   accountNumberMasked: String
@@ -220,7 +233,6 @@ type InvestmentAccount implements Account {
   actualBalance: Float
   availableBalance: Float
   routingNumber: String
-  transactions(limit: Int = 10, categoryId: ID, query: String): [Transaction!]!
 
   transactionConnection(
     limit: Int = 10
@@ -257,7 +269,7 @@ interface AbstractLoanAccount {
   secured: Boolean
 }
 
-type LoanAccount implements Account & AbstractLoanAccount {
+type LoanAccount implements Account & InternalAccount & AbstractLoanAccount {
   id: ID!
   accountNumber: String
   accountNumberMasked: String
@@ -268,7 +280,6 @@ type LoanAccount implements Account & AbstractLoanAccount {
   actualBalance: Float
   availableBalance: Float
   routingNumber: String
-  transactions(limit: Int = 10, categoryId: ID, query: String): [Transaction!]!
   message: Message
 
   transactionConnection(
@@ -301,7 +312,7 @@ interface OpenLoanAccount {
   limit: Float
 }
 
-type LineOfCreditAccount implements Account & AbstractLoanAccount & OpenLoanAccount {
+type LineOfCreditAccount implements Account & InternalAccount & AbstractLoanAccount & OpenLoanAccount {
   id: ID!
   accountNumber: String
   accountNumberMasked: String
@@ -312,7 +323,6 @@ type LineOfCreditAccount implements Account & AbstractLoanAccount & OpenLoanAcco
   actualBalance: Float
   availableBalance: Float
   routingNumber: String
-  transactions(limit: Int = 10, categoryId: ID, query: String): [Transaction!]!
   message: Message
 
   transactionConnection(
@@ -342,7 +352,7 @@ type LineOfCreditAccount implements Account & AbstractLoanAccount & OpenLoanAcco
   payoff: Float
 }
 
-type CreditCardAccount implements Account & AbstractLoanAccount & OpenLoanAccount {
+type CreditCardAccount implements Account & InternalAccount & AbstractLoanAccount & OpenLoanAccount {
   id: ID!
   accountNumber: String
   accountNumberMasked: String
@@ -353,7 +363,6 @@ type CreditCardAccount implements Account & AbstractLoanAccount & OpenLoanAccoun
   actualBalance: Float
   availableBalance: Float
   routingNumber: String
-  transactions(limit: Int = 10, categoryId: ID, query: String): [Transaction!]!
   message: Message
 
   transactionConnection(

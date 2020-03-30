@@ -17,9 +17,19 @@ type Transfer {
   nextScheduledTransferDate: Date
 }
 
+enum TransferAccountType {
+  INTERNAL
+  EXTERNAL
+}
+
+input TransferAccountInput {
+  type: TransferAccountType!
+  id: ID!
+}
+
 input TransferInput {
-  source: ID!
-  destination: ID!
+  source: TransferAccountInput!
+  destination: TransferAccountInput!
   amount: Float!
   frequency: String
   startDate: Date

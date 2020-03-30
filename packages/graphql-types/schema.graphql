@@ -2,6 +2,7 @@
 #import "./types/Address.graphql"
 #import "./types/Connection.graphql"
 #import "./types/Contact.graphql"
+#import "./types/ExternalAccount.graphql"
 #import "./types/Node.graphql"
 #import "./types/Party.graphql"
 #import "./types/Scalars.graphql"

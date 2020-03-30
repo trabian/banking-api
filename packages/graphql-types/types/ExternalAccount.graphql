@@ -1,0 +1,19 @@
+type ExternalAccount implements Account {
+  id: ID!
+  name: String!
+  nickname: String
+  routingNumber: String
+  routingNumberMasked: String
+  accountNumber: String
+  accountNumberMasked: String
+  actualBalance: Float
+  availableBalance: Float
+  transactionConnection(
+    limit: Int = 10
+    categoryId: ID
+    query: String
+    cursor: String
+  ): TransactionConnection
+  transferFrom: Boolean
+  transferTo: Boolean
+}
