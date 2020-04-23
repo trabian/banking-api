@@ -1,4 +1,4 @@
-type User {
+type User implements Node {
   """
   The user ID is persistent and unique across the institution and remains the
   same over the life of the user.
@@ -45,7 +45,7 @@ group of accounts that are shared with a spouse while also having independent
 accounts for a sole proprietorship. That same person may also have access to the
 accounts of a corporation which are associated via another relationship.
 """
-type Relationship {
+type Relationship implements Node {
   id: ID!
   nickname: String
   accounts: [InternalAccount!]!
@@ -53,7 +53,7 @@ type Relationship {
   primary: Boolean!
 }
 
-type Customer {
+type Customer implements Node {
   id: ID!
   name: String!
   accounts: [InternalAccount!]!
