@@ -1,4 +1,4 @@
-type ExternalAccount implements Account {
+type ExternalAccount implements Account & Node {
   id: ID!
   name: String!
   nickname: String
