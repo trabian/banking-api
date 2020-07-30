@@ -21,7 +21,8 @@
     "LICENSE",
     "README.md",
     "build.js",
-    "index.d.ts"
+    "index.d.ts",
+    "types/*.graphql"
   ],
   "scripts": {
     "build": "webpack",
