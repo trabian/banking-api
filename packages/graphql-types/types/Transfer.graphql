@@ -8,6 +8,7 @@ type Transfer {
   destination: Account
 
   amount: Money!
+  currency: Currency
 
   frequency: String
 
@@ -31,6 +32,7 @@ input TransferInput {
   source: TransferAccountInput!
   destination: TransferAccountInput!
   amount: Money!
+  currency: Currency
   frequency: String
   startDate: Date
   endDate: Date
