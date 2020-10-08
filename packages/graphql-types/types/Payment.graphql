@@ -1,0 +1,59 @@
+type Payment implements Transferable {
+  id: ID!
+
+  # These fields are payment-specific
+  paymentDate: Date
+  paymentType: PaymentType
+  memo: String
+
+  # The rest of the fields are to implement Transfer
+  source: Account
+  destination: Account
+  amount: Money!
+  currency: Currency!
+  frequency: String
+  startDate: Date
+  endDate: Date
+  nextScheduledTransferDate: Date
+}
+
+enum PaymentType {
+  REGULAR
+  PRINCIPAL_ONLY
+  INTEREST_ONLY
+  PAYOFF
+  PAYDOWN
+  ESCROW
+}
+
+input DestinationAccountInput {
+  id: ID!
+}
+
+input MakePaymentInput {
+  source: TransferAccountInput!
+  destination: DestinationAccountInput!
+  paymentType: PaymentType!
+  amount: Money!
+  currency: Currency!
+  paymentDate: Date!
+  frequency: String
+  startDate: Date
+  endDate: Date
+  nextScheduledTransferDate: Date
+}
+
+enum MakePaymentOutcome {
+  SUCCESS
+  ERROR
+}
+
+type MakePaymentPayload implements Payload {
+  outcome: MakePaymentOutcome!
+  payment: Payment
+  errors: [String]
+}
+
+extend type Mutation {
+  makePayment(payment: MakePaymentInput!): MakePaymentPayload!
+}
