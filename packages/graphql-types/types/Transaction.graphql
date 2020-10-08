@@ -83,7 +83,7 @@ type Transaction {
   transaction. The sign of the amount will be determined based on the
   transaction type.
   """
-  amount: Float!
+  amount: Money!
 
   """
   The transaction type simply reflects whether the account was debited or
@@ -95,7 +95,7 @@ type Transaction {
   """
   The running balance of this transaction's account.
   """
-  balance: Float
+  balance: Money
 
   """
   The current status of the transaction. This may be part of a session or
