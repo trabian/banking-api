@@ -1,4 +1,18 @@
-type Transfer {
+interface Transferable {
+  id: ID!
+  # The source account
+  source: Account
+  # The destination account
+  destination: Account
+  amount: Money!
+  currency: Currency
+  frequency: String
+  startDate: Date
+  endDate: Date
+  nextScheduledTransferDate: Date
+}
+
+type Transfer implements Transferable {
   id: ID!
 
   # The source account
@@ -7,7 +21,8 @@ type Transfer {
   # The destination account
   destination: Account
 
-  amount: Float!
+  amount: Money!
+  currency: Currency
 
   frequency: String
 
@@ -30,7 +45,8 @@ input TransferAccountInput {
 input TransferInput {
   source: TransferAccountInput!
   destination: TransferAccountInput!
-  amount: Float!
+  amount: Money!
+  currency: Currency
   frequency: String
   startDate: Date
   endDate: Date

@@ -6,8 +6,8 @@ type ExternalAccount implements Account & Node {
   routingNumberMasked: String
   accountNumber: String
   accountNumberMasked: String
-  actualBalance: Float
-  availableBalance: Float
+  actualBalance: Money
+  availableBalance: Money
   transactionConnection(
     limit: Int = 10
     categoryId: ID

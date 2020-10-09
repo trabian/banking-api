@@ -45,7 +45,7 @@ interface Account {
   deposit product, if the product is overdrawn it will be a negative amount.
   Positive is assumed if the sign does not appear in the data.
   """
-  actualBalance: Float
+  actualBalance: Money
 
   """
   Negative, zero or positive amount. If this is a loan, any balance owed
@@ -53,7 +53,7 @@ interface Account {
   a deposit product, if the product is overdrawn it will be a negative amount.
   Positive is assumed if the sign does not appear in the data.
   """
-  availableBalance: Float
+  availableBalance: Money
 
   """
   The transactions for this account
@@ -82,8 +82,8 @@ interface InternalAccount {
   nickname: String
   accountNumber: String
   accountNumberMasked: String
-  actualBalance: Float
-  availableBalance: Float
+  actualBalance: Money
+  availableBalance: Money
   transactionConnection(
     limit: Int = 10
     categoryId: ID
@@ -119,8 +119,8 @@ type CheckingAccount implements Account & InternalAccount & InterestBearingAccou
   nickname: String
   type: AccountType
   typeDescription: String
-  actualBalance: Float
-  availableBalance: Float
+  actualBalance: Money
+  availableBalance: Money
   routingNumber: String
 
   transactionConnection(
@@ -155,8 +155,8 @@ type SavingsAccount implements Account & InternalAccount & InterestBearingAccoun
   nickname: String
   type: AccountType
   typeDescription: String
-  actualBalance: Float
-  availableBalance: Float
+  actualBalance: Money
+  availableBalance: Money
   routingNumber: String
   message: Message
 
@@ -195,8 +195,8 @@ type CertificateAccount implements Account & InternalAccount & InterestBearingAc
   nickname: String
   type: AccountType
   typeDescription: String
-  actualBalance: Float
-  availableBalance: Float
+  actualBalance: Money
+  availableBalance: Money
   routingNumber: String
   message: Message
 
@@ -230,8 +230,8 @@ type InvestmentAccount implements Account & InternalAccount & Node {
   nickname: String
   type: AccountType
   typeDescription: String
-  actualBalance: Float
-  availableBalance: Float
+  actualBalance: Money
+  availableBalance: Money
   routingNumber: String
 
   transactionConnection(
@@ -258,14 +258,14 @@ type InvestmentAccount implements Account & InternalAccount & Node {
 
 type LoanPayment {
   nextDueDate: Date
-  amount: Float
+  amount: Money
 }
 
 interface AbstractLoanAccount {
   apr: Float
   nextPayment: LoanPayment
   originationDate: Date
-  payoff: Float
+  payoff: Money
   secured: Boolean
 }
 
@@ -277,8 +277,8 @@ type LoanAccount implements Account & InternalAccount & AbstractLoanAccount & No
   nickname: String
   type: AccountType
   typeDescription: String
-  actualBalance: Float
-  availableBalance: Float
+  actualBalance: Money
+  availableBalance: Money
   routingNumber: String
   message: Message
 
@@ -305,11 +305,11 @@ type LoanAccount implements Account & InternalAccount & AbstractLoanAccount & No
   nextPayment: LoanPayment
   originationDate: Date
   secured: Boolean
-  payoff: Float
+  payoff: Money
 }
 
 interface OpenLoanAccount {
-  limit: Float
+  limit: Money
 }
 
 type LineOfCreditAccount implements Account & InternalAccount & AbstractLoanAccount & OpenLoanAccount & Node {
@@ -320,8 +320,8 @@ type LineOfCreditAccount implements Account & InternalAccount & AbstractLoanAcco
   nickname: String
   type: AccountType
   typeDescription: String
-  actualBalance: Float
-  availableBalance: Float
+  actualBalance: Money
+  availableBalance: Money
   routingNumber: String
   message: Message
 
@@ -346,10 +346,10 @@ type LineOfCreditAccount implements Account & InternalAccount & AbstractLoanAcco
 
   apr: Float
   nextPayment: LoanPayment
-  limit: Float
+  limit: Money
   secured: Boolean
   originationDate: Date
-  payoff: Float
+  payoff: Money
 }
 
 type CreditCardAccount implements Account & InternalAccount & AbstractLoanAccount & OpenLoanAccount & Node {
@@ -360,8 +360,8 @@ type CreditCardAccount implements Account & InternalAccount & AbstractLoanAccoun
   nickname: String
   type: AccountType
   typeDescription: String
-  actualBalance: Float
-  availableBalance: Float
+  actualBalance: Money
+  availableBalance: Money
   routingNumber: String
   message: Message
 
@@ -386,10 +386,10 @@ type CreditCardAccount implements Account & InternalAccount & AbstractLoanAccoun
 
   apr: Float
   nextPayment: LoanPayment
-  limit: Float
+  limit: Money
   secured: Boolean
   originationDate: Date
-  payoff: Float
+  payoff: Money
 }
 
 extend type Query {
