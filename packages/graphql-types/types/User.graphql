@@ -56,9 +56,13 @@ type Relationship implements Node {
 type Customer implements Node {
   id: ID!
   name: String!
-  accounts: [InternalAccount!]!
+  accounts(filter: AccountsFilter): [InternalAccount!]!
   account(id: ID!): InternalAccount
   representative: Party!
+}
+
+input AccountsFilter {
+  transferFrom: Boolean
 }
 
 extend type Query {
