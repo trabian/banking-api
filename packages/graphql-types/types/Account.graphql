@@ -274,10 +274,10 @@ interface AbstractLoanAccount {
   originationDate: Date
   payoff: Money
   secured: Boolean
-  paymentOptions: [LoanPaymentOptions!]!
+  paymentOptions: [LoanPaymentOption!]!
 }
 
-type LoanPaymentOptions {
+type LoanPaymentOption {
   paymentType: PaymentType!
   defaultValue: Money
   value: Money
@@ -297,7 +297,7 @@ type LoanAccount implements Account & InternalAccount & AbstractLoanAccount & No
   currency: Currency
   routingNumber: String
   message: Message
-  paymentOptions: [LoanPaymentOptions!]!
+  paymentOptions: [LoanPaymentOption!]!
 
   transactionConnection(
     limit: Int = 10
@@ -342,7 +342,7 @@ type LineOfCreditAccount implements Account & InternalAccount & AbstractLoanAcco
   currency: Currency
   routingNumber: String
   message: Message
-  paymentOptions: [LoanPaymentOptions!]!
+  paymentOptions: [LoanPaymentOption!]!
 
   transactionConnection(
     limit: Int = 10
@@ -384,7 +384,7 @@ type CreditCardAccount implements Account & InternalAccount & AbstractLoanAccoun
   currency: Currency
   routingNumber: String
   message: Message
-  paymentOptions: [LoanPaymentOptions!]!
+  paymentOptions: [LoanPaymentOption!]!
 
   transactionConnection(
     limit: Int = 10
