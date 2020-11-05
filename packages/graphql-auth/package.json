@@ -1,0 +1,38 @@
+{
+  "name": "@trabian/graphql-auth",
+  "version": "0.1.0",
+  "license": "MIT",
+  "author": "Felix Green",
+  "main": "dist/index.js",
+  "module": "dist/graphql-auth.esm.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsdx build",
+    "lint": "tsdx lint",
+    "prepare": "tsdx build",
+    "start": "tsdx watch",
+    "test": "tsdx test"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "tsdx lint"
+    }
+  },
+  "prettier": {
+    "printWidth": 80,
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "es5"
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.13",
+    "husky": "^4.2.5",
+    "tsdx": "^0.13.3",
+    "tslib": "^2.0.1",
+    "typescript": "^4.0.2"
+  },
+  "peerDependencies": {}
+}
