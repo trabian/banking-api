@@ -10,13 +10,15 @@ type RoleOrConfig =
 
 type AuthorizationCheck = (roleOrConfig: RoleOrConfig) => Function;
 
-type CreateAuthorization = ({
+type CreateAuthorization<T extends Function> = ({
   hasPermission,
 }: {
   hasPermission: (roleOrConfig: RoleOrConfig, user: any) => boolean;
-}) => Function;
+}) => T;
 
-export const createAuthorization: CreateAuthorization = ({ hasPermission }) => {
+export const createAuthorization: CreateAuthorization<Function> = ({
+  hasPermission,
+}) => {
   const authorization: AuthorizationCheck = (roleOrConfig) => (
     callback: Function
   ) => {
