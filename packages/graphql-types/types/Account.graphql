@@ -105,6 +105,12 @@ interface InternalAccount {
   transferConnection(limit: Int = 10, cursor: String): TransferConnection
 
   message: Message
+
+  """
+  Cards associated with this account. This will likely be empty for non-checking or
+  debit cards.
+  """
+  cards: [Card!]!
 }
 
 interface InterestBearingAccount {
@@ -145,6 +151,8 @@ type CheckingAccount implements Account & InternalAccount & InterestBearingAccou
   message: Message
 
   apy: Float
+
+  cards: [Card!]!
 }
 
 type SavingsAccount implements Account & InternalAccount & InterestBearingAccount & Node {
@@ -185,6 +193,8 @@ type SavingsAccount implements Account & InternalAccount & InterestBearingAccoun
   regDRemaining: Int
 
   apy: Float
+
+  cards: [Card!]!
 }
 
 type CertificateAccount implements Account & InternalAccount & InterestBearingAccount & Node {
@@ -220,6 +230,8 @@ type CertificateAccount implements Account & InternalAccount & InterestBearingAc
   ): TransactionConnection
 
   apy: Float
+
+  cards: [Card!]!
 }
 
 type InvestmentAccount implements Account & InternalAccount & Node {
@@ -254,6 +266,8 @@ type InvestmentAccount implements Account & InternalAccount & Node {
   transferConnection(limit: Int = 10, cursor: String): TransferConnection
 
   message: Message
+
+  cards: [Card!]!
 }
 
 type LoanPayment {
@@ -306,6 +320,8 @@ type LoanAccount implements Account & InternalAccount & AbstractLoanAccount & No
   originationDate: Date
   secured: Boolean
   payoff: Float
+
+  cards: [Card!]!
 }
 
 interface OpenLoanAccount {
@@ -350,6 +366,8 @@ type LineOfCreditAccount implements Account & InternalAccount & AbstractLoanAcco
   secured: Boolean
   originationDate: Date
   payoff: Float
+
+  cards: [Card!]!
 }
 
 type CreditCardAccount implements Account & InternalAccount & AbstractLoanAccount & OpenLoanAccount & Node {
@@ -390,6 +408,8 @@ type CreditCardAccount implements Account & InternalAccount & AbstractLoanAccoun
   secured: Boolean
   originationDate: Date
   payoff: Float
+
+  cards: [Card!]!
 }
 
 extend type Query {

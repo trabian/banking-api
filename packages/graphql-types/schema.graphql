@@ -1,5 +1,6 @@
 #import "./types/Account.graphql"
 #import "./types/Address.graphql"
+#import "./types/Card.graphql"
 #import "./types/Connection.graphql"
 #import "./types/Contact.graphql"
 #import "./types/ExternalAccount.graphql"

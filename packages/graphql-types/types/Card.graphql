@@ -1,0 +1,35 @@
+type Card implements Node {
+  """
+  The card ID is a persistent and unique identifier for the card. It must be unique
+  for all users across the institution and remain the same over the life of the card.
+  The card ID should not be the same as the card number embossed on the card.
+  """
+  id: ID!
+
+  """
+  The card number is the visible sequence of numbers that appear on the card.
+  """
+  cardNumber: String!
+
+  """
+  The last 4 digits of the card number.
+  """
+  last4: String!
+
+  nameOnCard: String!
+
+  """
+  While this is often presented as MM/YYYY, it's represented by a date.
+  """
+  expirationDate: Date!
+
+  """
+  Account associated with this card
+  """
+  account: InternalAccount
+}
+
+extend type Customer {
+  cards: [Card!]!
+  card(id: ID!): Card
+}
