@@ -18,6 +18,8 @@ type Card implements Node {
 
   nameOnCard: String!
 
+  productName: String!
+
   """
   While this is often presented as MM/YYYY, it's represented by a date.
   """
