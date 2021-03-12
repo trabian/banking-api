@@ -12,7 +12,7 @@
     "jest": "^24.9.0",
     "lodash.sample": "^4.2.1",
     "nodemon": "^2.0.2",
-    "react-dev-utils": "^9.1.0",
+    "react-dev-utils": "^11.0.4",
     "webpack": "^4.41.2",
     "webpack-command": "^0.5.0",
     "yalc": "^1.0.0-pre.35"
